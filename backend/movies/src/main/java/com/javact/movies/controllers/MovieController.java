@@ -3,7 +3,6 @@ package com.javact.movies.controllers;
 import com.javact.movies.models.Movie;
 import com.javact.movies.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,16 +10,16 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins ="http://localhost:3001")
 @RequestMapping("api/movies")
 public class MovieController {
-
     @Autowired
     private MovieService movieService;
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
-
+    
     @GetMapping("/popular")
     public List<Movie> getMovies() {
         return movieService.getPopularMovies();
