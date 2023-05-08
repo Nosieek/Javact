@@ -16,7 +16,7 @@ import java.util.List;
 public class TmdbMovieDto {
     private Long id;
     private String title;
-    private String overview;git
+    private String overview;
     @JsonProperty("release_date")
     private String releaseDate;
     @JsonProperty("poster_path")
