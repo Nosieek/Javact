@@ -10,7 +10,7 @@ const Hero = ({movies}) => {
                     return(
                         <Paper key={movie.imdbId}>
                             <div className = 'movie-card-container'>
-                                <div className="movie-card" style={{"--img": `url(https://image.tmdb.org/t/p/w500${movie.posterPath})`}}>
+                                <div className="movie-card" style={{"--img": `url(https://image.tmdb.org/t/p/original${movie.posterPath})`}}>
                                     <div className="movie-detail">
                                         <div className="movie-poster">
                                             <img src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
