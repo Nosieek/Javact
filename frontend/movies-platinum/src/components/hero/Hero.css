@@ -14,12 +14,12 @@
 
 }
 .movie-card-container{
-    height: 850px;
-    background-color: red;
+    height: 600px;
+    background-color: black;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 1000px; 
+    min-height: 400px; 
 }
 .movie-card{
 
@@ -32,15 +32,20 @@
 }
  .movie-detail{
     position: absolute;
-    top:200px;
+    top:100px;
     display: flex;
     justify-content: space-evenly;
     width:100%;
 }
 .movie-title{
-    color:white;
+    background: linear-gradient(to right, #FFFFFF, #FF0000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     display: flex;
     align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 52px;
+    text-align: left;
 }
 
 .movie-buttons-container{

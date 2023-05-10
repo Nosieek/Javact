@@ -16,7 +16,7 @@ const Hero = ({movies}) => {
                                             <img src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
                                         </div>
                                         <div className="movie-title">
-                                            <h4>{movie.title}</h4>
+                                            {movie.title}
                                         </div>
 
                                     </div>
