@@ -6,7 +6,7 @@ import { Routes, Route} from 'react-router-dom';
 import { useState, useEffect} from 'react';
 import Home from './components/home/Home';
 import Layout from './components/Layout';
-
+import Header from './components/header/Header';
 
 function App() {
   const [movies, setMovies] = useState();
@@ -17,7 +17,7 @@ function App() {
     try {
       const response = await axios.get("http://localhost:8080/api/movies/popular");
       console.log(response.data);
-      setMovies(response.data); // assuming response contains the movie data as an array
+      setMovies(response.data); 
     } catch (error) {
       console.error(error);
     }
@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="App">
-      
+      <Header/>
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route path="/" element={<Home movies={movies}/>}></Route>
