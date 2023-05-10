@@ -5,15 +5,19 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/movies
-    username: 
-    password:
+    url: jdbc:postgresql://localhost:5432/tmdb
+    username: postgres
+    password: password
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+
+tmdb:
+  api:
+    key: 36beba8c548319d9ea82880e37caaefd
