@@ -2,6 +2,8 @@ package com.javact.movies.services;
 
 import com.javact.movies.dto.TmdbMovieDto;
 import com.javact.movies.dto.TmdbResultsDto;
+import com.javact.movies.dto.TmdbYouTubeDto;
+import com.javact.movies.dto.TmdbYouTubeResultsDto;
 import com.javact.movies.models.Movie;
 import com.javact.movies.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,8 @@ public class MovieService {
                 .block();
 
         List<Movie> movies = results.getResults().stream()
-                .map(dto -> new Movie(dto.getId(), dto.getTitle(), dto.getOverview(), dto.getReleaseDate(), dto.getPosterPath()))
+                .map(dto -> new Movie(dto.getId(), dto.getTitle(), dto.getOverview(),
+                        dto.getReleaseDate(), dto.getPosterPath(), getMovieYoutubeKey(dto.getId())))
                 .collect(Collectors.toList());
 
         return movies;
@@ -46,9 +49,28 @@ public class MovieService {
                 .bodyToMono(TmdbMovieDto.class)
                 .block();
 
-        Movie movie = new Movie(dto.getId(), dto.getTitle(), dto.getOverview(), dto.getReleaseDate(), dto.getPosterPath());
-
+        Movie movie = new Movie(dto.getId(), dto.getTitle(), dto.getOverview(),
+                dto.getReleaseDate(), dto.getPosterPath(), getMovieYoutubeKey(id));
+        //System.out.println(getMovieYoutubeKey(id));
         return movie;
+    }
+
+    private String getMovieYoutubeKey(Long id) {
+        TmdbYouTubeDto results = webClient.get()
+                .uri("/movie/{id}/videos?api_key={apiKey}", id, apiKey)
+                .retrieve()
+                .bodyToMono(TmdbYouTubeDto.class)
+                .block();
+        String idiot = results.getResults().stream()
+                .map(TmdbYouTubeResultsDto::getKey)
+                .findFirst()
+                .orElse(null);
+        System.out.println(idiot);
+
+        return results.getResults().stream()
+                .map(TmdbYouTubeResultsDto::getKey)
+                .findFirst()
+                .orElse(null);
     }
 
     public void saveFilm(Movie movie) {
