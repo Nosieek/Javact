@@ -20,5 +20,5 @@ public class Movie {
     private String overview;
     private String relaseDate;
     private String posterPath;
-
+    private String ytTrailer;
 }
