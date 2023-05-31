@@ -7,6 +7,7 @@ import { useState, useEffect} from 'react';
 import Home from './components/home/Home';
 import Layout from './components/Layout';
 import Header from './components/header/Header';
+import Trailer from './components/trailer/Trailer';
 
 function App() {
   const [movies, setMovies] = useState();
@@ -34,6 +35,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route path="/" element={<Home movies={movies}/>}></Route>
+          <Route path="/Trailer/:ytTrailer" element={<Trailer/>  }></Route>
+
 
         </Route>
       </Routes>
