@@ -12,7 +12,7 @@ return (
     <Navbar bg="dark" variant="dark" expand="lg">
         <Container fluid>
             <Navbar.Brand href="/" style={{"color":'red'}}>
-                <FontAwesomeIcon icon ={faFilm}/> MovieSpot
+                <FontAwesomeIcon icon ={faFilm}/> MoviesSpot
                 <FontAwesomeIcon icon="fa-thin fa-popcorn" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />

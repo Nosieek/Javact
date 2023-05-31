@@ -28,10 +28,12 @@ const Hero = ({movies}) => {
                                             <Link to={`/Trailer/${movie.ytTrailer}`}>
                                                 <div className="play-button-icon-container">
                                                     <FontAwesomeIcon className="play-button-icon"
-                                                        icon = {faCirclePlay}
-                                                    />
+                                                        icon = {faCirclePlay}/>
                                                 </div>
                                             </Link>
+                                            {/* <div className="movie-review-button-container">
+                                            <Button variant ="info" onClick={() => reviews(??)} >Reviews</Button>
+                                            </div> */}
                                         </div>
                                         
                                     </div>
