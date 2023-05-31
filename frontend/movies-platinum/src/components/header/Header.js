@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
+import { faFilm, faPager, faPeopleCarryBox, faPingPongPaddleBall, faStairs, faStar, faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container"
 import Nav from "react-bootstrap/Nav";
@@ -11,8 +11,9 @@ const Header = () => {
 return (
     <Navbar bg="dark" variant="dark" expand="lg">
         <Container fluid>
-            <Navbar.Brand href="/" style={{"color":'gold'}}>
-                <FontAwesomeIcon icon ={faVideoSlash}/> Portfolio
+            <Navbar.Brand href="/" style={{"color":'red'}}>
+                <FontAwesomeIcon icon ={faFilm}/> MovieSpot
+                <FontAwesomeIcon icon="fa-thin fa-popcorn" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
@@ -26,7 +27,7 @@ return (
                     <NavLink className ="nav-link" to="/popular">Ranking</NavLink>  
                     <NavLink className ="nav-link" to="/popular">About</NavLink>       
                 </Nav>
-                <Button variant="outline-info" className="me-2">Login</Button>
+                <Button variant="outline-info" className="me-2" style={{"color":'white'}}>Login</Button>
                 <Button variant="outline-info">Register</Button>
             </Navbar.Collapse>
         </Container>
