@@ -8,6 +8,7 @@ import Home from './components/home/Home';
 import Layout from './components/Layout';
 import Header from './components/header/Header';
 import Trailer from './components/trailer/Trailer';
+import NotFound from './components/notFound/NotFound';
 
 function App() {
   const [movies, setMovies] = useState();
@@ -36,7 +37,7 @@ function App() {
         <Route path="/" element={<Layout/>}>
           <Route path="/" element={<Home movies={movies}/>}></Route>
           <Route path="/Trailer/:ytTrailer" element={<Trailer/>  }></Route>
-
+          <Route path="/*" element={<NotFound/>  }></Route>
 
         </Route>
       </Routes>
