@@ -51,7 +51,7 @@ public class MovieService {
 
         Movie movie = new Movie(dto.getId(), dto.getTitle(), dto.getOverview(),
                 dto.getReleaseDate(), dto.getPosterPath(), getMovieYoutubeKey(id));
-        //System.out.println(getMovieYoutubeKey(id));
+
         return movie;
     }
 
@@ -61,11 +61,6 @@ public class MovieService {
                 .retrieve()
                 .bodyToMono(TmdbYouTubeDto.class)
                 .block();
-        String idiot = results.getResults().stream()
-                .map(TmdbYouTubeResultsDto::getKey)
-                .findFirst()
-                .orElse(null);
-        System.out.println(idiot);
 
         return results.getResults().stream()
                 .map(TmdbYouTubeResultsDto::getKey)
