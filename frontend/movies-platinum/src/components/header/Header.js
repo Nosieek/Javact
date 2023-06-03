@@ -9,10 +9,10 @@ import {NavLink} from "react-router-dom";
 const Header = () => {
  
 return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
         <Container fluid>
-            <Navbar.Brand href="/" style={{"color":'red'}}>
-                <FontAwesomeIcon icon ={faFilm}/> MoviesSpot
+            <Navbar.Brand href="/" style={{"color":'orange'}}>
+                <FontAwesomeIcon icon ={faFilm}/> MovieSpot
                 <FontAwesomeIcon icon="fa-thin fa-popcorn" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
@@ -24,11 +24,12 @@ return (
                     >
                     <NavLink className ="nav-link" to="/">Home</NavLink>
                     <NavLink className ="nav-link" to="/popular">Watch List</NavLink>
-                    <NavLink className ="nav-link" to="/popular">Ranking</NavLink>  
+                    <NavLink className ="nav-link" to="/popular">Genres</NavLink>
+                    <NavLink className ="nav-link" to="/popular">Ranking</NavLink>    
                     <NavLink className ="nav-link" to="/popular">About</NavLink>       
                 </Nav>
                 <Button variant="outline-info" className="me-2" style={{"color":'white'}}>Login</Button>
-                <Button variant="outline-info">Register</Button>
+                <Button variant="outline-info" style={{"color":'orange'}}>Register</Button>
             </Navbar.Collapse>
         </Container>
     </Navbar>
