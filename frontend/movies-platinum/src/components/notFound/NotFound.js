@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './NotFound.css'; // Import the CSS file for styling
+import './NotFound.css';
 const NotFound = () => {
   let navigate = useNavigate(); 
   const routeChange = () =>{ 
