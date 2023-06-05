@@ -1,6 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './NotFound.css'; // Import the CSS file for styling
 const NotFound = () => {
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+    let path =""; 
+    navigate(path);
+  }
   return (
     <div className='container-error'>
         <div className='title-error'>
@@ -9,7 +15,7 @@ const NotFound = () => {
         <div className='content-error'>
             <p className='content-error-message'>Sorry, we can't find that page. You'll find loads to explore on the home page.</p>
             <br></br>
-            <button className='amazing-button'>Home</button>
+            <button className='amazing-button' onClick={routeChange}>Home</button>
         </div>
     </div>
   );
