@@ -13,5 +13,6 @@ public class TmdbYouTubeResultsDto {
     private String id;
     private String name;
     private String key;
+    private String type;
 
 }

@@ -17,7 +17,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
-
-tmdb:
+tmdb:git
   api:
     key: YOUR_API_KEY
