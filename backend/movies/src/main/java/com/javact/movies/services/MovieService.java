@@ -63,9 +63,16 @@ public class MovieService {
                 .block();
 
         return results.getResults().stream()
+                .filter(movie -> movie.getName().equals("Official Trailer"))
                 .map(TmdbYouTubeResultsDto::getKey)
                 .findFirst()
-                .orElse(null);
+                .orElseGet(() ->
+                        results.getResults().stream()
+                                .filter(movie -> movie.getType().equals("Trailer"))
+                                .map(TmdbYouTubeResultsDto::getKey)
+                                .findFirst()
+                                .orElse(null)
+                );
     }
 
     public void saveFilm(Movie movie) {
