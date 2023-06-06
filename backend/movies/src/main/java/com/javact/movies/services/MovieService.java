@@ -62,6 +62,7 @@ public class MovieService {
                 .bodyToMono(TmdbYouTubeDto.class)
                 .block();
 
+        
         return results.getResults().stream()
                 .filter(movie -> movie.getName().equals("Official Trailer"))
                 .map(TmdbYouTubeResultsDto::getKey)
