@@ -1,28 +1,47 @@
-import React from 'react';
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilm } from "@fortawesome/free-solid-svg-icons";
-import { useCookies } from 'react-cookie';
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import jwtDecode from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
+
 
 const Header = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(['username']);
+  const [userEmail, setUserEmail] = useState(""); // State for user email
+  const [cookies, , removeCookie] = useCookies(["token"]); // Retrieve token from cookies
   const navigate = useNavigate();
+  const isLoggedIn = !!cookies.token; // Check if the user is logged in
 
-  const handleLogin = () => {
-    setCookie('username', 'uzytkownik', { path: '/' });
-    navigate('/profile');
+  useEffect(() => {
+    // Fetch user information after login
+    if (isLoggedIn) {
+      const userEmail = getUserEmailFromToken(cookies.token);
+      setUserEmail(userEmail);
+    }
+  }, [cookies.token, isLoggedIn]);
+
+  const getUserEmailFromToken = (token) => {
+    const decodedToken = jwtDecode(token);
+    const userEmail = decodedToken.sub;
+    console.log(userEmail);
+    return userEmail;
   };
 
   const handleLogout = () => {
-    removeCookie('username', { path: '/' });
-    navigate('/');
+    removeCookie("token"); // Remove the token from cookies
+    navigate('/login');
   };
 
-  const isLoggedIn = !cookies.username;
+  let user = null;
+
+  if (isLoggedIn) {
+    user = jwtDecode(cookies.token);
+  }
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
@@ -41,12 +60,12 @@ const Header = () => {
           </Nav>
           {isLoggedIn ? (
             <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
-              <Nav.Link as={Link} to="/profile">{cookies.username}</Nav.Link>
+              <Nav.Link as={Link} to="/profile">{userEmail}</Nav.Link>
               <Button variant="outline-info" style={{ color: 'orange' }} onClick={handleLogout}>Logout</Button>
             </Nav>
           ) : (
             <>
-              <Button variant="outline-info" style={{ color: 'orange' }} as={Link} to="/Login" onClick={handleLogin}>Login</Button>
+              <Button variant="outline-info" style={{ color: 'orange' }} as={Link} to="/Login">Login</Button>
               <Button variant="outline-info" style={{ color: 'orange' }} as={Link} to="/Register">Register</Button>
             </>
           )}
