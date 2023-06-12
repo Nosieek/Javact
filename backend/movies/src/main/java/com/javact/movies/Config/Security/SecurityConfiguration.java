@@ -1,37 +1,37 @@
 package com.javact.movies.Config.Security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import io.netty.handler.codec.http.HttpMethod;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
-@EnableMethodSecurity
-public class SecurityConfig {
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfiguration {
 
-//    @Autowired
-//    private UserDetailsService userDetailsService;
-//
-//
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//
-//        http.csrf().disable()
-//                .authorizeHttpRequests((authorize) ->
-//                        authorize.requestMatchers(HttpMethod.GET, "/api/movies/popular").permitAll() //Zezwalamy każdemu na dostęp do interfejsu API REST logowania
-//                                .requestMatchers("/api/auth/**").permitAll()
-////                                .requestMatchers("/api/movies/watchlist").permitAll()
-////                                .anyRequest().permitAll()
-//
-//                );
-//
-//        return http.build();
-//    }
+    private final AuthenticationProvider authenticationProvider;
+    private final SecurityJwtConfig jwtAuthFiler;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeHttpRequests()
+                .requestMatchers("/api/auth/**")
+                .permitAll()
+                .requestMatchers("/api/movies/popular").permitAll() //Zezwalamy każdemu na dostęp do interfejsu API REST logowania
+                .anyRequest().authenticated().and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFiler, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 }

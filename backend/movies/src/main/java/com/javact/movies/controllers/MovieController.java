@@ -24,6 +24,10 @@ public class MovieController {
     public List<Movie> getMovies() {
         return movieService.getPopularMovies();
     }
+    @GetMapping("/watchlist")
+    public List<Movie> watchList() {
+        return movieService.getPopularMovies2();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
