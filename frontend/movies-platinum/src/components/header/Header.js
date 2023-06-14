@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilm } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
@@ -8,17 +8,16 @@ import Navbar from "react-bootstrap/Navbar";
 import { NavLink, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
+import "./Header.css";
 
 const Header = () => {
-  const [userEmail, setUserEmail] = useState(""); // State for user email
-  const [cookies, , removeCookie] = useCookies(["token"]); // Retrieve token from cookies
+  const [userEmail, setUserEmail] = useState(""); 
+  const [cookies, , removeCookie] = useCookies(["token"]); 
   const navigate = useNavigate();
-  const isLoggedIn = !!cookies.token; // Check if the user is logged in
+  const isLoggedIn = !!cookies.token; 
 
   useEffect(() => {
-    // Fetch user information after login
     if (isLoggedIn) {
       const userEmail = getUserEmailFromToken(cookies.token);
       setUserEmail(userEmail);
@@ -33,8 +32,8 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    removeCookie("token"); // Remove the token from cookies
-    navigate('/login');
+    removeCookie("token"); 
+    navigate("/login");
   };
 
   let user = null;
@@ -44,9 +43,9 @@ const Header = () => {
   }
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
+    <Navbar className="header-navbar" bg="dark" variant="dark" expand="lg" sticky="top">
       <Container fluid>
-        <Navbar.Brand as={Link} to="/" style={{ color: 'orange' }}>
+        <Navbar.Brand as={Link} to="/" className="header-brand">
           <FontAwesomeIcon icon={faFilm} /> MovieSpot
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
@@ -61,12 +60,12 @@ const Header = () => {
           {isLoggedIn ? (
             <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
               <Nav.Link as={Link} to="/profile">{userEmail}</Nav.Link>
-              <Button variant="outline-info" style={{ color: 'orange' }} onClick={handleLogout}>Logout</Button>
+              <Button variant="outline-info" className="header-logout-btn" onClick={handleLogout}>Logout</Button>
             </Nav>
           ) : (
             <>
-              <Button variant="outline-info" style={{ color: 'orange' }} as={Link} to="/Login">Login</Button>
-              <Button variant="outline-info" style={{ color: 'orange' }} as={Link} to="/Register">Register</Button>
+              <Button variant="outline-info" className="header-login-btn" as={Link} to="/Login">Login</Button>
+              <Button variant="outline-info" className="header-register-btn" as={Link} to="/Register">Register</Button>
             </>
           )}
         </Navbar.Collapse>
