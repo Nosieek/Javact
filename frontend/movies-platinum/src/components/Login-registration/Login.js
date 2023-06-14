@@ -1,13 +1,17 @@
-// Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import './Login.css';
+import cameraImage from './cinema.jpg';
+import formImage from './cinema-time.jpg';
 
 const Login = () => {
+  const [showLoginForm, setShowLoginForm] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState(false); 
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['token']); // Use cookies to store the JWT token
+  const [cookies, setCookie] = useCookies(['token']); // Używamy ciasteczek do przechowywania tokena JWT
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,37 +32,85 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const { token } = data; // Extract the JWT token from the response
+        const { token } = data; // Wyciągamy token JWT z odpowiedzi
         console.log('Login successful!', token);
-        setCookie('token', token, { path: '/' }); // Store the JWT token in a cookie
-        navigate('/MovieList'); // Redirect to the movie list page
-
+        setCookie('token', token, { path: '/' }); // Zapisujemy token JWT w ciasteczku
+        navigate('/MovieList'); // Przekierowanie do strony listy filmów
       } else {
         console.log('Login failed!');
-        // Handle login failure, e.g., display error message
+        setLoginError(true); 
       }
     } catch (error) {
       console.error('Error occurred during login:', error);
-      // Handle error, e.g., display error message
+
     }
   };
 
+  const handleButtonClick = () => {
+    setShowLoginForm(true);
+  };
+
+  const handleBackButton = () => {
+    setShowLoginForm(false);
+    setEmail('');
+    setPassword('');
+    setLoginError(false); // Resetowanie stanu błędu logowania przy powrocie
+  };
+
+  const handleRegisterButton = () => {
+    setShowLoginForm(true);
+  };
+  const handleRegisterForm = () => {
+    navigate('/register');
+  };
+
+  const imageClassName = showLoginForm ? 'camera-image slide-out' : 'camera-image slide-in';
+  const formClassName = showLoginForm ? 'login-form active' : 'login-form';
+  const signInButtonClassName = showLoginForm ? 'sign-in-button hidden' : 'sign-in-button';
+  const formImageClassName = showLoginForm ? 'login-form-image slide-in-right' : 'login-form-image slide-out-right';
+
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label>
-          Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
+    <div className="login-container">
+      <div className="camera-container">
+        <img src={cameraImage} alt="Camera" className={imageClassName} />
+        <img src={formImage} alt="Form" className={formImageClassName} />
+        <div className={formClassName}>
+          <h2>Welcome again!</h2>
+          <form onSubmit={handleLogin}>
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {showLoginForm && (
+              <div className="form-buttons">
+                <button className="login-button" type="submit">Login</button>
+                <button className="back-button" onClick={handleBackButton}>Back</button>
+              </div>
+            )}
+            {loginError && (
+              <p className="error-message">Invalid email or password. Please try again.</p>
+            )}
+          </form>
+        </div>
+      </div>
+      {!showLoginForm && (
+        <div>
+          <button className="sign-in-button" onClick={handleButtonClick}>Sign In</button>
+          <button className="register-button" onClick={handleRegisterForm}>Register</button>
+        </div>
+      )}
     </div>
   );
 };
