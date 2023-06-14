@@ -1,0 +1,26 @@
+.header-navbar {
+    background-color: #343a40;
+  }
+  
+  .header-brand {
+    color: orange;
+    font-weight: bold;
+  }
+  
+  .nav-link {
+    color: white;
+    margin-right: 10px;
+  }
+  
+  .header-logout-btn,
+  .header-login-btn,
+  .header-register-btn {
+    color: orange;
+  }
+  
+  .header-logout-btn:hover,
+  .header-login-btn:hover,
+  .header-register-btn:hover {
+    color: #ffc107;
+  }
+  
