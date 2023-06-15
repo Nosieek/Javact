@@ -8,7 +8,6 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('./cinema-time.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -55,7 +54,7 @@
   .register-submit-button {
     width: 100%;
     padding: 10px;
-    background-color: #4caf50;
+    background-color: orange;
     color: #ffffff;
     border: none;
     border-radius: 3px;
