@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import './Login.css';
-import cameraImage from './cinema.jpg';
-import formImage from './cinema-time.jpg';
-
+import Register from './Register';
 const Login = () => {
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  // lacznasc z baza
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false); 
@@ -46,69 +44,73 @@ const Login = () => {
     }
   };
 
-  const handleButtonClick = () => {
-    setShowLoginForm(true);
+  
+
+  const [showLoginForm, setShowLoginForm] = useState(true);
+  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleSignInClick = () => {
+    if (!showLoginForm && !isAnimating) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setShowRegistrationForm(false);
+        setShowLoginForm(true);
+        setIsAnimating(false);
+      }, 500);
+      setShowLoginForm(false);
+      setEmail('');
+      setPassword('');
+      setLoginError(false);
+    }
   };
 
-  const handleBackButton = () => {
-    setShowLoginForm(false);
-    setEmail('');
-    setPassword('');
-    setLoginError(false); // Resetowanie stanu błędu logowania przy powrocie
+  const handleSignUpClick = () => {
+    if (!showRegistrationForm && !isAnimating) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setShowLoginForm(false);
+        setShowRegistrationForm(true);
+        setIsAnimating(false);
+      }, 500);
+    }
   };
-
-  const handleRegisterButton = () => {
-    setShowLoginForm(true);
-  };
-  const handleRegisterForm = () => {
-    navigate('/register');
-  };
-
-  const imageClassName = showLoginForm ? 'camera-image slide-out' : 'camera-image slide-in';
-  const formClassName = showLoginForm ? 'login-form active' : 'login-form';
-  const signInButtonClassName = showLoginForm ? 'sign-in-button hidden' : 'sign-in-button';
-  const formImageClassName = showLoginForm ? 'login-form-image slide-in-right' : 'login-form-image slide-out-right';
 
   return (
     <div className="login-container">
-      <div className="camera-container">
-        <img src={cameraImage} alt="Camera" className={imageClassName} />
-        <img src={formImage} alt="Form" className={formImageClassName} />
-        <div className={formClassName}>
-          <h2>Welcome again!</h2>
+      {showLoginForm && (
+        <div className={`form-container ${isAnimating ? 'slide-out-up' : 'slide-in-down'}`}>
+          <h2>Login Form</h2>
           <form onSubmit={handleLogin}>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
+            {/* Login form fields */}
+            <input type="email" 
+              placeholder="Email" 
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
+              required/>
+
+            <input type="password" 
+              placeholder="Password" 
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {showLoginForm && (
-              <div className="form-buttons">
-                <button className="login-button" type="submit">Login</button>
-                <button className="back-button" onClick={handleBackButton}>Back</button>
-              </div>
-            )}
+            <button type="submit">Log In</button>
+            <button className='SignIn' onClick={handleSignUpClick}>Sign Up</button>
             {loginError && (
               <p className="error-message">Invalid email or password. Please try again.</p>
             )}
           </form>
         </div>
-      </div>
-      {!showLoginForm && (
-        <div>
-          <button className="sign-in-button" onClick={handleButtonClick}>Sign In</button>
-          <button className="register-button" onClick={handleRegisterForm}>Register</button>
+      )}
+
+      {showRegistrationForm && (
+        <div className={`form-container ${isAnimating ? 'slide-out-down' : 'slide-in-up'}`}>
+          <h2>Registration Form</h2>
+          <Register handleSignInClick={handleSignInClick} />
+          <button className='SignIn' onClick={handleSignInClick}>Sign In</button>
         </div>
       )}
     </div>
