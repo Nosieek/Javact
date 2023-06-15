@@ -1,0 +1,108 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, transparent, rgba(30, 3, 3, 0.9));
+  animation: slideOutEffect 2s ease;
+
+}
+
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-width: 100%;
+  background-color: #f0f0f0;
+  border-radius: 20px; /* Zaokrąglone rogi */
+  box-shadow: 0 0 400px orange; /* Pomarańczowy cień */
+  padding: 60px;
+  opacity: 0.9;
+  transition: transform 0.8s ease, opacity 2s ease;
+  
+}
+
+
+.form-container.slide-out-up {
+  transform: translate(-50%, -150%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form-container.slide-in-down {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.form-container.slide-out-down {
+  transform: translate(-50%, 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form-container.slide-in-up {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  background-color: orange;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+form p {
+  text-align: center;
+  margin-top: 10px;
+  color: #007bff;
+  cursor: pointer;
+}
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+.error {
+  color: red;
+  margin-top: 10px;
+}
+.SignIn{
+  width: 100%;
+  padding: 10px;
+  background-color: rgb(0, 123, 255);
+  color: #ffffff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+margin-top: 10px;
+}
+
+.SignIn:hover {
+  background-color: #0062ff;
+}

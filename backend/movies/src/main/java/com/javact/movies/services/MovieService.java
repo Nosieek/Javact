@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,33 @@ public class MovieService {
 
         return movies;
     }
+    //do usuniecia wyswietla watchlist
+    public List<Movie> getPopularMovies2() {
+        TmdbResultsDto results = webClient.get()
+                .uri("/movie/popular?api_key={apiKey}", apiKey)
+                .retrieve()
+                .bodyToMono(TmdbResultsDto.class)
+                .block();
+
+        List<Movie> movies = results.getResults().stream()
+                .map(dto -> new Movie(dto.getId(), dto.getTitle(), dto.getOverview(),
+                        dto.getReleaseDate(), dto.getPosterPath(), getMovieYoutubeKey(dto.getId())))
+                .collect(Collectors.toList());
+        List<Movie> test = new ArrayList<>();
+        int i = 0;
+        for (Movie t:movies) {
+            test.add(t);
+            i++;
+            System.out.println("test");
+            if(i <= 5){
+                break;
+            }
+
+        }
+
+        return test;
+    }
+    //do tego miejsca
     public Movie getFilmById(Long id) {
         TmdbMovieDto dto = webClient.get()
                 .uri("/movie/{id}?api_key={apiKey}", id, apiKey)
