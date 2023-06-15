@@ -56,7 +56,6 @@ function App() {
           <Route path="/MovieList" element={<MovieList movies={watchlist} />} />
           <Route path="/Trailer/:ytTrailer" element={<Trailer/>  }></Route>
           <Route path="/Login" element={<Login />} />
-          <Route path="/Register" element={<Register />} />
           <Route path="/*" element={<NotFound/>  }></Route>
 
         </Route>
