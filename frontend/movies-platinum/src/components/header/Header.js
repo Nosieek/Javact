@@ -135,7 +135,7 @@ const Header = () => {
           <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
             <NavLink className="nav-link" to="/">Home</NavLink>
             <NavLink className="nav-link" to="/MovieList">Watch List</NavLink>
-            <NavLink className="nav-link" to="/popular">Genres</NavLink>
+            <NavLink className="nav-link" to="/Top">Top</NavLink>
             <NavLink className="nav-link" to="/popular">Ranking</NavLink>
             <NavLink className="nav-link" to="/popular">About</NavLink>
           </Nav>

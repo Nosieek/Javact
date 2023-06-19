@@ -1,5 +1,6 @@
 package com.javact.movies.entity;
 
+import com.javact.movies.models.Movie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 @Data
 @Builder
@@ -38,6 +40,21 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     private Set<Roles> roles;
 
+    @ManyToMany
+    @JoinTable(name = "liked_movies",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    private Set<Movie> likedMovies;
+
+    public void addLikedMovie(Movie movie) {
+        likedMovies.add(movie);
+        movie.getLikedByUsers().add(this);
+    }
+
+    public void removeLikedMovie(Movie movie) {
+        likedMovies.remove(movie);
+        movie.getLikedByUsers().remove(this);
+    }
 
 //    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    @JoinTable(name = "user_roles",

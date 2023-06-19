@@ -12,6 +12,7 @@ import NotFound from './components/notFound/NotFound';
 import MovieList from './components/movieList/MovieList';
 import Login from './components/Login-registration/Login';
 import Register from './components/Login-registration/Register';
+import TopRanked from './components/Top/TopRanked';
 
 function App() {
   const [movies, setMovies] = useState();
@@ -55,6 +56,7 @@ function App() {
           <Route path="/" element={<Home movies={movies}/>}></Route>
           <Route path="/MovieList" element={<MovieList movies={watchlist} />} />
           <Route path="/Trailer/:ytTrailer" element={<Trailer/>  }></Route>
+          <Route path="/Top" element={<TopRanked />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/*" element={<NotFound/>  }></Route>
 

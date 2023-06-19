@@ -22,15 +22,16 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/api/auth/**")
-                .permitAll()
-                .requestMatchers("/api/movies/popular").permitAll() //Zezwalamy każdemu na dostęp do interfejsu API REST logowania
-                .anyRequest().authenticated().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFiler, UsernamePasswordAuthenticationFilter.class);
+//        http.csrf().disable().authorizeHttpRequests()
+//                .requestMatchers("/api/auth/**")
+//                .permitAll()
+//                .requestMatchers("/api/movies/popular").permitAll() //Zezwalamy każdemu na dostęp do interfejsu API REST logowania
+//                .anyRequest().authenticated().and().sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authenticationProvider(authenticationProvider)
+//                .addFilterBefore(jwtAuthFiler, UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
 
         return http.build();
     }

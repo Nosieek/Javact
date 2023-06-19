@@ -1,5 +1,6 @@
 package com.javact.movies.controllers;
 
+import com.javact.movies.entity.User;
 import com.javact.movies.models.Movie;
 import com.javact.movies.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class MovieController {
     public List<Movie> getMovies() {
         return movieService.getPopularMovies();
     }
-    @GetMapping("/watchlist")
-    public List<Movie> watchList() {
-        return movieService.getPopularMovies2();
+    @GetMapping("/top")
+    public List<Movie> top(Long page) {
+        return movieService.getTopMoviesPolish(page);
     }
 
     @GetMapping("/{id}")
@@ -38,8 +39,11 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping
-    public void saveFilm(@RequestBody Movie film) {
-        movieService.saveFilm(film);
+    @PostMapping("/test")
+    public void addLikedMovieToUser(@RequestParam String email, @RequestParam Long movieId) {
+        System.out.println(email+"   "+movieId);
+        movieService.addLikedMovieToUser(email, movieId);
     }
+
+
 }

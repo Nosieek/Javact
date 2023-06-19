@@ -1,0 +1,102 @@
+body{
+  background: linear-gradient(to bottom, transparent, rgba(30, 3, 3, 0.9));
+  animation: slideOutEffect 2s ease;
+} 
+ .container {
+  
+  background: linear-gradient(to bottom, transparent, rgba(30, 3, 3, 0.9));
+  animation: slideOutEffect 2s ease;
+}
+
+.movie {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  height: max-content;
+  ;
+}
+
+.movie .left-column {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.movie .right-column {
+  flex: 0 0 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.movie .movie-image {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.movie .movie-details {
+  flex: 1;
+}
+
+.movie .title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, #ff7f00, #ffbf00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.movie .overview {
+  margin-bottom: 10px;
+  color: white;
+}
+
+.movie .release-date {
+  font-style: italic;
+  color: orange;
+}
+
+.movie .add-to-watchlist,
+.movie .add-review {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background-color: #f1f1f1;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f1f1f1;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.play-button-icon-container {
+  width: 150px;
+}
+
+.play-button-icon {
+  color: white;
+  font-size: 3rem;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.play-button-icon:hover {
+  font-size: 4rem;
+  color: white;
+}
