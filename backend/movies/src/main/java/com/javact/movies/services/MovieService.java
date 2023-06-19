@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -25,6 +22,8 @@ public class MovieService {
 
     @Autowired
     private MovieRepository repository;
+
+    @Autowired
 
     private UserRepository userRepository;
     @Value("${tmdb.api.key}")
@@ -151,6 +150,13 @@ public class MovieService {
                         .collect(Collectors.toList()));
 
         return allMoviesFuture.join();
+    }
+
+    public List<Movie> getLikedMoviesForUser(String userId) {
+        User user = userRepository.findByEmail(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+        Set<Movie> likedMovies = user.getLikedMovies();
+
+        return new ArrayList<>(likedMovies);
     }
 
 }

@@ -3,6 +3,7 @@ package com.javact.movies.controllers;
 import com.javact.movies.entity.User;
 import com.javact.movies.models.Movie;
 import com.javact.movies.services.MovieService;
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,10 @@ public class MovieController {
         System.out.println(email+"   "+movieId);
         movieService.addLikedMovieToUser(email, movieId);
     }
-
+    @GetMapping("/liked-movies")
+    public List<Movie> getLikedMovies(@RequestParam String userId) {
+        List<Movie> likedMovies = movieService.getLikedMoviesForUser(userId);
+        return likedMovies;
+    }
 
 }
