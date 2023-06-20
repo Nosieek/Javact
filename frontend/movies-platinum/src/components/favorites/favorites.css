@@ -1,0 +1,61 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #4287f5;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3366cc;
+  }
+  
+  .movie {
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  
+  .movie h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .movie p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .movie button {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #f54242;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .movie button:hover {
+    background-color: #cc3333;
+  }
+  

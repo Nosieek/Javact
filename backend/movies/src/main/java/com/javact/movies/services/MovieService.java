@@ -1,17 +1,16 @@
 package com.javact.movies.services;
 
-import com.javact.movies.dto.TmdbMovieDto;
-import com.javact.movies.dto.TmdbResultsDto;
-import com.javact.movies.dto.TmdbYouTubeDto;
-import com.javact.movies.dto.TmdbYouTubeResultsDto;
+import com.javact.movies.dto.*;
 import com.javact.movies.entity.User;
 import com.javact.movies.models.Movie;
 import com.javact.movies.repositories.MovieRepository;
 import com.javact.movies.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -97,35 +96,6 @@ public class MovieService {
                                 .orElse(null)
                 );
     }
-
-    public void saveFilm(Movie movie) {
-        repository.save(movie);
-    }
-
-    public Movie addLikedMovieToUser(String userId, Long movieId) {
-        System.out.println(userId +" ato id:" + movieId);
-        Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
-        Optional<User> optionalUser = userRepository.findByEmail(userId);
-
-        if (optionalMovie.isPresent() && optionalUser.isPresent()) {
-            Movie movie = optionalMovie.get();
-            User user = optionalUser.get();
-            user.getLikedMovies().add(movie);
-            userRepository.save(user);
-            return movie;
-        } else {
-            // Handle the case when either the movie or user is not found
-            System.out.println(userId + " "+ movieId);
-//            throw new NoSuchElementException("Movie or user not found");
-            Movie movie = optionalMovie.get();
-
-        }
-        Movie movie = optionalMovie.get();
-
-        return movie;
-    }
-
-
     public List<Movie> getTopMoviesPolish(Long page) {
         TmdbResultsDto results = webClient.get()
                 .uri("/movie/popular?api_key={apiKey}&page={page}", apiKey, page)
@@ -151,12 +121,117 @@ public class MovieService {
 
         return allMoviesFuture.join();
     }
+//    public Movie addLikedMovieToUser(String userId, Long movieId) {
+//        System.out.println(userId +" ato id:" + movieId);
+//        Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
+//        Optional<User> optionalUser = userRepository.findByEmail(userId);
+//
+//        if (optionalMovie.isPresent() && optionalUser.isPresent()) {
+//            Movie movie = optionalMovie.get();
+//            User user = optionalUser.get();
+//            user.getLikedMovies().add(movie);
+//            userRepository.save(user);
+//            return movie;
+//        } else {
+//            // Handle the case when either the movie or user is not found
+//            System.out.println(userId + " "+ movieId);
+////            throw new NoSuchElementException("Movie or user not found");
+//            Movie movie = optionalMovie.get();
+//
+//        }
+//        Movie movie = optionalMovie.get();
+//
+//        return movie;
+//    }
+    public void addLikedMovieToUser(String userId, Long movieId) {
+        System.out.println(userId +" ato id:" + movieId);
+        Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
+        Optional<User> optionalUser = userRepository.findByEmail(userId);
 
-    public List<Movie> getLikedMoviesForUser(String userId) {
-        User user = userRepository.findByEmail(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
-        Set<Movie> likedMovies = user.getLikedMovies();
+        if (optionalMovie.isPresent() && optionalUser.isPresent()) {
+            Movie movie = optionalMovie.get();
+            User user = optionalUser.get();
+            user.addLikedMovie(movie);
+            userRepository.save(user);
+        } else {
+            // Handle the case when either the movie or user is not found
+            System.out.println("KURWAAWWAAWWAA DZIALAJ");
+    //            throw new NoSuchElementException("Movie or user not found");
+            Movie movie = optionalMovie.get();
 
-        return new ArrayList<>(likedMovies);
+        }
+
+    }
+//    public List<Movie> getLikedMoviesForUser(String userId) {
+//        Optional<User> optionalUser = userRepository.findByEmail(userId);
+//
+//        if (optionalUser.isPresent()) {
+//            User user = optionalUser.get();
+//            List<Long> movieIds = new ArrayList<>();
+//            System.out.println(user.getLikedMovies());
+//            for (Movie movie : user.getLikedMovies())
+//            {
+//                Long id = movie.getImdb_id();
+//                System.out.println(id);
+//                movieIds.add(id);
+//            }
+//            List<Movie> movies = new ArrayList<>();
+//
+//            for (Long movieId : movieIds) {
+//                Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
+//                optionalMovie.ifPresent(movies::add);
+//                System.out.println(movieId);
+//            }
+//            for (Movie m: movies) {
+//                System.out.println(m.getTitle());
+//            }
+//            return movies;
+//        } else {
+//            throw new NoSuchElementException("User not found");
+//        }
+//
+//    }
+
+    public List<LikedMovieDto> getLikedMoviesForUser(String userId) {
+        Optional<User> optionalUser = userRepository.findByEmail(userId);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            List<Long> movieIds = new ArrayList<>();
+
+            for (Movie movie : user.getLikedMovies()) {
+                Long id = movie.getImdb_id();
+                movieIds.add(id);
+            }
+
+            List<LikedMovieDto> movies = new ArrayList<>();
+
+            for (Long movieId : movieIds) {
+                Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
+                optionalMovie.ifPresent(movie -> {
+                    LikedMovieDto movieDto = new LikedMovieDto(
+                            movie.getId(),
+                            movie.getTitle(),
+                            movie.getPosterPath()
+                    );
+                    movies.add(movieDto);
+                });
+            }
+
+            return movies;
+        } else {
+            throw new NoSuchElementException("User not found");
+        }
     }
 
+    public void getLikedMoviesForUser2(String userId) {
+        Optional<User> optionalUser = userRepository.findByEmail(userId);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            System.out.println(user.toString()); // Wypisanie wszystkich pól obiektu User
+        } else {
+            throw new NoSuchElementException("User not found");
+        }
+    }
 }

@@ -43,6 +43,6 @@ public class Movie {
     private String posterPath;
     private String ytTrailer;
 
-    @ManyToMany(mappedBy = "likedMovies")
+    @ManyToMany(mappedBy = "likedMovies", fetch = FetchType.LAZY)
     private Set<User> likedByUsers;
 }

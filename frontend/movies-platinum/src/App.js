@@ -13,6 +13,7 @@ import MovieList from './components/movieList/MovieList';
 import Login from './components/Login-registration/Login';
 import Register from './components/Login-registration/Register';
 import TopRanked from './components/Top/TopRanked';
+import Favorites from './components/favorites/favorites';
 
 function App() {
   const [movies, setMovies] = useState();
@@ -57,6 +58,7 @@ function App() {
           <Route path="/MovieList" element={<MovieList movies={watchlist} />} />
           <Route path="/Trailer/:ytTrailer" element={<Trailer/>  }></Route>
           <Route path="/Top" element={<TopRanked />} />
+          <Route path="/Fav" element={<Favorites />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/*" element={<NotFound/>  }></Route>
 
