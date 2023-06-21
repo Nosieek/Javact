@@ -42,9 +42,14 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/liked-movies")
     public List<LikedMovieDto> getLikedMovies(@RequestParam String email) {
         return movieService.getLikedMoviesForUser(email);
     }
 
+    @PostMapping("/addFav")
+    public void addLikedMovieToUser(@RequestParam String email, @RequestParam Long movieId) {
+        movieService.addLikedMovieToUser(email, movieId);
+    }
 }
