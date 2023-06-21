@@ -34,6 +34,15 @@ public class MovieService {
         return repository.findAll();
     }
 
+    private void saveData(Movie movie){
+        Optional<Movie> existingMovie = repository.findByTitle(movie.getTitle());
+        if (!existingMovie.isPresent()) {
+            repository.save(movie);
+        } else {
+            System.out.println("ISTNIEJE JUZ" + movie.getTitle());
+        }
+    }
+
     public List<Movie> getPopularMovies() {
         TmdbResultsDto results = webClient.get()
                 .uri("/movie/popular?api_key={apiKey}", apiKey)
@@ -43,22 +52,23 @@ public class MovieService {
 
 
         List<Movie> movies = results.getResults().stream()
-                .map(dto -> new Movie(dto.getId(),dto.getId(), dto.getTitle(), dto.getOverview(),
-                        dto.getReleaseDate(), dto.getPosterPath(), getMovieYoutubeKey(dto.getId())))
+                .map(dto -> {
+                    Movie movie = new Movie();
+                    movie.setId(dto.getId());
+                    movie.setImdb_id(dto.getId());
+                    movie.setTitle(dto.getTitle());
+                    movie.setOverview(dto.getOverview());
+                    movie.setRelaseDate(dto.getReleaseDate());
+                    movie.setPosterPath(dto.getPosterPath());
+                    movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
+                    return movie;
+                })
                 .collect(Collectors.toList());
 
         List<Movie> newMovies = new ArrayList<>();
 
         for (Movie movie : movies) {
-            Optional<Movie> existingMovie = repository.findByTitle(movie.getTitle());//.orElse(null);
-            if (!existingMovie.isPresent()) {
-                repository.save(movie);
-            } else {
-                System.out.println("Film już istnieje w bazie danych: " + movie.getTitle());
-                // Film już istnieje w bazie danych
-                // Możesz tutaj obsłużyć ten przypadek np. rzucając wyjątek lub wykonując odpowiednie działania                // W tym przykładzie zignorujemy ponowne zapisywanie filmu                System.out.println("Film już istnieje w bazie danych: " + movie.getTitle());
-            }
-
+            saveData(movie);
         }
 
         return movies;
@@ -70,8 +80,16 @@ public class MovieService {
                 .bodyToMono(TmdbMovieDto.class)
                 .block();
 
-        Movie movie = new Movie(dto.getId(),dto.getId(), dto.getTitle(), dto.getOverview(),
-                dto.getReleaseDate(), dto.getPosterPath(), getMovieYoutubeKey(id));
+        Movie movie = new Movie();
+        movie.setId(dto.getId());
+        movie.setImdb_id(dto.getId());
+        movie.setTitle(dto.getTitle());
+        movie.setOverview(dto.getOverview());
+        movie.setRelaseDate(dto.getReleaseDate());
+        movie.setPosterPath(dto.getPosterPath());
+        movie.setYtTrailer(getMovieYoutubeKey(id));
+
+        saveData(movie);
 
         return movie;
     }
@@ -106,8 +124,15 @@ public class MovieService {
         List<CompletableFuture<Movie>> movieFutures = results.getResults().stream()
                 .map(dto -> CompletableFuture.supplyAsync(() -> {
                     String youtubeKey = getMovieYoutubeKey(dto.getId());
-                    Movie movie = new Movie(dto.getId(), dto.getId(), dto.getTitle(), dto.getOverview(),
-                            dto.getReleaseDate(), dto.getPosterPath(), youtubeKey);
+                    Movie movie = new Movie();
+                    movie.setId(dto.getId());
+                    movie.setImdb_id(dto.getId());
+                    movie.setTitle(dto.getTitle());
+                    movie.setOverview(dto.getOverview());
+                    movie.setRelaseDate(dto.getReleaseDate());
+                    movie.setPosterPath(dto.getPosterPath());
+                    movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
+                    saveData(movie);
                     return movie;
                 }))
                 .collect(Collectors.toList());
@@ -121,28 +146,6 @@ public class MovieService {
 
         return allMoviesFuture.join();
     }
-//    public Movie addLikedMovieToUser(String userId, Long movieId) {
-//        System.out.println(userId +" ato id:" + movieId);
-//        Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
-//        Optional<User> optionalUser = userRepository.findByEmail(userId);
-//
-//        if (optionalMovie.isPresent() && optionalUser.isPresent()) {
-//            Movie movie = optionalMovie.get();
-//            User user = optionalUser.get();
-//            user.getLikedMovies().add(movie);
-//            userRepository.save(user);
-//            return movie;
-//        } else {
-//            // Handle the case when either the movie or user is not found
-//            System.out.println(userId + " "+ movieId);
-////            throw new NoSuchElementException("Movie or user not found");
-//            Movie movie = optionalMovie.get();
-//
-//        }
-//        Movie movie = optionalMovie.get();
-//
-//        return movie;
-//    }
     public void addLikedMovieToUser(String userId, Long movieId) {
         System.out.println(userId +" ato id:" + movieId);
         Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
@@ -156,41 +159,10 @@ public class MovieService {
         } else {
             // Handle the case when either the movie or user is not found
             System.out.println("KURWAAWWAAWWAA DZIALAJ");
-    //            throw new NoSuchElementException("Movie or user not found");
-            Movie movie = optionalMovie.get();
 
         }
 
     }
-//    public List<Movie> getLikedMoviesForUser(String userId) {
-//        Optional<User> optionalUser = userRepository.findByEmail(userId);
-//
-//        if (optionalUser.isPresent()) {
-//            User user = optionalUser.get();
-//            List<Long> movieIds = new ArrayList<>();
-//            System.out.println(user.getLikedMovies());
-//            for (Movie movie : user.getLikedMovies())
-//            {
-//                Long id = movie.getImdb_id();
-//                System.out.println(id);
-//                movieIds.add(id);
-//            }
-//            List<Movie> movies = new ArrayList<>();
-//
-//            for (Long movieId : movieIds) {
-//                Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
-//                optionalMovie.ifPresent(movies::add);
-//                System.out.println(movieId);
-//            }
-//            for (Movie m: movies) {
-//                System.out.println(m.getTitle());
-//            }
-//            return movies;
-//        } else {
-//            throw new NoSuchElementException("User not found");
-//        }
-//
-//    }
 
     public List<LikedMovieDto> getLikedMoviesForUser(String userId) {
         Optional<User> optionalUser = userRepository.findByEmail(userId);
@@ -219,17 +191,6 @@ public class MovieService {
             }
 
             return movies;
-        } else {
-            throw new NoSuchElementException("User not found");
-        }
-    }
-
-    public void getLikedMoviesForUser2(String userId) {
-        Optional<User> optionalUser = userRepository.findByEmail(userId);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            System.out.println(user.toString()); // Wypisanie wszystkich pól obiektu User
         } else {
             throw new NoSuchElementException("User not found");
         }
