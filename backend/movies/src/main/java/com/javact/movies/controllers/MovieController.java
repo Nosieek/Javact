@@ -42,11 +42,6 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("/test")
-    public void addLikedMovieToUser(@RequestParam String email, @RequestParam Long movieId) {
-        System.out.println(email+"   "+movieId);
-        movieService.addLikedMovieToUser(email, movieId);
-    }
     @GetMapping("/liked-movies")
     public List<LikedMovieDto> getLikedMovies(@RequestParam String email) {
         return movieService.getLikedMoviesForUser(email);
