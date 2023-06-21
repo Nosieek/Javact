@@ -62,7 +62,7 @@ const TopRanked = () => {
     try {
       const userEmail = getUserEmailFromToken(cookies.token);
   
-      const url = `http://localhost:8080/api/movies/test?email=${userEmail}&movieId=${movieId}`;
+      const url = `http://localhost:8080/api/movies/addFav?email=${userEmail}&movieId=${movieId}`;
       const response = await axios.post(url);
       console.log(response.data); // You can display the server response, e.g., success message
     } catch (error) {
@@ -140,7 +140,7 @@ const TopRanked = () => {
 
       <div className="pagination">
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-          Previous
+          Previousa
         </button>
         <span>{currentPage}</span>
         <button onClick={() => handlePageChange(currentPage + 1)}>Next</button>
