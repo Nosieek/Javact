@@ -6,6 +6,7 @@ import com.javact.movies.models.Movie;
 import com.javact.movies.services.MovieService;
 import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,11 +29,14 @@ public class MovieController {
     public List<Movie> getMovies() {
         return movieService.getPopularMovies();
     }
+//    @GetMapping("/top")
+//    public List<Movie> top(@RequestParam(defaultValue = "1")Long page) {
+//        return movieService.getTopMoviesPolish(page);
+//    }
     @GetMapping("/top")
     public List<Movie> top(Long page) {
         return movieService.getTopMoviesPolish(page);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
         Movie movie = movieService.getFilmById(id);
@@ -52,4 +56,14 @@ public class MovieController {
     public void addLikedMovieToUser(@RequestParam String email, @RequestParam Long movieId) {
         movieService.addLikedMovieToUser(email, movieId);
     }
+
+    @DeleteMapping("/favorites/{movieId}")
+    public void removeFromFavorites(@PathVariable Long movieId) {
+        movieService.removeFromFavorites(movieId);
+    }
+//    @GetMapping("/check")
+//    public Boolean checkIfMovieInFavorites(@RequestParam String email,@RequestParam Long movieId) {
+//        boolean isMovieInFavorites = movieService.isMovieInFavorites(email, movieId);
+//        return isMovieInFavorites;
+//    }
 }
