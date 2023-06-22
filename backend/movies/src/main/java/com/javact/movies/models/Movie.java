@@ -26,6 +26,7 @@ public class Movie {
     private String relaseDate;
     private String posterPath;
     private String ytTrailer;
+    private Float vote_average;
 
     @ManyToMany(mappedBy = "likedMovies", fetch = FetchType.LAZY)
     private Set<User> likedByUsers;
