@@ -21,5 +21,7 @@ public class TmdbMovieDto {
     private String releaseDate;
     @JsonProperty("poster_path")
     private String posterPath;
+    @JsonProperty("vote_average")
+    private Float voteAverage;
 
 }
