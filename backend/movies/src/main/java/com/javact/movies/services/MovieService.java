@@ -39,7 +39,7 @@ public class MovieService {
         if (!existingMovie.isPresent()) {
             repository.save(movie);
         } else {
-            System.out.println("ISTNIEJE JUZ" + movie.getTitle());
+            System.out.println("Movie " + movie.getTitle() + "already exists!");
         }
     }
 
@@ -61,6 +61,7 @@ public class MovieService {
                     movie.setRelaseDate(dto.getReleaseDate());
                     movie.setPosterPath(dto.getPosterPath());
                     movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
+                    movie.setVote_average(dto.getVoteAverage());
                     return movie;
                 })
                 .collect(Collectors.toList());
@@ -88,6 +89,7 @@ public class MovieService {
         movie.setRelaseDate(dto.getReleaseDate());
         movie.setPosterPath(dto.getPosterPath());
         movie.setYtTrailer(getMovieYoutubeKey(id));
+        movie.setVote_average(dto.getVoteAverage());
 
         saveData(movie);
 
@@ -101,7 +103,7 @@ public class MovieService {
                 .bodyToMono(TmdbYouTubeDto.class)
                 .block();
 
-        
+
         return results.getResults().stream()
                 .filter(movie -> movie.getName().equals("Official Trailer"))
                 .map(TmdbYouTubeResultsDto::getKey)
@@ -132,6 +134,7 @@ public class MovieService {
                     movie.setRelaseDate(dto.getReleaseDate());
                     movie.setPosterPath(dto.getPosterPath());
                     movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
+                    movie.setVote_average(dto.getVoteAverage());
                     saveData(movie);
                     return movie;
                 }))
@@ -147,7 +150,6 @@ public class MovieService {
         return allMoviesFuture.join();
     }
     public void addLikedMovieToUser(String userId, Long movieId) {
-        System.out.println(userId +" ato id:" + movieId);
         Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
         Optional<User> optionalUser = userRepository.findByEmail(userId);
 
@@ -158,7 +160,7 @@ public class MovieService {
             userRepository.save(user);
         } else {
             // Handle the case when either the movie or user is not found
-            System.out.println("KURWAAWWAAWWAA DZIALAJ");
+            System.out.println("USER or Movie not found");
 
         }
 
@@ -195,4 +197,27 @@ public class MovieService {
             throw new NoSuchElementException("User not found");
         }
     }
+
+    public void removeFromFavorites(Long movieId) {
+    }
+
+//    public boolean isMovieInFavorites(String userId, Long movieId) { // dziala
+//        Optional<User> optionalUser = userRepository.findByEmail(userId);
+//        System.out.println(userId +" movieid: "+ movieId);
+//        System.out.println(optionalUser.isPresent());
+//        if (optionalUser.isPresent()) {
+//            User user = optionalUser.get();
+//            for (Movie movie : user.getLikedMovies()) {
+//                System.out.println(movie.getImdb_id());
+//                System.out.println(movieId);
+//                System.out.println(movieId == movie.getImdb_id());
+//                System.out.println("TO equals "+ movieId.equals(movie.getImdb_id()));
+//                if (movieId.equals(movie.getImdb_id())) {
+//                    return true;
+//                }
+//            }
+//        }
+//
+//        return false;
+//    }
 }
