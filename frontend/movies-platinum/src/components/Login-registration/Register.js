@@ -32,8 +32,11 @@ const Register = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/register', registerData);
-
+      const response = await axios.post('http://localhost:8080/api/auth/register', registerData, {
+        headers: {
+          'Authorization': ''
+        }
+      });
       if (response.status === 200) {
         const { token } = response.data;
         console.log('Registration successful!', token);

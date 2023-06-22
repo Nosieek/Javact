@@ -34,7 +34,7 @@ const Login = () => {
         const { token } = data; // Wyciągamy token JWT z odpowiedzi
         console.log('Login successful!', token);
         setCookie('token', token, { path: '/' }); // Zapisujemy token JWT w ciasteczku
-        navigate('/MovieList'); // Przekierowanie do strony listy filmów
+        navigate('/'); // Przekierowanie do strony listy filmów
       } else {
         console.log('Login failed!');
         setLoginError(true); 

@@ -1,47 +1,70 @@
+.favorites-page {
+  background: linear-gradient(to bottom, black 0%, rgb(89, 38, 9) 100%);
+  padding: 20px;
+}
+
 .favorites-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 20px;
+  justify-items: center;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.movie {
+.movie-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 20px;
+  justify-content: center;
   text-align: center;
+  padding: 10px;
+  margin-top: 10%;
+  border-radius: 8px;
 }
 
-.poster {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  margin-bottom: 10px;
+.favorites-page h1 {
+  text-align: center;
+  position: relative;
 }
 
+.favorites-page h1 {
+  text-align: center;
+  position: relative;
+  background: linear-gradient(to bottom,  rgb(229, 11, 11), rgb(234, 135, 23));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.favorites-page h1 span {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 .movie-details {
-  margin-top: auto;
-}
-
-.movie h2 {
-  font-size: 16px;
-  margin-bottom: 5px;
-}
-
-.movie button {
   margin-top: 10px;
-  padding: 8px 12px;
-  font-size: 14px;
-  background-color: #f54242;
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
-.movie button:hover {
-  background-color: #cc3333;
+.movie-poster {
+  width: 250px; 
+  height: 375px; 
+}
+
+.movie-titles {
+  font-size: 20px; 
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: wheat;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+.heart-icon {
+  color: #f44336;
+  font-size: 34px;
+  cursor: pointer;
+padding: 10px}
+
+.heart-icon:hover {
+  color: #d32f2f;
 }

@@ -134,9 +134,9 @@ const Header = () => {
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
             <NavLink className="nav-link" to="/">Home</NavLink>
-            <NavLink className="nav-link" to="/MovieList">Watch List</NavLink>
-            <NavLink className="nav-link" to="/Top">Top</NavLink>
-            <NavLink className="nav-link" to="/Fav">fav</NavLink>
+            <NavLink className="nav-link" to="/Top">Top Ranked</NavLink>
+            <NavLink className="nav-link" to="/Fav">Favorites</NavLink>
+            {/* <NavLink className="nav-link" to="/MovieList">Watch List</NavLink> */}
             <NavLink className="nav-link" to="/popular">About</NavLink>
           </Nav>
           <Nav className="ms-auto" style={{ maxHeight: '100px' }} navbarScroll>
