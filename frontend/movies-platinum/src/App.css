@@ -104,16 +104,13 @@ body{
 
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
-* {
+/* * {
   box-sizing: border-box;
   font-family: 'Quicksand', Arial, Helvetica, sans-serif;
   color: orange ;
   transition: color 0.3s;
-}
+} */
 
-*:hover {
-  color: white;
-}
 
 body {
   padding: 0;

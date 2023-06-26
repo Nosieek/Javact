@@ -60,11 +60,16 @@ const Favorites = () => {
   const removeFromFavorites = async (movieId) => {
     try {
       const tk = cookies.token;
-      await axios.delete(`http://localhost:8080/api/movies/favorites/${movieId}`, {}, {
+      const userEmail = getUserEmailFromToken(tk);
+
+      await axios.delete(`http://localhost:8080/api/movies/deleteFav?email=${userEmail}&movieId=${movieId}`,
+      {},
+      {
         headers: {
           Authorization: `Bearer ${tk}`
         }
-      });
+      }
+    );
       setFavorites((prevFavorites) => prevFavorites.filter((movie) => movie.id !== movieId));
     } catch (error) {
       console.error('Error removing movie from favorites:', error);
@@ -80,37 +85,39 @@ const Favorites = () => {
   }
 
   return (
-    <div className="favorites-page">
-      <h1>My Favorites</h1>
-      <div className="favorites-container">
-        {favorites.length === 0 ? (
-          <p>No favorites yet.</p>
+    // <div className="container">
+      <div className="favorites-page">
+        <h1>My Favorites</h1>
+        <div className="favorites-container">
+          {favorites.length === 0 ? (
+            <p className="no-favorites">No favorites yet.</p>
         ) : (
-          favorites.map((movie) => (
-            <div className="movie-container" key={movie.id}>
-              <img className="movie-poster" src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
-              <div className="movie-details">
-                <h2 className="movie-titles">{movie.title}</h2>
-                {/* <button className="remove-button" onClick={() => removeFromFavorites(movie.id)}>
-                <FontAwesomeIcon icon={faHeartCircleMinus} /> */}
-                <FontAwesomeIcon
-                  className="heart-icon"
-                  icon={faHeartCircleMinus}
-                  onClick={() => removeFromFavorites(movie.id)}
-                />
-                <FontAwesomeIcon
-                  className="heart-icon"
-                  icon={faMagnifyingGlass}
-                  onClick={() => removeFromFavorites(movie.id)}
-                />
+            favorites.map((movie) => (
+              <div className="movie-container" key={movie.id}>
+                <img className="movie-poster" src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
+                <div className="movie-details">
+                  <h2 className="movie-titles">{movie.title}</h2>
+                  {/* <button className="remove-button" onClick={() => removeFromFavorites(movie.id)}>
+                  <FontAwesomeIcon icon={faHeartCircleMinus} /> */}
+                  <FontAwesomeIcon
+                    className="heart-icon"
+                    icon={faHeartCircleMinus}
+                    onClick={() => removeFromFavorites(movie.id)}
+                  />
+                  <FontAwesomeIcon
+                    className="magnify-glass-icon"
+                    icon={faMagnifyingGlass}
+                    onClick={() => removeFromFavorites(movie.id)}
+                  />
 
-            {/* </button> */}
+              {/* </button> */}
+                </div>
               </div>
-            </div>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    // </div>
   );
 };
 
