@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TopRanked.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeartCirclePlus, faMagnifyingGlass, faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHeartCircleMinus, faHeartCirclePlus, faMagnifyingGlass, faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
@@ -65,6 +65,25 @@ const TopRanked = () => {
       const response = await axios.post(
         `http://localhost:8080/api/movies/addFav?email=${userEmail}&movieId=${movieId}`,
         {},
+        {
+          headers: {
+            Authorization: `Bearer ${tk}`
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Error adding movie to favoritelist:', error);
+    }
+  };
+
+  const rmr = async (movieId) => {
+    try {
+      const userEmail = getUserEmailFromToken(cookies.token);
+      const tk = cookies.token;
+      console.log(movieId)
+      const response = await axios.delete(
+        `http://localhost:8080/api/movies/test?email=${userEmail}&movieId=${movieId}`,
+        {},{},
         {
           headers: {
             Authorization: `Bearer ${tk}`
@@ -146,8 +165,8 @@ const TopRanked = () => {
               />
               <FontAwesomeIcon
                 className="top-icon"
-                icon={faHeartCirclePlus}
-                onClick={() => addToFavoritelist(movie.id)}
+                icon={faHeartCircleMinus}
+                onClick={() => rmr(movie.id)}
               />
               <FontAwesomeIcon
                 className="top-icon"

@@ -57,22 +57,23 @@ const Favorites = () => {
     return userEmail;
   };
 
-  const removeFromFavorites = async (movieId) => {
+  const removeFromFavorites =async (movieId) => {
     try {
+      const userEmail = getUserEmailFromToken(cookies.token);
       const tk = cookies.token;
-      const userEmail = getUserEmailFromToken(tk);
-
-      await axios.delete(`http://localhost:8080/api/movies/deleteFav?email=${userEmail}&movieId=${movieId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${tk}`
+      console.log(movieId)
+      const response = await axios.delete(
+        `http://localhost:8080/api/movies/test?email=${userEmail}&movieId=${movieId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${tk}`
+          }
         }
-      }
-    );
-      setFavorites((prevFavorites) => prevFavorites.filter((movie) => movie.id !== movieId));
+      );
+      console.log(response.status);
     } catch (error) {
-      console.error('Error removing movie from favorites:', error);
+      console.error('Error removing 696969699 movie to favoritelist:', error);
     }
   };
 
