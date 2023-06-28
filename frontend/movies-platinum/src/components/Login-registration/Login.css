@@ -76,6 +76,8 @@ form button {
   padding: 8px 16px;
   border-radius: 3px;
   cursor: pointer;
+  border-radius: 25px;
+
 }
 
 form p {
@@ -100,9 +102,29 @@ form p {
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  border-radius: 25px;
 margin-top: 10px;
 }
 
 .SignIn:hover {
   background-color: #0062ff;
+}
+
+.logout-message {
+  background-color: #20e706;
+  color: #44721c;
+  text-align: center;
+
+  padding: 10px;
+  border-radius: 25px;
+  margin-top: 15px;
+}
+
+.logout-message p {
+  margin: 0;
+  margin-right: 5px;
+}
+
+.logout-message svg {
+  color: green;
 }

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import './Login.css';
 import Register from './Register';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Login = () => {
   // lacznasc z baza
@@ -11,6 +13,16 @@ const Login = () => {
   const [loginError, setLoginError] = useState(false); 
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(['token']); // Używamy ciasteczek do przechowywania tokena JWT
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const logout = queryParams.get('logout');
+
+  useEffect(() => {
+    if (logout === 'true') {
+      // Wyświetl komunikat o wylogowaniu
+      console.log('You have been logged out.');
+    }
+  }, [logout]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -104,6 +116,15 @@ const Login = () => {
               <p className="error-message">Invalid email or password. Please try again.</p>
             )}
           </form>
+          {logout && (
+            <div className="logout-message">
+              {/* <h7>You have been logged out.</h7> */}
+              <p>You have been logged out <FontAwesomeIcon
+                icon={faCircleCheck}
+              /></p>
+
+            </div>
+          )}
         </div>
       )}
 
