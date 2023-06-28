@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './TopRanked.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,8 +13,20 @@ const TopRanked = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [cookies] = useCookies(['token']);
+  
+  const [cookies, setCookies, removeCookies] = useCookies(['token']);
   const navigate = useNavigate();
+  const logoutTimeoutRef = useRef(null);
+
+  const handleLogout = () => {
+    removeCookies('token');
+    navigate('/Login?logout=true');
+  };
+
+  const resetLogoutTimeout = () => {
+    clearTimeout(logoutTimeoutRef.current);
+    logoutTimeoutRef.current = setTimeout(handleLogout, 10000); // 5 minut (300000 milisekund)
+  };
 
   useEffect(() => {
     const token = cookies.token;
@@ -24,6 +36,19 @@ const TopRanked = () => {
       fetchMovies(currentPage);
     }
   }, [currentPage, cookies, navigate]);
+
+  useEffect(() => {
+    const handleMouseMove = () => {
+      resetLogoutTimeout();
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(logoutTimeoutRef.current);
+    };
+  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
