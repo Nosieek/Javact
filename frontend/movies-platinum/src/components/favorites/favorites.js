@@ -62,8 +62,8 @@ const Favorites = () => {
       const userEmail = getUserEmailFromToken(cookies.token);
       const tk = cookies.token;
       console.log(movieId)
-      const response = await axios.delete(
-        `http://localhost:8080/api/movies/test?email=${userEmail}&movieId=${movieId}`,
+      const response = await axios.post(        
+        `http://localhost:8080/api/movies/Fav/delete?movieId=${movieId}&email=${userEmail}`,
         {},
         {
           headers: {
@@ -74,6 +74,9 @@ const Favorites = () => {
       console.log(response.status);
     } catch (error) {
       console.error('Error removing 696969699 movie to favoritelist:', error);
+    }finally {
+      // Odśwież stronę
+      window.location.reload();
     }
   };
 

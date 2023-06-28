@@ -103,6 +103,7 @@ padding: 10px}
   justify-items: center;
   align-items: center;
   max-width: 1000px;
+  min-height: 80vb;
   margin: 0 auto;
 }
 
