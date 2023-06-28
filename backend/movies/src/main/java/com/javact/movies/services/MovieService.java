@@ -198,8 +198,26 @@ public class MovieService {
         }
     }
 
-    public void removeFromFavorites(Long movieId) {
+    public void removeFromFavorites(Long movieId, String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Optional<Movie> optionalMovie = repository.findById(movieId);
+
+            if (optionalMovie.isPresent()) {
+                Movie movie = optionalMovie.get();
+//                user.getLikedMovies().remove(movie);
+                user.removeLikedMovie(movie);
+                userRepository.save(user);
+            } else {
+                throw new NoSuchElementException("Movie not found");
+            }
+        } else {
+            throw new NoSuchElementException("User not found");
+        }
     }
+
 
 //    public boolean isMovieInFavorites(String userId, Long movieId) { // dziala
 //        Optional<User> optionalUser = userRepository.findByEmail(userId);

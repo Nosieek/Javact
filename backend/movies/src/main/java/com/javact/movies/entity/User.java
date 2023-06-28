@@ -35,26 +35,26 @@ public class User implements UserDetails {
     private String password;
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"))
     private Set<Roles> roles;
 
     @ManyToMany
     @JoinTable(name = "liked_movies",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_imdb_id"))
     private Set<Movie> likedMovies = new HashSet<>();
 
     public void addLikedMovie(Movie movie) {
         likedMovies.add(movie);
-        movie.getLikedByUsers().add(this); // co to tu robi?
+        movie.getLikedByUsers().add(this);
 
     }
 
 
-//    public void removeLikedMovie(Movie movie) {
-//        likedMovies.remove(movie);
-//        movie.getLikedByUsers().remove(this);
-//    }
+    public void removeLikedMovie(Movie movie) {
+        likedMovies.remove(movie);
+        movie.getLikedByUsers().remove(this);
+    }
 //    public List<Movie> getLikedMovies() {
 //        return likedMovies.stream()
 //                .collect(Collectors.toList());

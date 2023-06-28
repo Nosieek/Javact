@@ -56,14 +56,10 @@ public class MovieController {
     public void addLikedMovieToUser(@RequestParam String email, @RequestParam Long movieId) {
         movieService.addLikedMovieToUser(email, movieId);
     }
-
-    @DeleteMapping("/favorites/{movieId}")
-    public void removeFromFavorites(@PathVariable Long movieId) {
-        movieService.removeFromFavorites(movieId);
+    @PostMapping("/Fav/delete")
+    public void removeFromFavorites(@RequestParam Long movieId, @RequestParam String email) {
+        System.out.println(movieId+" "+ email);
+        movieService.removeFromFavorites(movieId, email);
     }
-//    @GetMapping("/check")
-//    public Boolean checkIfMovieInFavorites(@RequestParam String email,@RequestParam Long movieId) {
-//        boolean isMovieInFavorites = movieService.isMovieInFavorites(email, movieId);
-//        return isMovieInFavorites;
-//    }
+
 }
