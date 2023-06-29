@@ -1,7 +1,7 @@
 # Javact
 
 
-## Demo on Heroku [MovieSpot](https://moviesspot.herokuapp.com/)
+## Demo on Heroku [MovieSpot](https://moviespot-4f9b38446e80.herokuapp.com)
 
 <h1 style="color: red;">Important!</h1>
 The project is still under development!<h7 style="color: red;"> Currently, the functionality is very limited</h7>. Below next section is which of things that will be implemented:
