@@ -25,7 +25,7 @@ const TopRanked = () => {
 
   const resetLogoutTimeout = () => {
     clearTimeout(logoutTimeoutRef.current);
-    logoutTimeoutRef.current = setTimeout(handleLogout, 10000); // 5 minut (300000 milisekund)
+    logoutTimeoutRef.current = setTimeout(handleLogout, 300000); // 5 minut (300000 milisekund)
   };
 
   useEffect(() => {
@@ -100,6 +100,11 @@ const TopRanked = () => {
       console.error('Error adding movie to favoritelist:', error);
     }
   };
+
+  const getMovieDetail = async (movieId) => {
+    navigate(`/movie/${movieId}`);
+    console.log(movieId);
+    };
 
   const rmr = async (movieId) => {
     try {
@@ -188,15 +193,15 @@ const TopRanked = () => {
                 icon={faHeartCirclePlus}
                 onClick={() => addToFavoritelist(movie.id)}
               />
-              <FontAwesomeIcon
+              {/* <FontAwesomeIcon
                 className="top-icon"
                 icon={faHeartCircleMinus}
                 onClick={() => rmr(movie.id)}
-              />
+              /> */}
               <FontAwesomeIcon
                 className="top-icon"
                 icon={faMagnifyingGlass}
-                onClick={() => addToFavoritelist(movie.id)}
+                onClick={() => getMovieDetail(movie.id)}
               />
             </div>
 

@@ -18,6 +18,8 @@ h1 {
 .movie {
   display: flex;
   margin-bottom: 20px;
+  border: 2px solid orange;
+  border-radius: 20px;
 }
 
 .left-column {
@@ -29,7 +31,10 @@ h1 {
 .movie-image {
   width: 150px;
   height: auto;
-  margin-right: 10px;
+  margin: 10px 20px;
+  
+  border-radius: 20px;
+  
 }
 
 .movie-details {
