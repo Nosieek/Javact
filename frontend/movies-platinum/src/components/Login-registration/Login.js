@@ -3,7 +3,7 @@ import { useNavigate,useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import './Login.css';
 import Register from './Register';
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false); 
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['token']); // Używamy ciasteczek do przechowywania tokena JWT
+  const [cookies, setCookie] = useCookies(['token']); 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const logout = queryParams.get('logout');
@@ -113,12 +113,15 @@ const Login = () => {
             <button type="submit">Log In</button>
             <button className='SignIn' onClick={handleSignUpClick}>Sign Up</button>
             {loginError && (
-              <p className="error-message">Invalid email or password. Please try again.</p>
+              <div className="error-message">
+              <p>Invalid email or password. Please try again. <FontAwesomeIcon
+                icon={faCircleXmark}
+              /></p>
+              </div>
             )}
           </form>
           {logout && (
             <div className="logout-message">
-              {/* <h7>You have been logged out.</h7> */}
               <p>You have been logged out <FontAwesomeIcon
                 icon={faCircleCheck}
               /></p>

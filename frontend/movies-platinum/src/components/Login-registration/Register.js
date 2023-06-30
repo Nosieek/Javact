@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import './Register.css';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -105,8 +108,20 @@ const Register = () => {
             required
           />
 
-          {passwordMismatchError && <p className="error">Passwords do not match.</p>}
-          {duplicateUserError && <p className="error">Username or email already exists.</p>}
+          {passwordMismatchError && 
+          <div className="error">
+              <p>Passwords do not match! <FontAwesomeIcon
+                icon={faCircleXmark}
+              /></p>
+              </div>
+          }
+          {duplicateUserError &&
+           <div className="error">
+           <p>Username or email already exists! <FontAwesomeIcon
+             icon={faCircleXmark}
+           /></p>
+           </div>
+           }
 
           <button className="register-submit-button" type="submit" onClick={handleResetErrors}>
             Register

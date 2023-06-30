@@ -17,8 +17,8 @@
   width: 400px;
   max-width: 100%;
   background-color: #f0f0f0;
-  border-radius: 20px; /* Zaokrąglone rogi */
-  box-shadow: 0 0 400px orange; /* Pomarańczowy cień */
+  border-radius: 50px; 
+  box-shadow: 0 0 400px orange; 
   padding: 60px;
   opacity: 0.9;
   transition: transform 0.8s ease, opacity 2s ease;
@@ -83,7 +83,7 @@ form button {
 form p {
   text-align: center;
   margin-top: 10px;
-  color: #007bff;
+  color: #ff0000;
   cursor: pointer;
 }
 .error-message {

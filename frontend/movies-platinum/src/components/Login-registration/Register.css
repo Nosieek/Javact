@@ -13,6 +13,7 @@
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
+    text-emphasis-color: orange;
     border-radius: 3px;
   }
   
@@ -22,7 +23,7 @@
     background-color: orange;
     color: #ffffff;
     border: none;
-    border-radius: 3px;
+    border-radius: 25px;
     cursor: pointer;
   }
   
