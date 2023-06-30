@@ -80,6 +80,12 @@ const Favorites = () => {
     }
   };
 
+  const getMovieDetail = async (movieId) => {
+    navigate(`/movie/${movieId}`);
+    console.log("CZEMU ", movieId);
+    };
+
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -87,41 +93,34 @@ const Favorites = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
   return (
-    // <div className="container">
-      <div className="favorites-page">
-        <h1>My Favorites</h1>
-        <div className="favorites-container">
-          {favorites.length === 0 ? (
-            <p className="no-favorites">No favorites yet.</p>
+    <div className="favorites-page">
+      <h1>My Favorites</h1>
+      <div className="favorites-container">
+        {favorites.length === 0 ? (
+          <div className="no-favorites">No favorites yet.</div>
         ) : (
-            favorites.map((movie) => (
-              <div className="movie-container" key={movie.id}>
-                <img className="movie-poster" src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
-                <div className="movie-details">
-                  <h2 className="movie-titles">{movie.title}</h2>
-                  {/* <button className="remove-button" onClick={() => removeFromFavorites(movie.id)}>
-                  <FontAwesomeIcon icon={faHeartCircleMinus} /> */}
-                  <FontAwesomeIcon
-                    className="heart-icon"
-                    icon={faHeartCircleMinus}
-                    onClick={() => removeFromFavorites(movie.id)}
-                  />
-                  <FontAwesomeIcon
-                    className="magnify-glass-icon"
-                    icon={faMagnifyingGlass}
-                    onClick={() => removeFromFavorites(movie.id)}
-                  />
-
-              {/* </button> */}
-                </div>
+          favorites.map((movie) => (
+            <div className="movie-container" key={movie.id}>
+              <img className="movie-poster" src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
+              <div className="movie-details">
+                <h2 className="movie-titles">{movie.title}</h2>
+                <FontAwesomeIcon
+                  className="heart-icon"
+                  icon={faHeartCircleMinus}
+                  onClick={() => removeFromFavorites(movie.id)}
+                />
+                {/* <FontAwesomeIcon
+                  className="magnify-glass-icon"
+                  icon={faMagnifyingGlass}
+                  onClick={() => getMovieDetail(movie.id)}
+                /> */}
               </div>
-            ))
-          )}
-        </div>
+            </div>
+          ))
+        )}
       </div>
-    // </div>
+    </div>
   );
 };
 
