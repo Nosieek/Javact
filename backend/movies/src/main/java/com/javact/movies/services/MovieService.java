@@ -93,6 +93,16 @@ public class MovieService {
 
         saveData(movie);
 
+
+
+//        Optional<Movie> existingMovie = repository.findByTitle(movie.getTitle());
+
+//        Optional<Movie>  = repository.findById(id);
+//        if (!existingMovie.isPresent()) {
+//            return existingMovie.get();
+//        } else {
+//            System.out.println("Movie " + existingMovie.get().getTitle() + "already exists!");
+//        }
         return movie;
     }
 
@@ -118,7 +128,7 @@ public class MovieService {
     }
     public List<Movie> getTopMoviesPolish(Long page) {
         TmdbResultsDto results = webClient.get()
-                .uri("/movie/popular?api_key={apiKey}&page={page}", apiKey, page)
+                .uri("/movie/top_rated?api_key={apiKey}&page={page}", apiKey, page)
                 .retrieve()
                 .bodyToMono(TmdbResultsDto.class)
                 .block();
