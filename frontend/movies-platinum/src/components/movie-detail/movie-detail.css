@@ -1,0 +1,18 @@
+   .movie-poster-container {
+    margin-top: 20px;
+    width:40vb;
+    min-height: 60vb;
+    object-fit: cover;
+   }
+
+.yt-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.yt-video {
+  width: 560px;
+  height: 315px;
+}
