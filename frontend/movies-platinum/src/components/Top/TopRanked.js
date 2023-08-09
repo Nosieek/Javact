@@ -106,24 +106,6 @@ const TopRanked = () => {
     console.log(movieId);
     };
 
-  const rmr = async (movieId) => {
-    try {
-      const userEmail = getUserEmailFromToken(cookies.token);
-      const tk = cookies.token;
-      console.log(movieId)
-      const response = await axios.delete(
-        `http://localhost:8080/api/movies/test?email=${userEmail}&movieId=${movieId}`,
-        {},{},
-        {
-          headers: {
-            Authorization: `Bearer ${tk}`
-          }
-        }
-      );
-    } catch (error) {
-      console.error('Error adding movie to favoritelist:', error);
-    }
-  };
 
   const renderRatingStars = (rating) => {
     const fullStars = Math.floor(rating);
@@ -168,8 +150,19 @@ const TopRanked = () => {
   }
 
   return (
+    
     <div className="container">
+      
       <h1>Top Ranked Movies</h1>
+      
+      <div className="pagination">
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>{currentPage}</span>
+        <button onClick={() => handlePageChange(currentPage + 1)}>Next</button>
+      </div>
+
       {movies.map((movie) => (
         <div key={movie.id} className="movie">
           <div className="left-column">
