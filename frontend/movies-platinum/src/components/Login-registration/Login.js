@@ -111,7 +111,6 @@ const Login = () => {
               required
             />
             <button type="submit">Log In</button>
-            <button className='SignIn' onClick={handleSignUpClick}>Sign Up</button>
             {loginError && (
               <div className="error-message">
               <p>Invalid email or password. Please try again. <FontAwesomeIcon
@@ -120,6 +119,8 @@ const Login = () => {
               </div>
             )}
           </form>
+          <button className='SignIn' onClick={handleSignUpClick}>Sign Up</button>
+
           {logout && (
             <div className="logout-message">
               <p>You have been logged out <FontAwesomeIcon
