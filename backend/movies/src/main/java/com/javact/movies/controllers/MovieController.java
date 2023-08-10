@@ -1,16 +1,12 @@
 package com.javact.movies.controllers;
 
 import com.javact.movies.dto.LikedMovieDto;
-import com.javact.movies.entity.User;
 import com.javact.movies.models.Movie;
 import com.javact.movies.services.MovieService;
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,16 +19,12 @@ public class MovieController {
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
-    } // usun
+    }
 
     @GetMapping("/popular")
     public List<Movie> getMovies() {
         return movieService.getPopularMovies();
     }
-//    @GetMapping("/top")
-//    public List<Movie> top(@RequestParam(defaultValue = "1")Long page) {
-//        return movieService.getTopMoviesPolish(page);
-//    }
     @GetMapping("/top")
     public List<Movie> top(Long page) {
         return movieService.getTopMoviesPolish(page);
