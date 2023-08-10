@@ -102,6 +102,7 @@ const Favorites = () => {
         ) : (
           favorites.map((movie) => (
             <div className="movie-container" key={movie.id}>
+              <p>{movie.imdbId}</p>
               <img className="movie-poster" src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
               <div className="movie-details">
                 <h2 className="movie-titles">{movie.title}</h2>
@@ -110,11 +111,11 @@ const Favorites = () => {
                   icon={faHeartCircleMinus}
                   onClick={() => removeFromFavorites(movie.id)}
                 />
-                {/* <FontAwesomeIcon
+                <FontAwesomeIcon
                   className="magnify-glass-icon"
                   icon={faMagnifyingGlass}
-                  onClick={() => getMovieDetail(movie.id)}
-                /> */}
+                  onClick={() => getMovieDetail(movie.imdbId)}
+                />
               </div>
             </div>
           ))
