@@ -36,6 +36,7 @@ const Register = () => {
 
     try {
       const response = await axios.post('http://localhost:8080/api/auth/register', registerData, {
+        // https://jjavact-1a06eb312a7d.herokuapp.com/api/auth/register
         headers: {
           'Authorization': ''
         }
