@@ -74,7 +74,12 @@ public class MovieService {
 
         return movies;
     }
-    public Movie getFilmById(Long id) {
+    public Movie getFilmById(Long id) { // dodac try-catcha, poniewaz jak nie ma tego id to bedzie blad 404 fot found
+        //org.springframework.web.reactive.function.client.WebClientResponseException$NotFound: 404 Not Found from GET https://api.themoviedb.org/3/movie/39?api_key=36beba8c548319d9ea82880e37caaefd
+        //	at org.springframework.web.reactive.function.client.WebClientResponseException.create(WebClientResponseException.java:314) ~[spring-webflux-6.0.8.jar:6.0.8]
+        //	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException:
+        //Error has been observed at the following site(s):
+        //	*__checkpoint ⇢ 404 NOT_FOUND from GET https://api.themoviedb.org/3/movie/39 [DefaultWebClient]
         TmdbMovieDto dto = webClient.get()
                 .uri("/movie/{id}?api_key={apiKey}", id, apiKey)
                 .retrieve()
@@ -92,17 +97,6 @@ public class MovieService {
         movie.setVote_average(dto.getVoteAverage());
 
         saveData(movie);
-
-
-
-//        Optional<Movie> existingMovie = repository.findByTitle(movie.getTitle());
-
-//        Optional<Movie>  = repository.findById(id);
-//        if (!existingMovie.isPresent()) {
-//            return existingMovie.get();
-//        } else {
-//            System.out.println("Movie " + existingMovie.get().getTitle() + "already exists!");
-//        }
         return movie;
     }
 
@@ -195,6 +189,7 @@ public class MovieService {
                 optionalMovie.ifPresent(movie -> {
                     LikedMovieDto movieDto = new LikedMovieDto(
                             movie.getId(),
+                            movie.getImdb_id(),
                             movie.getTitle(),
                             movie.getPosterPath()
                     );
@@ -210,13 +205,13 @@ public class MovieService {
 
     public void removeFromFavorites(Long movieId, String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             Optional<Movie> optionalMovie = repository.findById(movieId);
 
             if (optionalMovie.isPresent()) {
                 Movie movie = optionalMovie.get();
+
 //                user.getLikedMovies().remove(movie);
                 user.removeLikedMovie(movie);
                 userRepository.save(user);
@@ -227,25 +222,4 @@ public class MovieService {
             throw new NoSuchElementException("User not found");
         }
     }
-
-
-//    public boolean isMovieInFavorites(String userId, Long movieId) { // dziala
-//        Optional<User> optionalUser = userRepository.findByEmail(userId);
-//        System.out.println(userId +" movieid: "+ movieId);
-//        System.out.println(optionalUser.isPresent());
-//        if (optionalUser.isPresent()) {
-//            User user = optionalUser.get();
-//            for (Movie movie : user.getLikedMovies()) {
-//                System.out.println(movie.getImdb_id());
-//                System.out.println(movieId);
-//                System.out.println(movieId == movie.getImdb_id());
-//                System.out.println("TO equals "+ movieId.equals(movie.getImdb_id()));
-//                if (movieId.equals(movie.getImdb_id())) {
-//                    return true;
-//                }
-//            }
-//        }
-//
-//        return false;
-//    }
 }
