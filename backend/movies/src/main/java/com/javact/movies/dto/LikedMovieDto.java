@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LikedMovieDto {
     private Long id;
+    private Long imdbId;
     private String title;
 //    private String overview;
 //    private String releaseDate;
