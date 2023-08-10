@@ -34,6 +34,7 @@ const Login = () => {
 
     try {
       const response = await fetch('http://localhost:8080/api/auth/authenticate', {
+        //https://jjavact-1a06eb312a7d.herokuapp.com/api/auth/authenticate
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
