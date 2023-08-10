@@ -23,8 +23,8 @@ public class MovieController {
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
-    }
-    
+    } // usun
+
     @GetMapping("/popular")
     public List<Movie> getMovies() {
         return movieService.getPopularMovies();
