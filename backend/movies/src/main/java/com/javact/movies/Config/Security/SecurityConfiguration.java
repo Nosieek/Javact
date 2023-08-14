@@ -69,6 +69,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/movies/popular").permitAll()
+                .requestMatchers("/api/movies/search").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
