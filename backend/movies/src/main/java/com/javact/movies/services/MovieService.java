@@ -222,4 +222,31 @@ public class MovieService {
             throw new NoSuchElementException("User not found");
         }
     }
+    public List<Movie> searchMovies(String query) {
+        System.out.println("Executing searchMovies with query: " + query);
+        TmdbResultsDto results = webClient.get()
+                .uri("/search/movie?api_key={apiKey}&query={query}", apiKey, query)
+                .retrieve()
+                .bodyToMono(TmdbResultsDto.class)
+                .block();
+
+        System.out.println("Retrieved results: " + results);//del
+
+        List<Movie> movies = results.getResults().stream()
+                .map(dto -> {
+                    Movie movie = new Movie();
+                    movie.setId(dto.getId());
+                    movie.setImdb_id(dto.getId());
+                    movie.setTitle(dto.getTitle());
+                    movie.setOverview(dto.getOverview());
+                    movie.setRelaseDate(dto.getReleaseDate());
+                    movie.setPosterPath(dto.getPosterPath());
+                    movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
+                    movie.setVote_average(dto.getVoteAverage());
+                    saveData(movie);
+                    return movie;
+                })
+                .collect(Collectors.toList());
+        return movies;
+    }
 }
