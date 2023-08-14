@@ -9,6 +9,7 @@ import Login from './components/Login-registration/Login';
 import TopRanked from './components/Top/TopRanked';
 import Favorites from './components/favorites/favorites';
 import MovieDetail from './components/movie-detail/movie-detail';
+import SearchResults from './components/search/search-results';
 function App() {
   return (
     <div className="App">
@@ -20,6 +21,7 @@ function App() {
         <Route path="/Top" element={<TopRanked />} />
         <Route path="/Fav" element={<Favorites />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/search-results" element={<SearchResults />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </div>
