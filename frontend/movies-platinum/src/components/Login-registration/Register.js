@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import './Register.css';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -32,8 +35,12 @@ const Register = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/register', registerData);
-
+      const response = await axios.post('http://localhost:8080/api/auth/register', registerData, {
+        // https://jjavact-1a06eb312a7d.herokuapp.com/api/auth/register
+        headers: {
+          'Authorization': ''
+        }
+      });
       if (response.status === 200) {
         const { token } = response.data;
         console.log('Registration successful!', token);
@@ -102,8 +109,20 @@ const Register = () => {
             required
           />
 
-          {passwordMismatchError && <p className="error">Passwords do not match.</p>}
-          {duplicateUserError && <p className="error">Username or email already exists.</p>}
+          {passwordMismatchError && 
+          <div className="error">
+              <p>Passwords do not match! <FontAwesomeIcon
+                icon={faCircleXmark}
+              /></p>
+              </div>
+          }
+          {duplicateUserError &&
+           <div className="error">
+           <p>Username or email already exists! <FontAwesomeIcon
+             icon={faCircleXmark}
+           /></p>
+           </div>
+           }
 
           <button className="register-submit-button" type="submit" onClick={handleResetErrors}>
             Register

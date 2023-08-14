@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import './Login.css';
 import Register from './Register';
+import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Login = () => {
   // lacznasc z baza
@@ -10,7 +12,17 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false); 
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['token']); // Używamy ciasteczek do przechowywania tokena JWT
+  const [cookies, setCookie] = useCookies(['token']); 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const logout = queryParams.get('logout');
+
+  useEffect(() => {
+    if (logout === 'true') {
+      // Wyświetl komunikat o wylogowaniu
+      console.log('You have been logged out.');
+    }
+  }, [logout]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,6 +34,7 @@ const Login = () => {
 
     try {
       const response = await fetch('http://localhost:8080/api/auth/authenticate', {
+        //https://jjavact-1a06eb312a7d.herokuapp.com/api/auth/authenticate
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +47,7 @@ const Login = () => {
         const { token } = data; // Wyciągamy token JWT z odpowiedzi
         console.log('Login successful!', token);
         setCookie('token', token, { path: '/' }); // Zapisujemy token JWT w ciasteczku
-        navigate('/MovieList'); // Przekierowanie do strony listy filmów
+        navigate('/'); // Przekierowanie do strony listy filmów
       } else {
         console.log('Login failed!');
         setLoginError(true); 
@@ -99,11 +112,24 @@ const Login = () => {
               required
             />
             <button type="submit">Log In</button>
-            <button className='SignIn' onClick={handleSignUpClick}>Sign Up</button>
             {loginError && (
-              <p className="error-message">Invalid email or password. Please try again.</p>
+              <div className="error-message">
+              <p>Invalid email or password. Please try again. <FontAwesomeIcon
+                icon={faCircleXmark}
+              /></p>
+              </div>
             )}
           </form>
+          <button className='SignIn' onClick={handleSignUpClick}>Sign Up</button>
+
+          {logout && (
+            <div className="logout-message">
+              <p>You have been logged out <FontAwesomeIcon
+                icon={faCircleCheck}
+              /></p>
+
+            </div>
+          )}
         </div>
       )}
 

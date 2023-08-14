@@ -1,5 +1,6 @@
 package com.javact.movies.controllers;
 
+import com.javact.movies.dto.LikedMovieDto;
 import com.javact.movies.models.Movie;
 import com.javact.movies.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,15 @@ public class MovieController {
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
-    
+
     @GetMapping("/popular")
     public List<Movie> getMovies() {
         return movieService.getPopularMovies();
     }
-    @GetMapping("/watchlist")
-    public List<Movie> watchList() {
-        return movieService.getPopularMovies2();
+    @GetMapping("/top")
+    public List<Movie> top(Long page) {
+        return movieService.getTopMoviesPolish(page);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
         Movie movie = movieService.getFilmById(id);
@@ -38,8 +38,20 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping
-    public void saveFilm(@RequestBody Movie film) {
-        movieService.saveFilm(film);
+
+    @GetMapping("/liked-movies")
+    public List<LikedMovieDto> getLikedMovies(@RequestParam String email) {
+        return movieService.getLikedMoviesForUser(email);
     }
+
+    @PostMapping("/addFav")
+    public void addLikedMovieToUser(@RequestParam String email, @RequestParam Long movieId) {
+        movieService.addLikedMovieToUser(email, movieId);
+    }
+    @PostMapping("/Fav/delete")
+    public void removeFromFavorites(@RequestParam Long movieId, @RequestParam String email) {
+        System.out.println(movieId+" "+ email);
+        movieService.removeFromFavorites(movieId, email);
+    }
+
 }

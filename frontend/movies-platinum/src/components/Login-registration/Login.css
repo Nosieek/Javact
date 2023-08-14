@@ -17,8 +17,8 @@
   width: 400px;
   max-width: 100%;
   background-color: #f0f0f0;
-  border-radius: 20px; /* Zaokrąglone rogi */
-  box-shadow: 0 0 400px orange; /* Pomarańczowy cień */
+  border-radius: 50px; 
+  box-shadow: 0 0 400px orange; 
   padding: 60px;
   opacity: 0.9;
   transition: transform 0.8s ease, opacity 2s ease;
@@ -76,12 +76,14 @@ form button {
   padding: 8px 16px;
   border-radius: 3px;
   cursor: pointer;
+  border-radius: 25px;
+
 }
 
 form p {
   text-align: center;
   margin-top: 10px;
-  color: #007bff;
+  color: #ff0000;
   cursor: pointer;
 }
 .error-message {
@@ -100,9 +102,29 @@ form p {
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  border-radius: 25px;
 margin-top: 10px;
 }
 
 .SignIn:hover {
   background-color: #0062ff;
+}
+
+.logout-message {
+  background-color: #20e706;
+  color: #44721c;
+  text-align: center;
+
+  padding: 10px;
+  border-radius: 25px;
+  margin-top: 15px;
+}
+
+.logout-message p {
+  margin: 0;
+  margin-right: 5px;
+}
+
+.logout-message svg {
+  color: green;
 }

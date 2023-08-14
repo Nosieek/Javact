@@ -12,7 +12,7 @@ const Hero = ({movies}) => {
             {
                 movies?.map((movie) =>{
                     return(
-                        <Paper key={movie.imdbId}>
+                        <Paper key={movie.id}>
                             <div className = 'movie-card-container'>
                                 <div className="movie-card" style={{"--img": `url(https://image.tmdb.org/t/p/original${movie.posterPath})`}}>
                                     <div className="movie-detail">
