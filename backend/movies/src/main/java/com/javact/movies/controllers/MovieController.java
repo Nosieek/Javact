@@ -54,4 +54,8 @@ public class MovieController {
         movieService.removeFromFavorites(movieId, email);
     }
 
+    @GetMapping("/search")
+    public List<Movie> getSearchMovies(@RequestParam String query) {
+        return movieService.searchMovies(query);
+    }
 }
