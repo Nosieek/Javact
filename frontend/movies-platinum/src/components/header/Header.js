@@ -7,12 +7,12 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Dropdown } from "react-bootstrap";
+import FormControl from "react-bootstrap/FormControl";
 
 import "./Header.css";
 
@@ -20,7 +20,17 @@ const Header = () => {
   const [userEmail, setUserEmail] = useState("");
   const [cookies, , removeCookie] = useCookies(["token"]);
   const navigate = useNavigate();
+  const [searchText, setSearchText] = useState(""); // Renamed for clarity
   const isLoggedIn = !!cookies.token;
+
+  const handleSearchTextChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleSearch = () => {
+    navigate(`/search-results?query=${searchText}`);
+  };
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -63,6 +73,20 @@ const Header = () => {
             <NavLink className="nav-link" to="/popular">About</NavLink>
           </Nav>
           <Nav className="ms-auto" style={{ maxHeight: '100px' }} navbarScroll>
+            {/* ale kurwa rzezba XD */}
+            <div className="header-search">
+      <FormControl
+        type="text"
+        placeholder="Search movies"
+        className="header-search-input"
+        value={searchText}
+        onChange={handleSearchTextChange}
+      />
+      <Button variant="info" className="header-search-button-small" onClick={handleSearch}>
+        Wyszukaj
+      </Button>
+    </div>
+
             {isLoggedIn ? (
                <>
                <Dropdown align="end" className="header-dropdown">
