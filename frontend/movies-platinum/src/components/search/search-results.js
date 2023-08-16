@@ -1,32 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation
+import { useLocation } from "react-router-dom"; 
 import axios from "axios";
 import { faHeartCircleMinus, faHeartCirclePlus, faMagnifyingGlass, faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
+import { BeatLoader } from 'react-spinners'; // importowanie BeatLoader
 
 
 const SearchResults = () => {
   const [searchResults, setSearchResults] = useState([]);
-  const location = useLocation(); // Get the location object
-  const queryParams = new URLSearchParams(location.search); // Parse the query parameters
-  const searchText = queryParams.get("query"); // Get the 'query' parameter
+  const location = useLocation(); 
+  const queryParams = new URLSearchParams(location.search); 
+  const searchText = queryParams.get("query");
   const navigate = useNavigate();
   const [cookies] = useCookies(['token']);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [notFound, setNotFound] = useState(false);
 
-
-  const handleSearch = () => {
-    axios
-      .get(`http://localhost:8080/api/movies/search?query=${searchText}`)
-      .then((response) => {
+  const handleSearch = async () => {
+    setLoading(true);
+    try{
+      const response = await axios.get(`http://localhost:8080/api/movies/search?query=${searchText}`);
+      if (response.status === 200) {
         setSearchResults(response.data);
-      })
-      .catch((error) => {
-        // Handle error
-      });
-  };
+        if(response.data.length === 0){
+          setNotFound(true);
+        }
+        else{
+          setNotFound(false);
+        }
+        console.log(response.data)
+      } else {
+        throw new Error('Error fetching movies');
+      }
+    } catch (error) {
+      setError('Error fetching movies. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+    };
 
   const getMovieDetail = async (movieId) => {
     navigate(`/movie/${movieId}`);
@@ -70,13 +85,28 @@ const SearchResults = () => {
   };
 
 
-  return (
+
+
+  if (loading) {
+    return (
       <div className="container">
-        
+        <h1>Searching Movies</h1>
+        <div className="loading">
+          <BeatLoader color="#ffffff" loading={loading} size={15} />
+        </div>
+      </div>
+    );
+  }
+  return (
+  <div className="container">
         <h1>Search {searchText}</h1>
-      
-    
-        {searchResults.map((result) => (
+        {notFound && searchResults.length === 0 && (
+          <p> Niestety nie zlaleźlismy tego co szukasz😥😥😥</p>
+        )}
+
+        {!notFound && (
+          <>
+    {searchResults.map((result) => (
           <div key={result.id} className="movie">
             <div className="left-column">
               <img
@@ -92,7 +122,7 @@ const SearchResults = () => {
             <div className="right-column">
               <div className="play-button-icon-container">
                 
-                {cookies.token ? ( // Check if the user is logged in
+                {cookies.token ? ( 
                 <>
                   <FontAwesomeIcon
                     className="top-icon"
@@ -123,9 +153,11 @@ const SearchResults = () => {
     
             </div>
           </div>
-        ))}
+            ))}
+          </>
+        )}
       </div>
     );
-    };
-    
-    export default SearchResults;
+  };
+
+export default SearchResults;
