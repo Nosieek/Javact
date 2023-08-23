@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../api/axiosConfig';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
 import React, { useState, useEffect } from 'react';
@@ -33,7 +33,7 @@ const Favorites = () => {
       const token = cookies.token;
       const userEmail = getUserEmailFromToken(token);
       const tk = cookies.token;
-      const response = await axios.get(`http://localhost:8080/api/movies/liked-movies?email=${userEmail}`,{
+      const response = await axios.get(`movies/liked-movies?email=${userEmail}`,{
         headers: {
           Authorization: `Bearer ${tk}`
         }
