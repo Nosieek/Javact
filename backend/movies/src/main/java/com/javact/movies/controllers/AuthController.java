@@ -22,7 +22,6 @@ public class AuthController {
         AuthenticationResponse registrationResponse = service.register(request);
 
         if (registrationResponse.getToken() == null) {
-//            String errorMessage = "Username or email already exists";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(registrationResponse);
 
         }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../api/axiosConfig';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
 import React, { useState, useEffect } from 'react';
@@ -33,7 +33,7 @@ const Favorites = () => {
       const token = cookies.token;
       const userEmail = getUserEmailFromToken(token);
       const tk = cookies.token;
-      const response = await axios.get(`http://localhost:8080/api/movies/liked-movies?email=${userEmail}`,{
+      const response = await axios.get(`movies/liked-movies?email=${userEmail}`,{
         headers: {
           Authorization: `Bearer ${tk}`
         }
@@ -63,7 +63,7 @@ const Favorites = () => {
       const tk = cookies.token;
       console.log(movieId)
       const response = await axios.post(        
-        `http://localhost:8080/api/movies/Fav/delete?movieId=${movieId}&email=${userEmail}`,
+        `movies/Fav/delete?movieId=${movieId}&email=${userEmail}`,
         {},
         {
           headers: {
@@ -73,7 +73,7 @@ const Favorites = () => {
       );
       console.log(response.status);
     } catch (error) {
-      console.error('Error removing 696969699 movie to favoritelist:', error);
+      console.error('Error removing  movie to favoritelist:', error);
     }finally {
       // Odśwież stronę
       window.location.reload();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import axios from '../../api/axiosConfig'
 import './TopRanked.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeartCircleMinus, faHeartCirclePlus, faMagnifyingGlass, faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
@@ -65,9 +65,7 @@ const TopRanked = () => {
     setError(null);
     try {
       const tk = cookies.token;
-      // const response = await axios.get(`https://jjavact-1a06eb312a7d.herokuapp.com/api/movies/top?page=${page}`, {
-
-      const response = await axios.get(`http://localhost:8080/api/movies/top?page=${page}`, {
+      const response = await axios.get(`movies/top?page=${page}`, {
         headers: {
           Authorization: `Bearer ${tk}`
         }
@@ -90,7 +88,7 @@ const TopRanked = () => {
       const tk = cookies.token;
       console.log(movieId)
       const response = await axios.post(
-        `http://localhost:8080/api/movies/addFav?email=${userEmail}&movieId=${movieId}`,
+        `movies/addFav?email=${userEmail}&movieId=${movieId}`,
         {},
         {
           headers: {

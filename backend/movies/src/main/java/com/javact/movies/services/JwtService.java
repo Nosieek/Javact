@@ -37,7 +37,6 @@ public class JwtService {
         return buildToken(extraClaims, userDetails);
     }
     private Claims extractAllClaims(String token){
-        //return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parse(token).getBody(); //nie powinienem castowac
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())

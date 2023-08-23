@@ -1,6 +1,7 @@
 package com.javact.movies.entity;
 
 import com.javact.movies.models.Movie;
+//import com.javact.movies.models.Review;
 import lombok.*;
 
 import jakarta.persistence.*;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,15 +50,10 @@ public class User implements UserDetails {
 
     }
 
-
     public void removeLikedMovie(Movie movie) {
         likedMovies.remove(movie);
         movie.getLikedByUsers().remove(this);
     }
-//    public List<Movie> getLikedMovies() {
-//        return likedMovies.stream()
-//                .collect(Collectors.toList());
-//    }
     @Override
     public String toString() {
         return "User{" +

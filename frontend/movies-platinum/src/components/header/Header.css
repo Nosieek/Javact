@@ -36,3 +36,18 @@
 .header-brand{
   color: orange !important;
 }
+.header-search {
+  display: flex;
+  align-items: center; /* Domyślnie elementy będą wyśrodkowane pionowo */
+}
+
+.header-search-input {
+  margin-right: 5px; /* Dostosuj margines między polem wyszukiwania a przyciskiem */
+  padding: 5px;
+}
+.header-search-button-small {
+  padding: 2px 5px; /* Dostosuj padding do preferencji */
+  font-size: 10px; /* Dostosuj rozmiar czcionki do preferencji */
+  margin-right: 5px; /* Dostosuj margines między polem wyszukiwania a przyciskiem */
+
+}

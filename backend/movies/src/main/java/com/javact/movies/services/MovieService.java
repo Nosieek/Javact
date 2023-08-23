@@ -8,6 +8,7 @@ import com.javact.movies.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,9 +31,6 @@ public class MovieService {
 
     @Autowired
     private WebClient webClient;
-    public List<Movie> findAllMovies(){
-        return repository.findAll();
-    }
 
     private void saveData(Movie movie){
         Optional<Movie> existingMovie = repository.findByTitle(movie.getTitle());
@@ -62,42 +60,37 @@ public class MovieService {
                     movie.setPosterPath(dto.getPosterPath());
                     movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
                     movie.setVote_average(dto.getVoteAverage());
+                    saveData(movie);
                     return movie;
                 })
                 .collect(Collectors.toList());
 
-        List<Movie> newMovies = new ArrayList<>();
-
-        for (Movie movie : movies) {
-            saveData(movie);
-        }
-
         return movies;
     }
-    public Movie getFilmById(Long id) { // dodac try-catcha, poniewaz jak nie ma tego id to bedzie blad 404 fot found
-        //org.springframework.web.reactive.function.client.WebClientResponseException$NotFound: 404 Not Found from GET https://api.themoviedb.org/3/movie/39?api_key=36beba8c548319d9ea82880e37caaefd
-        //	at org.springframework.web.reactive.function.client.WebClientResponseException.create(WebClientResponseException.java:314) ~[spring-webflux-6.0.8.jar:6.0.8]
-        //	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException:
-        //Error has been observed at the following site(s):
-        //	*__checkpoint ⇢ 404 NOT_FOUND from GET https://api.themoviedb.org/3/movie/39 [DefaultWebClient]
-        TmdbMovieDto dto = webClient.get()
-                .uri("/movie/{id}?api_key={apiKey}", id, apiKey)
-                .retrieve()
-                .bodyToMono(TmdbMovieDto.class)
-                .block();
-
+    public Movie getFilmById(Long id) {
         Movie movie = new Movie();
-        movie.setId(dto.getId());
-        movie.setImdb_id(dto.getId());
-        movie.setTitle(dto.getTitle());
-        movie.setOverview(dto.getOverview());
-        movie.setRelaseDate(dto.getReleaseDate());
-        movie.setPosterPath(dto.getPosterPath());
-        movie.setYtTrailer(getMovieYoutubeKey(id));
-        movie.setVote_average(dto.getVoteAverage());
 
-        saveData(movie);
-        return movie;
+        try {
+            TmdbMovieDto dto = webClient.get()
+                    .uri("/movie/{id}?api_key={apiKey}", id, apiKey)
+                    .retrieve()
+                    .bodyToMono(TmdbMovieDto.class)
+                    .block();
+
+            movie.setId(dto.getId());
+            movie.setImdb_id(dto.getId());
+            movie.setTitle(dto.getTitle());
+            movie.setOverview(dto.getOverview());
+            movie.setRelaseDate(dto.getReleaseDate());
+            movie.setPosterPath(dto.getPosterPath());
+            movie.setYtTrailer(getMovieYoutubeKey(id));
+            movie.setVote_average(dto.getVoteAverage());
+
+            saveData(movie);
+            return movie;
+        } catch (Exception notFoundException) {
+            return null;
+        }
     }
 
     private String getMovieYoutubeKey(Long id) {
@@ -129,7 +122,6 @@ public class MovieService {
 
         List<CompletableFuture<Movie>> movieFutures = results.getResults().stream()
                 .map(dto -> CompletableFuture.supplyAsync(() -> {
-                    String youtubeKey = getMovieYoutubeKey(dto.getId());
                     Movie movie = new Movie();
                     movie.setId(dto.getId());
                     movie.setImdb_id(dto.getId());
@@ -163,9 +155,7 @@ public class MovieService {
             user.addLikedMovie(movie);
             userRepository.save(user);
         } else {
-            // Handle the case when either the movie or user is not found
             System.out.println("USER or Movie not found");
-
         }
 
     }
@@ -211,8 +201,6 @@ public class MovieService {
 
             if (optionalMovie.isPresent()) {
                 Movie movie = optionalMovie.get();
-
-//                user.getLikedMovies().remove(movie);
                 user.removeLikedMovie(movie);
                 userRepository.save(user);
             } else {
@@ -221,5 +209,32 @@ public class MovieService {
         } else {
             throw new NoSuchElementException("User not found");
         }
+    }
+    public List<Movie> searchMovies(String query) {
+        System.out.println("Executing searchMovies with query: " + query);
+        TmdbResultsDto results = webClient.get()
+                .uri("/search/movie?api_key={apiKey}&query={query}", apiKey, query)
+                .retrieve()
+                .bodyToMono(TmdbResultsDto.class)
+                .block();
+
+        System.out.println("Retrieved results: " + results);//del
+
+        List<Movie> movies = results.getResults().stream()
+                .map(dto -> {
+                    Movie movie = new Movie();
+                    movie.setId(dto.getId());
+                    movie.setImdb_id(dto.getId());
+                    movie.setTitle(dto.getTitle());
+                    movie.setOverview(dto.getOverview());
+                    movie.setRelaseDate(dto.getReleaseDate());
+                    movie.setPosterPath(dto.getPosterPath());
+                    movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
+                    movie.setVote_average(dto.getVoteAverage());
+                    saveData(movie);
+                    return movie;
+                })
+                .collect(Collectors.toList());
+        return movies;
     }
 }
