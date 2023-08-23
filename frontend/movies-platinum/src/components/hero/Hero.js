@@ -7,7 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import { faHeartCircleMinus, faHeartCirclePlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
-import axios from "axios";
+import axios from '../../api/axiosConfig';
 
 const Hero = ({movies}) => {
     const [cookies] = useCookies(['token']);
@@ -24,7 +24,7 @@ const Hero = ({movies}) => {
         const tk = cookies.token;
         console.log(movieId)
         const response = await axios.post(
-          `http://localhost:8080/api/movies/addFav?email=${userEmail}&movieId=${movieId}`,
+          `movies/addFav?email=${userEmail}&movieId=${movieId}`,
           {},
           {
             headers: {

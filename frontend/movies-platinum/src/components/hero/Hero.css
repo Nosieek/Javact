@@ -85,7 +85,7 @@
     color:white;
 }
 .heart-icon-hero{
-    margin-left: -150px; /* Adjust this value as needed */
+    margin-left: -150px;  
     color:white;
     font-size: 3rem;
     transition: 0.3s;

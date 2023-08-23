@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom"; 
-import axios from "axios";
+import axios from '../../api/axiosConfig';
 import { faHeartCircleMinus, faHeartCirclePlus, faMagnifyingGlass, faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
-import { BeatLoader } from 'react-spinners'; // importowanie BeatLoader
+import { BeatLoader } from 'react-spinners'; 
 
 
 const SearchResults = () => {
@@ -23,7 +23,7 @@ const SearchResults = () => {
   const handleSearch = async () => {
     setLoading(true);
     try{
-      const response = await axios.get(`http://localhost:8080/api/movies/search?query=${searchText}`);
+      const response = await axios.get(`movies/search?query=${searchText}`);
       if (response.status === 200) {
         setSearchResults(response.data);
         if(response.data.length === 0){
@@ -71,7 +71,7 @@ const SearchResults = () => {
       const tk = cookies.token;
       console.log(movieId)
       const response = await axios.post(
-        `http://localhost:8080/api/movies/addFav?email=${userEmail}&movieId=${movieId}`,
+        `movies/addFav?email=${userEmail}&movieId=${movieId}`,
         {},
         {
           headers: {

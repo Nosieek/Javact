@@ -1,128 +1,128 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-import { Container, Row, Col } from 'react-bootstrap';
-import './movie-detail.css';
-// import ReviewForm from '../reviewForm/ReviewForm';
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { useParams } from 'react-router-dom';
+// import { useCookies } from 'react-cookie';
+// import { Container, Row, Col } from 'react-bootstrap';
+// import './movie-detail.css';
+// // import ReviewForm from '../reviewForm/ReviewForm';
 
-const MovieDetail = () => {
-  const { movieId } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [cookies, setCookies, removeCookies] = useCookies(['token']);
-  const [reviews, setReviews] = useState([]);
+// const MovieDetail = () => {
+//   const { movieId } = useParams();
+//   const [movie, setMovie] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [cookies, setCookies, removeCookies] = useCookies(['token']);
+//   const [reviews, setReviews] = useState([]);
 
-  useEffect(() => {
-    fetchMovieDetails();
-  }, []);
+//   useEffect(() => {
+//     fetchMovieDetails();
+//   }, []);
 
-  const fetchMovieDetails = async () => {
-    console.log(movieId)
+//   const fetchMovieDetails = async () => {
+//     console.log(movieId)
 
-    try {
-      const tk = cookies.token;
-      const response = await axios.get(`http://localhost:8080/api/movies/${movieId}`, {
-        headers: {
-          Authorization: `Bearer ${tk}`
-        }
-      });
-      setMovie(response.data);
-      console.log(movieId)
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching movie details:', error);
-      setLoading(false);
-    }
-  };
+//     try {
+//       const tk = cookies.token;
+//       const response = await axios.get(`http://localhost:8080/api/movies/${movieId}`, {
+//         headers: {
+//           Authorization: `Bearer ${tk}`
+//         }
+//       });
+//       setMovie(response.data);
+//       console.log(movieId)
+//       setLoading(false);
+//     } catch (error) {
+//       console.error('Error fetching movie details:', error);
+//       setLoading(false);
+//     }
+//   };
 
-  const addReview = async (e) => {
-    e.preventDefault();
+//   const addReview = async (e) => {
+//     e.preventDefault();
 
-    const rev = revText.current;
+//     const rev = revText.current;
 
-    try {
-      const response = await axios.post("/api/v1/reviews", {
-        reviewBody: rev.value,
-        imdbId: movieId
-      });
+//     try {
+//       const response = await axios.post("/api/v1/reviews", {
+//         reviewBody: rev.value,
+//         imdbId: movieId
+//       });
 
-      const updatedReviews = [...reviews, { body: rev.value }];
+//       const updatedReviews = [...reviews, { body: rev.value }];
 
-      rev.value = "";
+//       rev.value = "";
 
-      setReviews(updatedReviews);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+//       setReviews(updatedReviews);
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+//   if (loading) {
+//     return <div>Loading...</div>;
+//   }
 
-  if (!movie) {
-    return <div>No movie found.</div>;
-  }
+//   if (!movie) {
+//     return <div>No movie found.</div>;
+//   }
 
-  return (
-    <Container>
-      <Row>
-        <Col>
-          <h3>{movie.title}</h3>
-        </Col>
-      </Row>
-      <Row className="mt-2">
-        <Col>
-          <img
-            className="movie-poster-container"
-            src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
-            alt={movie.title}
-          />
-        </Col>
-        <Col>
-          <>
-            <Row>
-              <Col>
-                <h5>Release Date:</h5>
-                {movie.releaseDate}
-                <hr />
-                <h5>Overview:</h5>
-                {movie.overview}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <hr />
-                <h5>Vote Average:</h5>
-                {movie.vote_average}
-                <hr />
-              </Col>
-            </Row>
-          </>
-          <h3>Trailer</h3>
-          <div className="yt-video-container">
-            <iframe
-              className="yt-video"
-              title="Trailer"
-              width="560"
-              height="315"
-              src={`https://www.youtube.com/embed/${movie.ytTrailer}`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <hr />
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+//   return (
+//     <Container>
+//       <Row>
+//         <Col>
+//           <h3>{movie.title}</h3>
+//         </Col>
+//       </Row>
+//       <Row className="mt-2">
+//         <Col>
+//           <img
+//             className="movie-poster-container"
+//             src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
+//             alt={movie.title}
+//           />
+//         </Col>
+//         <Col>
+//           <>
+//             <Row>
+//               <Col>
+//                 <h5>Release Date:</h5>
+//                 {movie.releaseDate}
+//                 <hr />
+//                 <h5>Overview:</h5>
+//                 {movie.overview}
+//               </Col>
+//             </Row>
+//             <Row>
+//               <Col>
+//                 <hr />
+//                 <h5>Vote Average:</h5>
+//                 {movie.vote_average}
+//                 <hr />
+//               </Col>
+//             </Row>
+//           </>
+//           <h3>Trailer</h3>
+//           <div className="yt-video-container">
+//             <iframe
+//               className="yt-video"
+//               title="Trailer"
+//               width="560"
+//               height="315"
+//               src={`https://www.youtube.com/embed/${movie.ytTrailer}`}
+//               frameBorder="0"
+//               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+//               allowFullScreen
+//             ></iframe>
+//           </div>
+//         </Col>
+//       </Row>
+//       <Row>
+//         <Col>
+//           <hr />
+//         </Col>
+//       </Row>
+//     </Container>
+//   );
+// };
 
 // export default MovieDetail;
 // import React, { useEffect, useState } from 'react';
@@ -248,5 +248,151 @@ const MovieDetail = () => {
 //     </Container>
 //   );
 // };
+import React, { useEffect, useState } from 'react';
+import axios from '../../api/axiosConfig';
+import { useParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { Container, Row, Col } from 'react-bootstrap';
+import './movie-detail.css';
+import NotFoundPage from '../404page/page404'
+
+const MovieDetail = () => {
+  const { movieId } = useParams();
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [cookies] = useCookies(['token']);
+  const [reviews, setReviews] = useState([]);
+  const [revText, setRevText] = useState(""); // State for review text input
+
+  useEffect(() => {
+    fetchMovieDetails();
+  }, []);
+
+  const fetchMovieDetails = async () => {
+    try {
+      const tk = cookies.token;
+      const response = await axios.get(`movies/${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`
+        }
+      });
+      setMovie(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching movie details:', error);
+      setLoading(false);
+    }
+  };
+
+  const addReview = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("/api/v1/reviews", {
+        reviewBody: revText,
+        imdbId: movieId
+      });
+
+      const updatedReviews = [...reviews, { body: revText }];
+      setReviews(updatedReviews);
+      setRevText(""); // Clear the review text input
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleReviewChange = (e) => {
+    setRevText(e.target.value);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!movie) {
+    // return <div>No movie found.</div>;
+    return <NotFoundPage />; // Wyświetl NotFoundPage w przypadku braku filmu
+  }
+
+  return (
+    <Container>
+            <Row>
+        <Col>
+          <h3>{movie.title}</h3>
+        </Col>
+      </Row>
+      <Row className="mt-2">
+        <Col>
+          <img
+            className="movie-poster"
+            src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
+            alt={movie.title}
+          />
+        </Col>
+        <Col>
+          <>
+            <Row>
+              <Col>
+                <h5>Release Date:</h5>
+                {movie.releaseDate}
+                <hr />
+                <h5>Overview:</h5>
+                {movie.overview}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <hr />
+                <h5>Vote Average:</h5>
+                {movie.vote_average}
+                <hr />
+              </Col>
+            </Row>
+          </>
+          <h3>Trailer</h3>
+          <div className="yt-video-container">
+            <iframe
+              className="yt-video"
+              title="Trailer"
+              width="560"
+              height="315"
+              src={`https://www.youtube.com/embed/${movie.ytTrailer}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <hr />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <hr />
+          <h3>Reviews</h3>
+          <ul className="reviews-list">
+            {reviews.map((review, index) => (
+              <li key={index}>{review.body}</li>
+            ))}
+          </ul>
+          <h3>Add a Review</h3>
+          <form onSubmit={addReview}>
+            <textarea
+              className="review-input"
+              placeholder="Write your review..."
+              value={revText}
+              onChange={handleReviewChange}
+              required
+            />
+            <button type="submit">Submit Review</button>
+          </form>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default MovieDetail;
