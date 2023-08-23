@@ -6,6 +6,7 @@ import com.javact.movies.auth.RegisterRequest;
 import com.javact.movies.entity.User;
 import com.javact.movies.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,9 @@ public class AuthenticationService {
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .build();
-             if(repository.findByEmail(request.getEmail()).isEmpty()){
+             if(repository.findByEmail(request.getEmail()).isEmpty()
+                     && repository.findByUsername(request.getUsername()).isEmpty()){
+
                  repository.save(user);
                  var jwtToken = jwtService.generateToken(user);
 
@@ -39,7 +42,6 @@ public class AuthenticationService {
         } catch (Exception ex) {
             return AuthenticationResponse.builder().token(null).build();
         }
-
     }
 
 

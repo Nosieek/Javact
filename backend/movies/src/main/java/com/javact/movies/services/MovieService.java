@@ -31,9 +31,6 @@ public class MovieService {
 
     @Autowired
     private WebClient webClient;
-    public List<Movie> findAllMovies(){
-        return repository.findAll();
-    }
 
     private void saveData(Movie movie){
         Optional<Movie> existingMovie = repository.findByTitle(movie.getTitle());
@@ -63,13 +60,10 @@ public class MovieService {
                     movie.setPosterPath(dto.getPosterPath());
                     movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
                     movie.setVote_average(dto.getVoteAverage());
+                    saveData(movie);
                     return movie;
                 })
                 .collect(Collectors.toList());
-
-        for (Movie movie : movies) {
-            saveData(movie);
-        }
 
         return movies;
     }
@@ -95,16 +89,7 @@ public class MovieService {
             saveData(movie);
             return movie;
         } catch (Exception notFoundException) {
-            // Handle 404 error here
-            // You can return a custom error response or throw a custom exception
-            // For example:
-            // throw new MovieNotFoundException("Movie with ID " + id + " not found");
-
-//            log.error("Error occurred while fetching movie with ID {}: {}", id, notFoundException.getMessage());
-
-            // Returning a custom error response
-            String errorMessage = "Movie with ID " + id + " not found";
-            return new Movie();
+            return null;
         }
     }
 
@@ -137,7 +122,6 @@ public class MovieService {
 
         List<CompletableFuture<Movie>> movieFutures = results.getResults().stream()
                 .map(dto -> CompletableFuture.supplyAsync(() -> {
-                    String youtubeKey = getMovieYoutubeKey(dto.getId());
                     Movie movie = new Movie();
                     movie.setId(dto.getId());
                     movie.setImdb_id(dto.getId());
