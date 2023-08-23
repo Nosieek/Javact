@@ -50,7 +50,6 @@ public class MovieController {
     }
     @PostMapping("/Fav/delete")
     public void removeFromFavorites(@RequestParam Long movieId, @RequestParam String email) {
-        System.out.println(movieId+" "+ email);
         movieService.removeFromFavorites(movieId, email);
     }
 
