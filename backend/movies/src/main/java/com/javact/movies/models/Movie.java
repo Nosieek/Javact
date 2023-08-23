@@ -1,10 +1,12 @@
 package com.javact.movies.models;
 
 
+import com.javact.movies.dto.TmdbResultsDto;
 import com.javact.movies.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -30,4 +32,9 @@ public class Movie {
 
     @ManyToMany(mappedBy = "likedMovies", fetch = FetchType.LAZY)
     private Set<User> likedByUsers;
+
+//    @OneToMany(mappedBy = "movie")
+//    private Set<Review> reviews;
+
+
 }
