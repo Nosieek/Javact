@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import axios from 'axios';
+import axios from '../../api/axiosConfig';
 import './Register.css';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -35,8 +35,7 @@ const Register = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/register', registerData, {
-        // https://jjavact-1a06eb312a7d.herokuapp.com/api/auth/register
+      const response = await axios.post('auth/register', registerData, {
         headers: {
           'Authorization': ''
         }
