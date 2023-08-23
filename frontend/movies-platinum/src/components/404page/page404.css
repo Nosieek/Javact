@@ -1,0 +1,66 @@
+/* .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: orange;
+  }
+  
+  .textContainer {
+    text-align: center;
+    color: white;
+  }
+  
+  .heading {
+    font-size: 6rem;
+    margin-bottom: 10px;
+    animation: changeColor 2s infinite alternate;
+  }
+  
+  .subtext {
+    font-size: 1.5rem;
+  }
+  
+  @keyframes changeColor {
+    0% {
+      color: red; 
+    }
+    50% {
+        color: green; 
+      }
+    100% {
+      color: blue; 
+    }
+  }
+   */
+/* Resetowanie domyślnych stylów */
+.page404-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  
+  .number-404 {
+    font-size: 6rem;
+    animation: bounceAndColorChange 1s infinite alternate;
+  }
+  
+  .error-message {
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+  }
+  
+  @keyframes bounceAndColorChange {
+    0% {
+      font-size: 7rem;
+      color: red;
+    }
+    100% {
+      font-size: 8rem;
+      color: orange;
+    }
+  }
+  
