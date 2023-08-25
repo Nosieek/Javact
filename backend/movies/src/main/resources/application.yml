@@ -1,7 +1,6 @@
-server:
-  error:
-    include-message: always
-    include-binding-errors: always
+error:
+  include-message: always
+  include-binding-errors: always
 
 spring:
   datasource:
@@ -27,16 +26,3 @@ application:
 tmdb:
   api:
     key: 36beba8c548319d9ea82880e37caaefd
-#spring:
-#  jpa:
-#    hibernate:
-#      ddl-auto: create-drop
-#      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-#  datasource:
-#    url: "jdbc:mysql://eu-cdbr-west-03.cleardb.net:3306/heroku_9d6469e4e9c5540"
-#    username: be55ade96b6f95
-#    password: 46035b69
-#
-#tmdb:
-#  api:
-#    key: 36beba8c548319d9ea82880e37caaefd
