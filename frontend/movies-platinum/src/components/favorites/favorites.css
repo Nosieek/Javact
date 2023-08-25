@@ -85,14 +85,18 @@ padding: 10px
   color: #555555;
   text-align: center;
   margin-top: 20px;
-} */
+}  */
 
-.favorites-page {
-  /* background: linear-gradient(to bottom, rgb(12, 46, 76) 0%, rgb(248, 74, 0) 100%); */
-  /* background: linear-gradient(45deg, #332173, #000000); */
+
+
+
+
+/* ten jest dobry */
+ .favorites-page {
+
   background: linear-gradient(to bottom , rgb(0, 0, 0), rgb(115, 75, 2));
   padding: 20px;
-}
+} 
 
 .favorites-container {
   display: grid;
@@ -183,4 +187,4 @@ padding: 10px
   color: #555555;
   text-align: center;
   margin-top: 20px;
-}
+} 
