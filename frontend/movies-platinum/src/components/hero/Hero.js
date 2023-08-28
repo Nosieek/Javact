@@ -11,6 +11,7 @@ import axios from '../../api/axiosConfig';
 
 const Hero = ({movies}) => {
     const [cookies] = useCookies(['token']);
+    const navigate = useNavigate();
 
     const getUserEmailFromToken = (token) => {
         const decodedToken = jwtDecode(token);
@@ -18,13 +19,15 @@ const Hero = ({movies}) => {
         return userEmail;
       };
   
-    const addToFavorite = async (movieId) => {
+    const addToFavorite = async (movie) => {
       try {
         const userEmail = getUserEmailFromToken(cookies.token);
         const tk = cookies.token;
-        console.log(movieId)
+        console.log(movie.title)
+        console.log(movie.imdb_id)
+
         const response = await axios.post(
-          `movies/addFav?email=${userEmail}&movieId=${movieId}`,
+          `movies/addFav?email=${userEmail}&movieId=${movie.imdb_id}`,
           {},
           {
             headers: {
@@ -36,6 +39,12 @@ const Hero = ({movies}) => {
         console.error('Error adding movie to favoritelist:', error);
       }
     };
+
+    const getMovieDetail = async (movie) => {
+      console.log(movie.imdb_id)
+      navigate(`/movie/${movie.imdb_id}`);
+      console.log("CZEMU ", movie.title);
+      };
   
     return (
         <div className ='movie-carousel-container'>
@@ -65,11 +74,18 @@ const Hero = ({movies}) => {
                                                 </div>
 
                                              </Link>
-                                             <div className="play-button-icon-container2">
+                                             {/* <div className="play-button-icon-container2">
+                                             <FontAwesomeIcon
+                                                        className="heart-icon-hero"
+                                                        icon={faMagnifyingGlass}
+                                                        onClick={() => getMovieDetail(movie)}
+                                                    />
+                                            </div> */}
+                                            <div className="play-button-icon-container2">
                                              <FontAwesomeIcon
                                                         className="heart-icon-hero"
                                                         icon={faHeartCirclePlus}
-                                                        onClick={() => addToFavorite(movie.id)}
+                                                        onClick={() => addToFavorite(movie)}
                                                     />
                                             </div>
                                             </>
