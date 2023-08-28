@@ -12,13 +12,14 @@ const Layout = () => {
     const fetchMovies = async () => {
       try {
         const response = await axios.get("movies/popular");
+        // debugger;
         setMovies(response.data);
       } catch (error) {
         console.error(error);
       }
     };
-
     fetchMovies();
+
   }, []);
 
   return (
