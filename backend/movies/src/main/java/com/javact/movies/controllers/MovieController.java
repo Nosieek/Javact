@@ -31,7 +31,7 @@ public class MovieController {
 
     @GetMapping("/top")
     public List<Movie> top(Long page) {
-        return movieService.getTopMoviesPolish(page);
+        return movieService.getTopMovies(page);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
