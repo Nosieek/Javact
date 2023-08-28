@@ -70,9 +70,8 @@ public class MovieService {
 
     @Scheduled(cron = "0 0 0 * * ?") //updatujemy in midnight
     public void updatePopularMovies() {
-        List<PopularMovie> latestAndTopMovies = fetchLatestAndTopMoviesFromApi();
-        //narazie save trzeba zrobic update
-        popularMovieRepository.saveAll(latestAndTopMovies);
+        popularMovieRepository.deleteAll();
+        popularMovieRepository.saveAll(this.fetchLatestAndTopMoviesFromApi());
     }
 
     private List<PopularMovie> fetchLatestAndTopMoviesFromApi() {
@@ -97,11 +96,38 @@ public class MovieService {
 
         return movies;
     }
+    private List<Movie> fetchMovies() {
+        TmdbPopularResults results = webClient.get()
+                .uri("/movie/popular?api_key={apiKey}", apiKey)
+                .retrieve()
+                .bodyToMono(TmdbPopularResults.class)
+                .block();
+
+
+        List<Movie> movies = results.getResults().stream()
+                .map(dto -> {
+                    Movie movie = new Movie();
+                    movie.setImdb_id(dto.getImdb_id());
+                    movie.setTitle(dto.getTitle());
+                    movie.setPosterPath(dto.getPosterPath());
+                    movie.setYtTrailer(getMovieYoutubeKey(dto.getImdb_id()));
+                    saveData(movie);
+                    return movie;
+                })
+                .collect(Collectors.toList());
+
+        return movies;
+    }
 
     public List<PopularMovie> getPopularMovies() {
         List<PopularMovie> popular = popularMovieRepository.findAll();
+        List<Movie> movies = repository.findAll();
         if (popular.isEmpty()){
             popular = this.fetchLatestAndTopMoviesFromApi();
+        }
+        if (movies.isEmpty())
+        {
+            this.fetchMovies();
         }
         return popular;
     }
@@ -153,7 +179,7 @@ public class MovieService {
                                 .orElse(null)
                 );
     }
-    public List<Movie> getTopMoviesPolish(Long page) {
+    public List<Movie> getTopMovies(Long page) {
         TmdbResultsDto results = webClient.get()
                 .uri("/movie/top_rated?api_key={apiKey}&page={page}", apiKey, page)
                 .retrieve()
@@ -188,7 +214,7 @@ public class MovieService {
     public void addLikedMovieToUser(String userId, Long movieId) {
         Optional<Movie> optionalMovie = repository.findMovieByImdbId(movieId);
         Optional<User> optionalUser = userRepository.findByEmail(userId);
-
+        System.out.println(optionalMovie.isPresent());
         if (optionalMovie.isPresent() && optionalUser.isPresent()) {
             Movie movie = optionalMovie.get();
             User user = optionalUser.get();
@@ -257,8 +283,6 @@ public class MovieService {
                 .retrieve()
                 .bodyToMono(TmdbResultsDto.class)
                 .block();
-
-        System.out.println("Retrieved results: " + results);//del
 
         List<Movie> movies = results.getResults().stream()
                 .map(dto -> {
