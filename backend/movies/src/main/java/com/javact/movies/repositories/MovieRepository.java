@@ -15,4 +15,8 @@ public interface MovieRepository extends JpaRepository<Movie,Long> {
     List<Movie> findByTitle(String title);
     @Query("SELECT m FROM Movie m WHERE m.imdb_id = :imdbId")
     Optional<Movie> findMovieByImdbId(@Param("imdbId") Long imdbId);
+
+    @Query("SELECT m FROM Movie m WHERE m.imdb_id = :imdbId")
+    Movie findMovieBy(@Param("imdbId") Long imdbId);
+
 }
