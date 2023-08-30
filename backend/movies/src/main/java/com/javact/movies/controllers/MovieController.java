@@ -4,6 +4,7 @@ import com.javact.movies.dto.LikedMovieDto;
 import com.javact.movies.models.Movie;
 import com.javact.movies.models.PopularMovie;
 import com.javact.movies.services.MovieService;
+import com.javact.movies.services.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ import java.util.List;
 public class MovieController {
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
@@ -61,4 +65,15 @@ public class MovieController {
     public List<Movie> getSearchMovies(@RequestParam String query) {
         return movieService.searchMovies(query);
     }
+
+    //testy
+
+    @PostMapping("/addReview")
+    public void addReview(@RequestParam String email, @RequestParam Long movieId, @RequestParam int rating,
+                          @RequestParam String review){
+        System.out.println("JESTEM");
+        reviewService.addReview(email, movieId,rating, review);
+
+    }
+
 }

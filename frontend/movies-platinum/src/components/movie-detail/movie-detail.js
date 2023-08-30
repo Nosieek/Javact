@@ -255,6 +255,8 @@ import { useCookies } from 'react-cookie';
 import { Container, Row, Col } from 'react-bootstrap';
 import './movie-detail.css';
 import NotFoundPage from '../404page/page404'
+import ReviewForm from '../reviewForm/RevieForm';
+import jwtDecode from "jwt-decode";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -313,7 +315,12 @@ const MovieDetail = () => {
     // return <div>No movie found.</div>;
     return <NotFoundPage />; // Wyświetl NotFoundPage w przypadku braku filmu
   }
-
+  const getUserEmailFromToken = (token) => {
+    const decodedToken = jwtDecode(token);
+    const userEmail = decodedToken.sub;
+    console.log(userEmail);
+    return userEmail;
+  };
   return (
     <Container>
             <Row>
@@ -379,7 +386,7 @@ const MovieDetail = () => {
             ))}
           </ul>
           <h3>Add a Review</h3>
-          <form onSubmit={addReview}>
+          {/* <form onSubmit={ReviewForm}>
             <textarea
               className="review-input"
               placeholder="Write your review..."
@@ -388,7 +395,8 @@ const MovieDetail = () => {
               required
             />
             <button type="submit">Submit Review</button>
-          </form>
+          </form> */}
+            <ReviewForm movieId={movie.id} userEmail={getUserEmailFromToken(cookies.token)} />
         </Col>
       </Row>
     </Container>

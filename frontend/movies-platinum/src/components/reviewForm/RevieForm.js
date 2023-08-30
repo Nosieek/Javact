@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
 import axios from '../../api/axiosConfig';
-
+import { useCookies } from 'react-cookie';
 const ReviewForm = ({ movieId, userEmail }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const [cookies, , removeCookie] = useCookies(["token"]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const reviewData = {
+      userEmail,
+      movieId,
+      rating,
+      comment,
+    };
+
     try {
-      const response = await axios.post('review/add-review', {
-        userEmail,
-        movieId,
-        rating,
-        comment,
+      const token = cookies.token;
+      console.log(token);
+      const response = await axios.post(`movies/addReview?email=${userEmail}&movieId=${movieId}&rating=${rating}&review=${comment}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
       });
 
       if (response.status === 200) {
-        // Handle successful review submission
         console.log('Review submitted successfully');
-        // You might want to update the UI or display a message here
       }
     } catch (error) {
-      // Handle error during review submission
       console.error('Error submitting review:', error);
-      // You might want to display an error message to the user
     }
   };
 
