@@ -18,15 +18,6 @@ const TopRanked = () => {
   const navigate = useNavigate();
   const logoutTimeoutRef = useRef(null);
 
-  const handleLogout = () => {
-    removeCookies('token');
-    navigate('/Login?logout=true');
-  };
-
-  const resetLogoutTimeout = () => {
-    clearTimeout(logoutTimeoutRef.current);
-    logoutTimeoutRef.current = setTimeout(handleLogout, 300000); // 5 minut (300000 milisekund)
-  };
 
   useEffect(() => {
     const token = cookies.token;
@@ -36,19 +27,6 @@ const TopRanked = () => {
       fetchMovies(currentPage);
     }
   }, [currentPage, cookies, navigate]);
-
-  useEffect(() => {
-    const handleMouseMove = () => {
-      resetLogoutTimeout();
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      clearTimeout(logoutTimeoutRef.current);
-    };
-  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -168,7 +146,7 @@ const TopRanked = () => {
           <div className="left-column">
             <img
               className="movie-image"
-              src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
+              src={movie.posterPath ? `https://image.tmdb.org/t/p/w500${movie.posterPath}` : ''}
               alt={movie.title}
             />
             <div className="movie-details">

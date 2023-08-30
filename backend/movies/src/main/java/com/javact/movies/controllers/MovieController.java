@@ -2,11 +2,14 @@ package com.javact.movies.controllers;
 
 import com.javact.movies.dto.LikedMovieDto;
 import com.javact.movies.models.Movie;
+import com.javact.movies.models.PopularMovie;
 import com.javact.movies.services.MovieService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Enumeration;
 import java.util.List;
 
 
@@ -22,12 +25,13 @@ public class MovieController {
     }
 
     @GetMapping("/popular")
-    public List<Movie> getMovies() {
+    public List<PopularMovie> getMovies() {
         return movieService.getPopularMovies();
     }
+
     @GetMapping("/top")
     public List<Movie> top(Long page) {
-        return movieService.getTopMoviesPolish(page);
+        return movieService.getTopMovies(page);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {

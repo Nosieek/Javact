@@ -15,7 +15,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "movie", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"imdb_id"})
+})
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
