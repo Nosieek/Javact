@@ -19,7 +19,6 @@ import java.util.List;
 public class MovieController {
     @Autowired
     private MovieService movieService;
-
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
