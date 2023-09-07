@@ -67,7 +67,6 @@ public class MovieService {
         }
     }
 
-
     @Scheduled(cron = "0 0 0 * * ?") //updatujemy in midnight
     public void updatePopularMovies() {
         popularMovieRepository.deleteAll();
@@ -97,20 +96,24 @@ public class MovieService {
         return movies;
     }
     private List<Movie> fetchMovies() {
-        TmdbPopularResults results = webClient.get()
+        TmdbResultsDto results = webClient.get()
                 .uri("/movie/popular?api_key={apiKey}", apiKey)
                 .retrieve()
-                .bodyToMono(TmdbPopularResults.class)
+                .bodyToMono(TmdbResultsDto.class)
                 .block();
 
 
         List<Movie> movies = results.getResults().stream()
                 .map(dto -> {
                     Movie movie = new Movie();
-                    movie.setImdb_id(dto.getImdb_id());
+                    movie.setId(dto.getId());
+                    movie.setImdb_id(dto.getId());
                     movie.setTitle(dto.getTitle());
+                    movie.setOverview(dto.getOverview());
+                    movie.setRelaseDate(dto.getReleaseDate());
                     movie.setPosterPath(dto.getPosterPath());
-                    movie.setYtTrailer(getMovieYoutubeKey(dto.getImdb_id()));
+                    movie.setYtTrailer(getMovieYoutubeKey(dto.getId()));
+                    movie.setVote_average(dto.getVoteAverage());
                     saveData(movie);
                     return movie;
                 })
@@ -121,14 +124,11 @@ public class MovieService {
 
     public List<PopularMovie> getPopularMovies() {
         List<PopularMovie> popular = popularMovieRepository.findAll();
-        List<Movie> movies = repository.findAll();
         if (popular.isEmpty()){
             popular = this.fetchLatestAndTopMoviesFromApi();
-        }
-        if (movies.isEmpty())
-        {
             this.fetchMovies();
         }
+
         return popular;
     }
 
