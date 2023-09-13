@@ -27,11 +27,6 @@ public class Review {
     @JsonBackReference
     private Movie movie;
 
-<<<<<<< Updated upstream
-=======
-//    private String username = user.getUsername();
-
->>>>>>> Stashed changes
     private int rating;
 
     @Column(length = 1000)

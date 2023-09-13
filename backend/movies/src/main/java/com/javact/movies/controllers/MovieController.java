@@ -1,25 +1,14 @@
 package com.javact.movies.controllers;
-<<<<<<< Updated upstream
-=======
 
-import com.javact.movies.auth.ReviewRequest;
->>>>>>> Stashed changes
+
 import com.javact.movies.dto.LikedMovieDto;
-import com.javact.movies.dto.ReviewDto;
 import com.javact.movies.models.Movie;
 import com.javact.movies.models.PopularMovie;
 import com.javact.movies.services.MovieService;
-<<<<<<< Updated upstream
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-=======
-import com.javact.movies.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
->>>>>>> Stashed changes
 import java.util.List;
 
 @RestController
@@ -71,8 +60,4 @@ public class MovieController {
         return movieService.searchMovies(query);
     }
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 }
