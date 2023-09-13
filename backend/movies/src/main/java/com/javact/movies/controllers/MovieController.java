@@ -1,18 +1,26 @@
 package com.javact.movies.controllers;
+<<<<<<< Updated upstream
+=======
 
+import com.javact.movies.auth.ReviewRequest;
+>>>>>>> Stashed changes
 import com.javact.movies.dto.LikedMovieDto;
+import com.javact.movies.dto.ReviewDto;
 import com.javact.movies.models.Movie;
 import com.javact.movies.models.PopularMovie;
 import com.javact.movies.services.MovieService;
+<<<<<<< Updated upstream
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+=======
 import com.javact.movies.services.ReviewService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Enumeration;
+>>>>>>> Stashed changes
 import java.util.List;
-
 
 @RestController
 @CrossOrigin(origins ="http://localhost:3000")
@@ -20,9 +28,6 @@ import java.util.List;
 public class MovieController {
     @Autowired
     private MovieService movieService;
-
-    @Autowired
-    private ReviewService reviewService;
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
@@ -66,14 +71,8 @@ public class MovieController {
         return movieService.searchMovies(query);
     }
 
-    //testy
+<<<<<<< Updated upstream
+=======
 
-    @PostMapping("/addReview")
-    public void addReview(@RequestParam String email, @RequestParam Long movieId, @RequestParam int rating,
-                          @RequestParam String review){
-        System.out.println("JESTEM");
-        reviewService.addReview(email, movieId,rating, review);
-
-    }
-
+>>>>>>> Stashed changes
 }

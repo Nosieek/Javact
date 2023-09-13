@@ -256,7 +256,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 import './movie-detail.css';
 import NotFoundPage from '../404page/page404'
 import ReviewForm from '../reviewForm/RevieForm';
-import jwtDecode from "jwt-decode";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -264,11 +263,12 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [cookies] = useCookies(['token']);
   const [reviews, setReviews] = useState([]);
-  const [revText, setRevText] = useState(""); // State for review text input
+
 
   useEffect(() => {
     fetchMovieDetails();
-  }, []);
+    fetchMovieReview(); 
+  }, [movieId]);
 
   const fetchMovieDetails = async () => {
     try {
@@ -286,41 +286,31 @@ const MovieDetail = () => {
     }
   };
 
-  const addReview = async (e) => {
-    e.preventDefault();
-
+  const fetchMovieReview = async () => {
     try {
-      const response = await axios.post("/api/v1/reviews", {
-        reviewBody: revText,
-        imdbId: movieId
+      const tk = cookies.token;
+      const response = await axios.get(`review/movie-reviews?imdb=${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`
+        }
       });
-
-      const updatedReviews = [...reviews, { body: revText }];
-      setReviews(updatedReviews);
-      setRevText(""); // Clear the review text input
-    } catch (err) {
-      console.error(err);
+      setReviews(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching movie details:', error);
+      setLoading(false);
     }
   };
 
-  const handleReviewChange = (e) => {
-    setRevText(e.target.value);
-  };
+
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (!movie) {
-    // return <div>No movie found.</div>;
-    return <NotFoundPage />; // Wyświetl NotFoundPage w przypadku braku filmu
+    return <NotFoundPage />; 
   }
-  const getUserEmailFromToken = (token) => {
-    const decodedToken = jwtDecode(token);
-    const userEmail = decodedToken.sub;
-    console.log(userEmail);
-    return userEmail;
-  };
   return (
     <Container>
             <Row>
@@ -378,25 +368,20 @@ const MovieDetail = () => {
       </Row>
       <Row>
         <Col>
-          <hr />
-          <h3>Reviews</h3>
-          <ul className="reviews-list">
-            {reviews.map((review, index) => (
-              <li key={index}>{review.body}</li>
+        <h3>Review</h3>
+        {reviews.length > 0 && (
+          <>
+            {reviews.map((review) => (
+              <div key={review.id}>
+                <p>Username: {review.username}</p>
+                <p>Rating: {review.rating}</p>
+                <p>Comment: {review.comment}</p>
+                <hr />
+              </div>
             ))}
-          </ul>
-          <h3>Add a Review</h3>
-          {/* <form onSubmit={ReviewForm}>
-            <textarea
-              className="review-input"
-              placeholder="Write your review..."
-              value={revText}
-              onChange={handleReviewChange}
-              required
-            />
-            <button type="submit">Submit Review</button>
-          </form> */}
-            <ReviewForm movieId={movie.id} userEmail={getUserEmailFromToken(cookies.token)} />
+          </>
+        )}
+          <ReviewForm movieId={movieId}/> 
         </Col>
       </Row>
     </Container>

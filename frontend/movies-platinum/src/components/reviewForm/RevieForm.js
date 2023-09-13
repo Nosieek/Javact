@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import axios from '../../api/axiosConfig';
 import { useCookies } from 'react-cookie';
-const ReviewForm = ({ movieId, userEmail }) => {
+import jwtDecode from "jwt-decode";
+
+const ReviewForm = ({ movieId }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const [cookies, , removeCookie] = useCookies(["token"]);
+  const [cookies, setCookies, removeCookies] = useCookies(['token']);
+
+  const getUserEmailFromToken = (token) => {
+    const decodedToken = jwtDecode(token);
+    const userEmail = decodedToken.sub;
+    return userEmail;
+  };
+  const userEmail = getUserEmailFromToken(cookies.token);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,11 +27,10 @@ const ReviewForm = ({ movieId, userEmail }) => {
 
     try {
       const token = cookies.token;
-      console.log(token);
-      const response = await axios.post(`movies/addReview?email=${userEmail}&movieId=${movieId}&rating=${rating}&review=${comment}`, {
+      const response = await axios.post(`review/add-review`, reviewData, {
         headers: {
           Authorization: `Bearer ${token}`
-        },
+        }
       });
 
       if (response.status === 200) {
