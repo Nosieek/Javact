@@ -1,6 +1,4 @@
 package com.javact.movies.controllers;
-
-
 import com.javact.movies.dto.LikedMovieDto;
 import com.javact.movies.models.Movie;
 import com.javact.movies.models.PopularMovie;

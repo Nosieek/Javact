@@ -26,7 +26,6 @@ public class Review {
     @JoinColumn(name = "movie_id")
     @JsonBackReference
     private Movie movie;
-
     private int rating;
 
     @Column(length = 1000)
