@@ -62,7 +62,6 @@ const Header = () => {
 
   return (
     <>
-      {/* Dodaj SessionTimeout tutaj */}
       {isLoggedIn && <SessionTimeout onTimeout={handleLogout} />}
       <Navbar className="header-navbar" bg="dark" variant="dark" expand="lg" sticky="top">
         <Container fluid>
