@@ -39,14 +39,9 @@ public class ReviewService {
     @Autowired
     private MovieRepository repository;
     public void addReview(ReviewRequest request) {
-        System.out.println(request.getUserEmail());
-        System.out.println(request.getMovieId());
         User user = userRepository.findByEmail(request.getUserEmail()).orElse(null);
         Movie movie = repository.findMovieByImdbId(request.getMovieId()).orElse(null);
-        System.out.println("ponizej user");
-        System.out.println(user == null);
-        System.out.println("ponizej movie");
-        System.out.println(movie == null);
+
         if (user != null && movie != null) {
             Review review = Review.builder()
                     .user(user)
@@ -54,11 +49,31 @@ public class ReviewService {
                     .rating(request.getRating())
                     .comment(request.getComment())
                     .build();
-            System.out.println("zapisuje");
             reviewRepository.save(review);
         }else {
             // For example:
             // throw new ReviewAlreadyExistsException("Review already exists for this user and movie");
+        }
+    }
+
+    public void editReview(Long reviewId, ReviewRequest request){
+        Review existingReview = reviewRepository.findById(reviewId).orElse(null);
+
+        if (existingReview != null){
+            if (existingReview.getUser().getEmail().equals(request.getUserEmail())){
+                existingReview.setRating(request.getRating());
+                existingReview.setComment(request.getComment());
+
+                reviewRepository.save(existingReview);
+            }
+        }
+    }
+
+    public void  deleteReview(Long reviewId){
+        Review existingReview = reviewRepository.findById(reviewId).orElse(null);
+        if (existingReview != null) {
+            reviewRepository.delete(existingReview);
+
         }
     }
 }
