@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap'; 
 import './movie-detail.css';
-import NotFoundPage from '../404page/page404'
-import ReviewForm from '../reviewForm/RevieForm';
+import NotFoundPage from '../404page/page404';
 import jwtDecode from "jwt-decode";
+import ReviewForm from '../reviewForm/ReviewForm';
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -14,8 +14,6 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [cookies] = useCookies(['token']);
   const [reviews, setReviews] = useState([]);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
 
   useEffect(() => {
     fetchMovieDetails();
@@ -77,45 +75,7 @@ const MovieDetail = () => {
     return review.username === email;
   };
 
-  const handleDeleteReview = async (reviewId) =>{
-    console.log(reviewId);
-    try {
-      const tk = cookies.token;
-      const response = await axios.post(`review/movie-reviews?reviewId=${reviewId}`, {
-        headers: {
-          Authorization: `Bearer ${tk}`
-        }
-      });
-    } catch (error) {
-      console.error('Error fetching movie details:', error);
-      setLoading(false);
-    }
-  };
 
-  const reviewData = {
-    userEmail,
-    movieId,
-    rating,
-    comment,
-  };
-
-  const handleEditReview = async (reviewId) =>{
-    console.log(reviewId);
-    try {
-      const tk = cookies.token;
-      console.log(reviewData);
-      const response = await axios.post(`review/edit-review?reviewId=${reviewId}`, reviewData, {
-        headers: {
-          Authorization: `Bearer ${tk}`
-        }
-      });
-      setReviews(response.data);
-      console.log(reviewData)
-    } catch (error) {
-      console.error('Error fetching movie details:', error);
-      setLoading(false);
-    }
-  };
   return (
     <Container>
       <Row>
@@ -171,21 +131,21 @@ const MovieDetail = () => {
           <hr />
         </Col>
       </Row>
-      <Row>
+            <Row>
         <Col>
-        <h3>Review</h3>
-        <hr/><hr/>
-        {reviews.length > 0 && (
-          <>
-            {reviews.map((review) => (
-              <div key={review.id}>
+          <h3>Review</h3>
+          <hr />
+          {reviews.length > 0 && (
+            <>
+              {reviews.map((review) => (
+                <div key={review.id}>
                 <p>Username: {review.username}</p>
                 <p>Rating: {review.rating}</p>
                 <p>Comment: {review.comment}</p>
                 <hr />
                 {isUserReview(review, userEmail) && (
                 <div>
-                  {/* <Button
+                  <Button
                     variant="outline-primary"
                     onClick={() => handleEditReview(review.id, review.rating, review.comment)}
                   >
@@ -193,14 +153,15 @@ const MovieDetail = () => {
                   </Button>
                   <Button variant="outline-primary" onClick={() => handleEditReview(review.id)}>
                     Edit
-                  </Button> */}
+                  </Button>
                 </div>
               )}
             </div>
           ))}
           </>
         )}
-      <ReviewForm movieId={movieId} onReviewAdded={handleReviewAdded} /> 
+        <ReviewForm movieId={movieId} onReviewAdded={handleReviewAdded} />
+
         </Col>
       </Row>
     </Container>
