@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './movie-detail.css';
 import NotFoundPage from '../404page/page404'
 import ReviewForm from '../reviewForm/RevieForm';
+import jwtDecode from "jwt-decode";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -13,7 +14,8 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [cookies] = useCookies(['token']);
   const [reviews, setReviews] = useState([]);
-
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     fetchMovieDetails();
@@ -52,7 +54,9 @@ const MovieDetail = () => {
     }
   };
 
-
+  const handleReviewAdded = () => {
+    fetchMovieReview();
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -61,9 +65,60 @@ const MovieDetail = () => {
   if (!movie) {
     return <NotFoundPage />; 
   }
+
+  const getUserEmailFromToken = (token) => {
+    const decodedToken = jwtDecode(token);
+    const userEmail = decodedToken.sub;
+    return userEmail;
+  };
+  const userEmail = getUserEmailFromToken(cookies.token);
+
+  const isUserReview = (review, email) => {
+    return review.username === email;
+  };
+
+  const handleDeleteReview = async (reviewId) =>{
+    console.log(reviewId);
+    try {
+      const tk = cookies.token;
+      const response = await axios.post(`review/movie-reviews?reviewId=${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching movie details:', error);
+      setLoading(false);
+    }
+  };
+
+  const reviewData = {
+    userEmail,
+    movieId,
+    rating,
+    comment,
+  };
+
+  const handleEditReview = async (reviewId) =>{
+    console.log(reviewId);
+    try {
+      const tk = cookies.token;
+      console.log(reviewData);
+      const response = await axios.post(`review/edit-review?reviewId=${reviewId}`, reviewData, {
+        headers: {
+          Authorization: `Bearer ${tk}`
+        }
+      });
+      setReviews(response.data);
+      console.log(reviewData)
+    } catch (error) {
+      console.error('Error fetching movie details:', error);
+      setLoading(false);
+    }
+  };
   return (
     <Container>
-            <Row>
+      <Row>
         <Col>
           <h3>{movie.title}</h3>
         </Col>
@@ -119,6 +174,7 @@ const MovieDetail = () => {
       <Row>
         <Col>
         <h3>Review</h3>
+        <hr/><hr/>
         {reviews.length > 0 && (
           <>
             {reviews.map((review) => (
@@ -127,11 +183,24 @@ const MovieDetail = () => {
                 <p>Rating: {review.rating}</p>
                 <p>Comment: {review.comment}</p>
                 <hr />
-              </div>
-            ))}
+                {isUserReview(review, userEmail) && (
+                <div>
+                  {/* <Button
+                    variant="outline-primary"
+                    onClick={() => handleEditReview(review.id, review.rating, review.comment)}
+                  >
+                    Edit
+                  </Button>
+                  <Button variant="outline-primary" onClick={() => handleEditReview(review.id)}>
+                    Edit
+                  </Button> */}
+                </div>
+              )}
+            </div>
+          ))}
           </>
         )}
-          <ReviewForm movieId={movieId}/> 
+      <ReviewForm movieId={movieId} onReviewAdded={handleReviewAdded} /> 
         </Col>
       </Row>
     </Container>
