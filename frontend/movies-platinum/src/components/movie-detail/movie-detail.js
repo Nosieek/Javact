@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { Container, Row, Col, Button } from 'react-bootstrap'; 
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './movie-detail.css';
 import NotFoundPage from '../404page/page404';
 import jwtDecode from "jwt-decode";
-import ReviewForm from '../reviewForm/ReviewForm';
+import EditReviewForm from '../reviewForm/EditReviewForm';
+import CreateReviewForm from '../reviewForm/CreateReviewForm';
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -14,19 +15,26 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [cookies] = useCookies(['token']);
   const [reviews, setReviews] = useState([]);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+
+  const [editedReview, setEditedReview] = useState(null);
 
   useEffect(() => {
     fetchMovieDetails();
-    fetchMovieReview(); 
+    fetchMovieReview();
   }, [movieId]);
+
+  const handleEditReview = (reviewId) => {
+    setEditingReviewId(reviewId);
+  };
 
   const fetchMovieDetails = async () => {
     try {
       const tk = cookies.token;
       const response = await axios.get(`movies/${movieId}`, {
         headers: {
-          Authorization: `Bearer ${tk}`
-        }
+          Authorization: `Bearer ${tk}`,
+        },
       });
       setMovie(response.data);
       setLoading(false);
@@ -41,19 +49,14 @@ const MovieDetail = () => {
       const tk = cookies.token;
       const response = await axios.get(`review/movie-reviews?imdb=${movieId}`, {
         headers: {
-          Authorization: `Bearer ${tk}`
-        }
+          Authorization: `Bearer ${tk}`,
+        },
       });
       setReviews(response.data);
-      console.log(response.data)
     } catch (error) {
       console.error('Error fetching movie details:', error);
       setLoading(false);
     }
-  };
-
-  const handleReviewAdded = () => {
-    fetchMovieReview();
   };
 
   if (loading) {
@@ -61,7 +64,7 @@ const MovieDetail = () => {
   }
 
   if (!movie) {
-    return <NotFoundPage />; 
+    return <NotFoundPage />;
   }
 
   const getUserEmailFromToken = (token) => {
@@ -74,7 +77,6 @@ const MovieDetail = () => {
   const isUserReview = (review, email) => {
     return review.username === email;
   };
-
 
   return (
     <Container>
@@ -131,37 +133,40 @@ const MovieDetail = () => {
           <hr />
         </Col>
       </Row>
-            <Row>
+      <Row>
         <Col>
           <h3>Review</h3>
+          <CreateReviewForm movieId={movieId} onReviewAdded={fetchMovieReview} />
+
           <hr />
           {reviews.length > 0 && (
             <>
               {reviews.map((review) => (
                 <div key={review.id}>
-                <p>Username: {review.username}</p>
-                <p>Rating: {review.rating}</p>
-                <p>Comment: {review.comment}</p>
-                <hr />
-                {isUserReview(review, userEmail) && (
-                <div>
-                  <Button
-                    variant="outline-primary"
-                    onClick={() => handleEditReview(review.id, review.rating, review.comment)}
-                  >
-                    Edit
-                  </Button>
-                  <Button variant="outline-primary" onClick={() => handleEditReview(review.id)}>
-                    Edit
-                  </Button>
+                  <p>Username: {review.username}</p>
+                  <p>Rating: {review.rating}</p>
+                  <p>Comment: {review.comment}</p>
+                  <hr />
+                  {isUserReview(review, userEmail) && (
+                    <div>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => handleEditReview(review.id)}
+                      >
+                        Edit
+                      </Button>
+                    </div>
+                  )}
+                  {editingReviewId === review.id && (
+                    <EditReviewForm
+                      reviewToEdit={review}
+                      onReviewEdited={fetchMovieReview} 
+                    />
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
-          </>
-        )}
-        <ReviewForm movieId={movieId} onReviewAdded={handleReviewAdded} />
-
+              ))}
+            </>
+          )}
         </Col>
       </Row>
     </Container>

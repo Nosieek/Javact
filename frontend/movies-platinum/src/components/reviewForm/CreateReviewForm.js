@@ -4,19 +4,11 @@ import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
 import { Modal, Button } from 'react-bootstrap';
 
-const ReviewForm = ({ movieId, onReviewAdded, reviewToEdit }) => {
+const CreateReviewForm = ({ movieId, onReviewAdded }) => {
   const [show, setShow] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [cookies] = useCookies(['token']);
-
-  useEffect(() => {
-    if (reviewToEdit) {
-      loadReviewForEditing();
-    } else {
-      clearForm();
-    }
-  }, [reviewToEdit]);
 
   const getUserEmailFromToken = (token) => {
     const decodedToken = jwtDecode(token);
@@ -39,17 +31,6 @@ const ReviewForm = ({ movieId, onReviewAdded, reviewToEdit }) => {
     setComment('');
   };
 
-  const loadReviewForEditing = async () => {
-    if (!reviewToEdit) {
-      return;
-    }
-
-    const { rating, comment } = reviewToEdit;
-
-    setRating(rating);
-    setComment(comment);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,33 +43,15 @@ const ReviewForm = ({ movieId, onReviewAdded, reviewToEdit }) => {
 
     try {
       const token = cookies.token;
-      if (reviewToEdit) {
-        // Jeśli mamy reviewToEdit, to edytujemy recenzję
-        const response = await axios.put(
-          `review/edit-review?reviewId=${reviewToEdit}`,
-          reviewData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          console.log('Review edited successfully');
-          onReviewAdded();
-          handleClose();
-        }
-      } else {
-        const response = await axios.post(`review/add-review`, reviewData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.status === 200) {
-          console.log('Review submitted successfully');
-          onReviewAdded();
-          handleClose();
-        }
+      const response = await axios.post(`review/add-review`, reviewData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        console.log('Review submitted successfully');
+        onReviewAdded();
+        handleClose();
       }
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -98,14 +61,12 @@ const ReviewForm = ({ movieId, onReviewAdded, reviewToEdit }) => {
   return (
     <div>
       <Button variant="primary" onClick={handleShow}>
-        {reviewToEdit ? 'Edit Review' : 'Leave a Review'}
+        Leave a Review
       </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            {reviewToEdit ? 'Edit Review' : 'Leave a Review'}
-          </Modal.Title>
+          <Modal.Title>Leave a Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
@@ -130,7 +91,7 @@ const ReviewForm = ({ movieId, onReviewAdded, reviewToEdit }) => {
               Close
             </Button>
             <Button variant="primary" type="submit">
-              {reviewToEdit ? 'Edit Review' : 'Submit Review'}
+              Submit Review
             </Button>
           </form>
         </Modal.Body>
@@ -138,5 +99,4 @@ const ReviewForm = ({ movieId, onReviewAdded, reviewToEdit }) => {
     </div>
   );
 };
-
-export default ReviewForm;
+export default CreateReviewForm;
