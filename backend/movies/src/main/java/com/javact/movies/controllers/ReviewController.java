@@ -25,4 +25,9 @@ public class ReviewController {
         List<ReviewDto> reviewDTOs = reviewService.getMovieReview(imdb);
         return ResponseEntity.ok(reviewDTOs);
     }
+
+    @PutMapping("/edit-review")
+    public void edit(Long reviewId, @RequestBody ReviewRequest request) {
+        reviewService.editReview(reviewId, request);
+    }
 }
