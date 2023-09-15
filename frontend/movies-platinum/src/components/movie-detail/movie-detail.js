@@ -28,6 +28,21 @@ const MovieDetail = () => {
     setEditingReviewId(reviewId);
   };
 
+  const handleDeleteReview = async(reviewId) => {
+    try {
+      const tk = cookies.token;
+      await axios.delete(`review/delete/${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`,
+        },
+      });
+  
+      setReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
+    } catch (error) {
+      console.error('Error deleting review:', error);
+    }
+  };
+
   const fetchMovieDetails = async () => {
     try {
       const tk = cookies.token;
@@ -154,6 +169,12 @@ const MovieDetail = () => {
                         onClick={() => handleEditReview(review.id)}
                       >
                         Edit
+                      </Button>
+                      <Button
+                        variant="outline-danger"
+                        onClick={() => handleDeleteReview(review.id)}
+                      >
+                        Delete
                       </Button>
                     </div>
                   )}
