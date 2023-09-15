@@ -5,6 +5,9 @@ import com.javact.movies.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -30,4 +33,9 @@ public class Review {
 
     @Column(length = 1000)
     private String comment;
+
+//    Calendar calendar = Calendar.getInstance();
+//
+//    @Temporal(TemporalType.TIMESTAMP) // Adnotacja określająca typ daty i czasu
+//    private Date fullDate = calendar.getTime();
 }
