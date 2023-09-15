@@ -19,6 +19,11 @@ const MovieDetail = () => {
 
   const [editedReview, setEditedReview] = useState(null);
 
+  function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', options);
+  }
   useEffect(() => {
     fetchMovieDetails();
     fetchMovieReview();
@@ -90,8 +95,15 @@ const MovieDetail = () => {
   const userEmail = getUserEmailFromToken(cookies.token);
 
   const isUserReview = (review, email) => {
-    return review.username === email;
+    return review.email === email;
   };
+
+  //sortowanie reviews
+  const sortedReviews = [...reviews].sort((a, b) => {
+    const dateA = new Date(a.fullDate);
+    const dateB = new Date(b.fullDate);
+    return dateB - dateA; 
+  });
 
   return (
     <Container>
@@ -154,13 +166,14 @@ const MovieDetail = () => {
           <CreateReviewForm movieId={movieId} onReviewAdded={fetchMovieReview} />
 
           <hr />
-          {reviews.length > 0 && (
+          {sortedReviews.length > 0 && (
             <>
-              {reviews.map((review) => (
+              {sortedReviews.map((review) => (
                 <div key={review.id}>
                   <p>Username: {review.username}</p>
                   <p>Rating: {review.rating}</p>
                   <p>Comment: {review.comment}</p>
+                  <p>Date: {formatDate(review.fullDate)}</p>
                   <hr />
                   {isUserReview(review, userEmail) && (
                     <div>

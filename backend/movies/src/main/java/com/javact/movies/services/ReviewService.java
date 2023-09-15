@@ -26,6 +26,7 @@ public class ReviewService {
         return new ReviewDto(
                 review.getId(),
                 review.getUser().getUsername(),
+                review.getUser().getRealusername(),
                 review.getRating(),
                 review.getComment()
         );
