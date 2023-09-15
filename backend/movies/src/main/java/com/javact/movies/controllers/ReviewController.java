@@ -30,4 +30,10 @@ public class ReviewController {
     public void edit(Long reviewId, @RequestBody ReviewRequest request) {
         reviewService.editReview(reviewId, request);
     }
+
+    @DeleteMapping("/delete/{reviewId}")
+    public void delete(@PathVariable Long reviewId) {
+
+        reviewService.deleteReview(reviewId);
+    }
 }
