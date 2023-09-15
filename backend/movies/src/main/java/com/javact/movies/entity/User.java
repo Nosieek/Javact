@@ -87,6 +87,10 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+    public String getRealusername(){
+        return username;
+    }
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
