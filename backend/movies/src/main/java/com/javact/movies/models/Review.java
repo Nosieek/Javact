@@ -34,8 +34,15 @@ public class Review {
     @Column(length = 1000)
     private String comment;
 
-//    Calendar calendar = Calendar.getInstance();
-//
-//    @Temporal(TemporalType.TIMESTAMP) // Adnotacja określająca typ daty i czasu
-//    private Date fullDate = calendar.getTime();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fullDate;
+
+    // Dodajemy konstruktor, który inicjalizuje pole fullDate
+    public Review(User user, Movie movie, int rating, String comment) {
+        this.user = user;
+        this.movie = movie;
+        this.rating = rating;
+        this.comment = comment;
+        this.fullDate = Calendar.getInstance().getTime();
+    }
 }

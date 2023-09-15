@@ -14,13 +14,13 @@ public class ReviewDto {
     private String comment;
     private Date fullDate;
 
-    public ReviewDto(Long id, String email,String username, int rating, String comment) {
+    public ReviewDto(Long id, String email,String username, int rating, String comment, Date fullDate) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.rating = rating;
         this.comment = comment;
         Calendar calendar = Calendar.getInstance();
-        this.fullDate = calendar.getTime();
+        this.fullDate = fullDate;
     }
 }

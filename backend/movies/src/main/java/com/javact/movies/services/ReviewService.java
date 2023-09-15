@@ -10,6 +10,7 @@ import com.javact.movies.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,8 @@ public class ReviewService {
                 review.getUser().getUsername(),
                 review.getUser().getRealusername(),
                 review.getRating(),
-                review.getComment()
+                review.getComment(),
+                review.getFullDate()
         );
     }
     @Autowired
@@ -49,6 +51,7 @@ public class ReviewService {
                     .movie(movie)
                     .rating(request.getRating())
                     .comment(request.getComment())
+                    .fullDate(new Date())
                     .build();
             reviewRepository.save(review);
         }else {
