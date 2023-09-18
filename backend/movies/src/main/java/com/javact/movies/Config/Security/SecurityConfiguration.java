@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/movies/popular").permitAll()
                 .requestMatchers("/api/movies/search/**").permitAll()
+                .requestMatchers("/api/movies/addReview/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

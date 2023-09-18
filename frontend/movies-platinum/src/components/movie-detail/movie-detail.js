@@ -1,260 +1,13 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { useParams } from 'react-router-dom';
-// import { useCookies } from 'react-cookie';
-// import { Container, Row, Col } from 'react-bootstrap';
-// import './movie-detail.css';
-// // import ReviewForm from '../reviewForm/ReviewForm';
-
-// const MovieDetail = () => {
-//   const { movieId } = useParams();
-//   const [movie, setMovie] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [cookies, setCookies, removeCookies] = useCookies(['token']);
-//   const [reviews, setReviews] = useState([]);
-
-//   useEffect(() => {
-//     fetchMovieDetails();
-//   }, []);
-
-//   const fetchMovieDetails = async () => {
-//     console.log(movieId)
-
-//     try {
-//       const tk = cookies.token;
-//       const response = await axios.get(`http://localhost:8080/api/movies/${movieId}`, {
-//         headers: {
-//           Authorization: `Bearer ${tk}`
-//         }
-//       });
-//       setMovie(response.data);
-//       console.log(movieId)
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error fetching movie details:', error);
-//       setLoading(false);
-//     }
-//   };
-
-//   const addReview = async (e) => {
-//     e.preventDefault();
-
-//     const rev = revText.current;
-
-//     try {
-//       const response = await axios.post("/api/v1/reviews", {
-//         reviewBody: rev.value,
-//         imdbId: movieId
-//       });
-
-//       const updatedReviews = [...reviews, { body: rev.value }];
-
-//       rev.value = "";
-
-//       setReviews(updatedReviews);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   }
-
-//   if (loading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (!movie) {
-//     return <div>No movie found.</div>;
-//   }
-
-//   return (
-//     <Container>
-//       <Row>
-//         <Col>
-//           <h3>{movie.title}</h3>
-//         </Col>
-//       </Row>
-//       <Row className="mt-2">
-//         <Col>
-//           <img
-//             className="movie-poster-container"
-//             src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
-//             alt={movie.title}
-//           />
-//         </Col>
-//         <Col>
-//           <>
-//             <Row>
-//               <Col>
-//                 <h5>Release Date:</h5>
-//                 {movie.releaseDate}
-//                 <hr />
-//                 <h5>Overview:</h5>
-//                 {movie.overview}
-//               </Col>
-//             </Row>
-//             <Row>
-//               <Col>
-//                 <hr />
-//                 <h5>Vote Average:</h5>
-//                 {movie.vote_average}
-//                 <hr />
-//               </Col>
-//             </Row>
-//           </>
-//           <h3>Trailer</h3>
-//           <div className="yt-video-container">
-//             <iframe
-//               className="yt-video"
-//               title="Trailer"
-//               width="560"
-//               height="315"
-//               src={`https://www.youtube.com/embed/${movie.ytTrailer}`}
-//               frameBorder="0"
-//               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-//               allowFullScreen
-//             ></iframe>
-//           </div>
-//         </Col>
-//       </Row>
-//       <Row>
-//         <Col>
-//           <hr />
-//         </Col>
-//       </Row>
-//     </Container>
-//   );
-// };
-
-// export default MovieDetail;
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { useParams } from 'react-router-dom';
-// import { useCookies } from 'react-cookie';
-// import { Container, Row, Col } from 'react-bootstrap';
-// import './movie-detail.css';
-
-// const MovieDetail = () => {
-//   const { movieId } = useParams();
-//   const [movie, setMovie] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [cookies, setCookies, removeCookies] = useCookies(['token']);
-//   const [reviews, setReviews] = useState([]);
-
-//   useEffect(() => {
-//     fetchMovieDetails();
-//   }, []);
-
-//   const fetchMovieDetails = async () => {
-//     try {
-//         console.log(movie.ytTrailer)
-
-//       const tk = cookies.token;
-//       const response = await axios.get(`http://localhost:8080/api/movies/${movieId}`, {
-//         headers: {
-//           Authorization: `Bearer ${tk}`
-//         }
-//       });
-//       setMovie(response.data);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error fetching movie details:', error);
-//       setLoading(false);
-//     }
-//   };
-
-//   const addReview = async (e) => {
-//     e.preventDefault();
-
-//     const rev = revText.current;
-
-//     try {
-//       const response = await axios.post("/api/v1/reviews", {
-//         reviewBody: rev.value,
-//         imdbId: movieId
-//       });
-
-//       const updatedReviews = [...reviews, { body: rev.value }];
-
-//       rev.value = "";
-
-//       setReviews(updatedReviews);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   }
-
-//   if (loading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (!movie) {
-//     return <div>No movie found.</div>;
-//   }
-
-//   return (
-//     <Container>
-//       <Row>
-//         <Col>
-//           <h3>{movie.title}</h3>
-//         </Col>
-//       </Row>
-//       <Row className="mt-2">
-//         <Col>
-//           <img
-//             className="movie-poster"
-//             src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
-//             alt={movie.title}
-//           />
-//         </Col>
-//         <Col>
-//           <>
-//             <Row>
-//               <Col>
-//                 <h5>Release Date:</h5>
-//                 {movie.releaseDate}
-//                 <hr />
-//                 <h5>Overview:</h5>
-//                 {movie.overview}
-//               </Col>
-//             </Row>
-//             <Row>
-//               <Col>
-//                 <hr />
-//                 <h5>Vote Average:</h5>
-//                 {movie.vote_average}
-//                 <hr />
-//               </Col>
-//             </Row>
-//           </>
-//           <h3>Trailer</h3>
-//           <div className="yt-video-container">
-//             <iframe
-//               className="yt-video"
-//               title="Trailer"
-//               width="560"
-//               height="315"
-//               src={`https://www.youtube.com/embed/${movie.ytTrailer}`}
-//               frameBorder="0"
-//               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-//               allowFullScreen
-//             ></iframe>
-//           </div>
-//         </Col>
-//       </Row>
-//       <Row>
-//         <Col>
-//           <hr />
-//         </Col>
-//       </Row>
-//     </Container>
-//   );
-// };
 import React, { useEffect, useState } from 'react';
 import axios from '../../api/axiosConfig';
 import { useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './movie-detail.css';
-import NotFoundPage from '../404page/page404'
+import NotFoundPage from '../404page/page404';
+import jwtDecode from "jwt-decode";
+import EditReviewForm from '../reviewForm/EditReviewForm';
+import CreateReviewForm from '../reviewForm/CreateReviewForm';
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -262,19 +15,46 @@ const MovieDetail = () => {
   const [loading, setLoading] = useState(true);
   const [cookies] = useCookies(['token']);
   const [reviews, setReviews] = useState([]);
-  const [revText, setRevText] = useState(""); // State for review text input
+  const [editingReviewId, setEditingReviewId] = useState(null);
 
+  const [editedReview, setEditedReview] = useState(null);
+
+  function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', options);
+  }
   useEffect(() => {
     fetchMovieDetails();
-  }, []);
+    fetchMovieReview();
+  }, [movieId]);
+
+  const handleEditReview = (reviewId) => {
+    setEditingReviewId(reviewId);
+  };
+
+  const handleDeleteReview = async(reviewId) => {
+    try {
+      const tk = cookies.token;
+      await axios.delete(`review/delete/${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`,
+        },
+      });
+  
+      setReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
+    } catch (error) {
+      console.error('Error deleting review:', error);
+    }
+  };
 
   const fetchMovieDetails = async () => {
     try {
       const tk = cookies.token;
       const response = await axios.get(`movies/${movieId}`, {
         headers: {
-          Authorization: `Bearer ${tk}`
-        }
+          Authorization: `Bearer ${tk}`,
+        },
       });
       setMovie(response.data);
       setLoading(false);
@@ -284,25 +64,19 @@ const MovieDetail = () => {
     }
   };
 
-  const addReview = async (e) => {
-    e.preventDefault();
-
+  const fetchMovieReview = async () => {
     try {
-      const response = await axios.post("/api/v1/reviews", {
-        reviewBody: revText,
-        imdbId: movieId
+      const tk = cookies.token;
+      const response = await axios.get(`review/movie-reviews?imdb=${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`,
+        },
       });
-
-      const updatedReviews = [...reviews, { body: revText }];
-      setReviews(updatedReviews);
-      setRevText(""); // Clear the review text input
-    } catch (err) {
-      console.error(err);
+      setReviews(response.data);
+    } catch (error) {
+      console.error('Error fetching movie details:', error);
+      setLoading(false);
     }
-  };
-
-  const handleReviewChange = (e) => {
-    setRevText(e.target.value);
   };
 
   if (loading) {
@@ -310,13 +84,30 @@ const MovieDetail = () => {
   }
 
   if (!movie) {
-    // return <div>No movie found.</div>;
-    return <NotFoundPage />; // Wyświetl NotFoundPage w przypadku braku filmu
+    return <NotFoundPage />;
   }
+
+  const getUserEmailFromToken = (token) => {
+    const decodedToken = jwtDecode(token);
+    const userEmail = decodedToken.sub;
+    return userEmail;
+  };
+  const userEmail = getUserEmailFromToken(cookies.token);
+
+  const isUserReview = (review, email) => {
+    return review.email === email;
+  };
+
+  //sortowanie reviews
+  const sortedReviews = [...reviews].sort((a, b) => {
+    const dateA = new Date(a.fullDate);
+    const dateB = new Date(b.fullDate);
+    return dateB - dateA; 
+  });
 
   return (
     <Container>
-            <Row>
+      <Row>
         <Col>
           <h3>{movie.title}</h3>
         </Col>
@@ -371,24 +162,45 @@ const MovieDetail = () => {
       </Row>
       <Row>
         <Col>
+          <h3>Review</h3>
+          <CreateReviewForm movieId={movieId} onReviewAdded={fetchMovieReview} />
+
           <hr />
-          <h3>Reviews</h3>
-          <ul className="reviews-list">
-            {reviews.map((review, index) => (
-              <li key={index}>{review.body}</li>
-            ))}
-          </ul>
-          <h3>Add a Review</h3>
-          <form onSubmit={addReview}>
-            <textarea
-              className="review-input"
-              placeholder="Write your review..."
-              value={revText}
-              onChange={handleReviewChange}
-              required
-            />
-            <button type="submit">Submit Review</button>
-          </form>
+          {sortedReviews.length > 0 && (
+            <>
+              {sortedReviews.map((review) => (
+                <div key={review.id}>
+                  <p>Username: {review.username}</p>
+                  <p>Rating: {review.rating}</p>
+                  <p>Comment: {review.comment}</p>
+                  <p>Date: {formatDate(review.fullDate)}</p>
+                  <hr />
+                  {isUserReview(review, userEmail) && (
+                    <div>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => handleEditReview(review.id)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline-danger"
+                        onClick={() => handleDeleteReview(review.id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  )}
+                  {editingReviewId === review.id && (
+                    <EditReviewForm
+                      reviewToEdit={review}
+                      onReviewEdited={fetchMovieReview} 
+                    />
+                  )}
+                </div>
+              ))}
+            </>
+          )}
         </Col>
       </Row>
     </Container>

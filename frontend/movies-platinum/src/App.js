@@ -23,8 +23,8 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
       {isLoggedIn && <SessionTimeout onTimeout={handleLogout} />}
+      <Header /> {/*/znowu tu przeniosłem */}
       <Routes>
         <Route path="/" element={<Layout />} />
         <Route path="/movie/:movieId" element={<MovieDetail />} />

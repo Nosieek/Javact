@@ -1,11 +1,14 @@
 package com.javact.movies.services;
 
+import com.javact.movies.auth.ReviewRequest;
 import com.javact.movies.dto.*;
 import com.javact.movies.entity.User;
 import com.javact.movies.models.Movie;
 import com.javact.movies.models.PopularMovie;
+import com.javact.movies.models.Review;
 import com.javact.movies.repositories.MovieRepository;
 import com.javact.movies.repositories.PopularMovieRepository;
+import com.javact.movies.repositories.ReviewRepository;
 import com.javact.movies.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -67,7 +71,7 @@ public class MovieService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") //updatujemy in midnight
+    @Scheduled(cron = "0 0 0 * * ?")
     public void updatePopularMovies() {
         popularMovieRepository.deleteAll();
         popularMovieRepository.saveAll(this.fetchLatestAndTopMoviesFromApi());
@@ -259,7 +263,8 @@ public class MovieService {
         }
     }
 
-    public void removeFromFavorites(Long movieId, String email) {
+
+        public void removeFromFavorites(Long movieId, String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -301,4 +306,5 @@ public class MovieService {
                 .collect(Collectors.toList());
         return movies;
     }
+
 }

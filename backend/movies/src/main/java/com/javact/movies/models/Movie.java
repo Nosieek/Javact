@@ -35,8 +35,8 @@ public class Movie {
     @ManyToMany(mappedBy = "likedMovies", fetch = FetchType.LAZY)
     private Set<User> likedByUsers;
 
-//    @OneToMany(mappedBy = "movie")
-//    private Set<Review> reviews;
+    @OneToMany(mappedBy = "movie")
+    private Set<Review> reviews = new HashSet<>();
 
 
 }

@@ -1,17 +1,13 @@
 package com.javact.movies.controllers;
-
 import com.javact.movies.dto.LikedMovieDto;
 import com.javact.movies.models.Movie;
 import com.javact.movies.models.PopularMovie;
 import com.javact.movies.services.MovieService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Enumeration;
 import java.util.List;
-
 
 @RestController
 @CrossOrigin(origins ="http://localhost:3000")
@@ -60,4 +56,5 @@ public class MovieController {
     public List<Movie> getSearchMovies(@RequestParam String query) {
         return movieService.searchMovies(query);
     }
+
 }
