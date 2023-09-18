@@ -8,6 +8,8 @@ import NotFoundPage from '../404page/page404';
 import jwtDecode from "jwt-decode";
 import EditReviewForm from '../reviewForm/EditReviewForm';
 import CreateReviewForm from '../reviewForm/CreateReviewForm';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -171,7 +173,20 @@ const MovieDetail = () => {
               {sortedReviews.map((review) => (
                 <div key={review.id}>
                   <p>Username: {review.username}</p>
-                  <p>Rating: {review.rating}</p>
+                  <p>
+                    Rating:{" "}
+                    {[...Array(10)].map((_, index) => (
+                      <span
+                        key={index}
+                        style={{
+                          color: index < review.rating ? "orange" : "gray",
+                          marginRight: "2px",
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faStar} />
+                      </span>
+                    ))}
+                  </p>
                   <p>Comment: {review.comment}</p>
                   <p>Date: {formatDate(review.fullDate)}</p>
                   <hr />
