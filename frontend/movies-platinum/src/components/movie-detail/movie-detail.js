@@ -121,6 +121,7 @@ const MovieDetail = () => {
   };
 
   return (
+    <div className="movie-detail-container">
     <Container>
       <Row>
         <Col>
@@ -129,11 +130,17 @@ const MovieDetail = () => {
       </Row>
       <Row className="mt-2">
         <Col>
+        <div className="light-rays-container">
           <img
             className="movie-poster"
             src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
             alt={movie.title}
-          />
+          /></div>
+          {/* <img
+            className="movie-poster"
+            src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
+            alt={movie.title}
+          /> */}
         </Col>
         <Col>
           <>
@@ -258,6 +265,7 @@ const MovieDetail = () => {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 };
 

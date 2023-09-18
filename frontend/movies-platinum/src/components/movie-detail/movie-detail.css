@@ -1,9 +1,71 @@
-   .movie-poster-container {
+/* .movie-detail-container {
+  background: linear-gradient(90deg, transparent 40%, rgba(249, 134, 2, 0.5) 50%, transparent 60%);
+  background-size: 200% 100%;
+  animation: gradientAnimation 3s infinite linear;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+} */
+/* zobaczymy pasek latajacy XD */
+/* .movie-detail-container{ 
+  /* background: linear-gradient(90deg, orange, transparent, transparent, orange);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; */
+  /* background: linear-gradient(90deg, orange, transparent, transparent, orange); */
+  /* display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  padding: 20px; /* Dodajemy wypełnienie, aby tekst nie nachodził na gradient */
+  /* background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent),
+                      linear-gradient(to left, transparent, rgba(255, 255, 255, 0.2), transparent); */
+  /* background-size: 50% 100%; /* Rozmiar gradientu na 50% szerokości */
+  /* background-repeat: no-repeat; Nie powtarzaj gradientu */
+
+/* }  */ 
+.movie-detail-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-detail-container::before,
+.movie-detail-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 30%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent, rgba(230, 228, 228, 0.2) 190%, transparent);
+  pointer-events: none;
+}
+
+.movie-detail-container::before {
+  left: 0;
+  transform: skew(-45deg);
+}
+
+.movie-detail-container::after {
+  right: 0;
+  transform: skew(45deg);
+}
+h3 {
+  color: orange;
+}
+.movie-poster-container {
     margin-top: 20px;
     width:40vb;
     min-height: 60vb;
     object-fit: cover;
-   }
+    box-shadow: 0px 20px 20px rgb(255, 204, 0); /* Dodaj mocniejszy cień */
+}
 
 .yt-video-container {
   display: flex;
@@ -52,4 +114,22 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.light-rays-container {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.light-rays-container::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 100%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
 }
