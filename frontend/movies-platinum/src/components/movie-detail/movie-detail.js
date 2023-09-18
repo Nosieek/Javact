@@ -9,7 +9,7 @@ import jwtDecode from "jwt-decode";
 import EditReviewForm from '../reviewForm/EditReviewForm';
 import CreateReviewForm from '../reviewForm/CreateReviewForm';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faTrash,faPenToSquare, faStarHalfAlt} from "@fortawesome/free-solid-svg-icons";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -169,9 +169,10 @@ const MovieDetail = () => {
 
           <hr />
           {sortedReviews.length > 0 && (
-            <>
-              {sortedReviews.map((review) => (
-                <div key={review.id}>
+          <>
+            {sortedReviews.map((review) => (
+              <div key={review.id} className="review-container review-border">
+                <div className="left-section">
                   <p>Username: {review.username}</p>
                   <p>
                     Rating:{" "}
@@ -179,43 +180,55 @@ const MovieDetail = () => {
                       <span
                         key={index}
                         style={{
-                          color: index < review.rating ? "orange" : "gray",
+                          color:
+                            index < Math.floor(review.rating)
+                              ? "orange"
+                              : index === Math.floor(review.rating) &&
+                                review.rating % 1 !== 0
+                              ? "orange"
+                              : "gray",
                           marginRight: "2px",
                         }}
                       >
-                        <FontAwesomeIcon icon={faStar} />
+                        {index < Math.floor(review.rating) ? (
+                          <FontAwesomeIcon icon={faStar} />
+                        ) : index === Math.floor(review.rating) &&
+                          review.rating % 1 !== 0 ? (
+                          <FontAwesomeIcon icon={faStarHalfAlt} />
+                        ) : (
+                          <FontAwesomeIcon icon={faStar} />
+                        )}
                       </span>
                     ))}
                   </p>
-                  <p>Comment: {review.comment}</p>
+                </div>
+                <div className="center-section">
+                  <p>Comment:</p>
+                  <p className="comment-text">{review.comment}</p>
+                </div>
+                <div className="right-section">
                   <p>Date: {formatDate(review.fullDate)}</p>
-                  <hr />
                   {isUserReview(review, userEmail) && (
                     <div>
-                      <Button
-                        variant="outline-primary"
+                      <FontAwesomeIcon
                         onClick={() => handleEditReview(review.id)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outline-danger"
+                        icon={faPenToSquare}
+                      />
+
+                      <FontAwesomeIcon
                         onClick={() => handleDeleteReview(review.id)}
-                      >
-                        Delete
-                      </Button>
+                        icon={faTrash}
+                        color="red"
+                      />
                     </div>
                   )}
-                  {editingReviewId === review.id && (
-                    <EditReviewForm
-                      reviewToEdit={review}
-                      onReviewEdited={fetchMovieReview} 
-                    />
-                  )}
                 </div>
-              ))}
-            </>
-          )}
+                <hr />
+              </div>
+            ))}
+          </>
+        )}
+
         </Col>
       </Row>
     </Container>
