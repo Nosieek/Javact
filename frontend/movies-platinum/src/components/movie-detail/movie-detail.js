@@ -125,7 +125,7 @@ const MovieDetail = () => {
             <Row>
               <Col>
                 <h5>Release Date:</h5>
-                {movie.releaseDate}
+                {movie.relaseDate}
                 <hr />
                 <h5>Overview:</h5>
                 {movie.overview}
