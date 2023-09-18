@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../api/axiosConfig';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap'; 
+import './CustomModal.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 
 const CreateReviewForm = ({ movieId, onReviewAdded }) => {
   const [show, setShow] = useState(false);
@@ -60,43 +63,50 @@ const CreateReviewForm = ({ movieId, onReviewAdded }) => {
 
   return (
     <div>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="outline-primary" onClick={handleShow}>
         Leave a Review
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} className='custom-modal' centered>
         <Modal.Header closeButton>
           <Modal.Title>Leave a Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Rating:</label>
-              <input
+          <Form onSubmit={handleSubmit}> 
+            <Form.Group controlId="formRating">
+              <Form.Label>Rating:</Form.Label>
+              <Form.Control
                 type="number"
                 min="0"
+                step="0.1"
                 max="10"
                 value={rating}
                 onChange={(e) => setRating(e.target.value)}
               />
-            </div>
-            <div>
-              <label>Comment:</label>
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-            </div>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
+            </Form.Group>
+
+            <Form.Group controlId="formComment">
+            <Form.Label>Comment:</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={6}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="custom-textarea" 
+            />
+          </Form.Group>
+          <Button variant="secondary" onClick={handleClose} className="custom-modal-btn">
+            Close
+          </Button>
+
             <Button variant="primary" type="submit">
               Submit Review
             </Button>
-          </form>
+          </Form>
         </Modal.Body>
       </Modal>
     </div>
   );
 };
+
 export default CreateReviewForm;
