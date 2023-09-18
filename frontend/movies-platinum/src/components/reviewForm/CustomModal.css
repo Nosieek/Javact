@@ -1,0 +1,40 @@
+.custom-modal {
+    
+  }
+  
+  .custom-modal .modal-title {
+    color: orange; 
+    text-align: center;
+    padding: auto;
+  }
+  
+  .custom-modal .btn-primary {
+    background-color: orange; 
+    color: white;
+    border-radius: 45px;
+    margin-top: 15px;
+    padding: 10px;
+  }
+  .custom-modal .btn-primary:hover{
+    background-color: rgb(255, 136, 0);
+  }
+  .custom-modal .btn-secondary {
+    background-color: red;
+    color: wheat;
+    border-radius: 75px;
+    margin-top: 15px;
+    max-width: 30%;
+    padding: 0px; 
+    display: block; 
+    margin: 0 auto; 
+    text-align: center; 
+    width: 50%; 
+  }
+  
+  .custom-modal .btn-secondary:hover {
+    background-color: white; 
+    color: red;
+  
+  }
+
+  
