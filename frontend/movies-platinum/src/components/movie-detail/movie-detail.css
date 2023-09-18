@@ -16,3 +16,34 @@
   width: 560px;
   height: 315px;
 }
+.review-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.left-section {
+  flex: 1;
+}
+
+.center-section {
+  flex: 2;
+  text-align: center;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.right-section p {
+  margin-bottom: 5px;
+}
+.review-border {
+  border: 2px solid orange;
+  padding: 10px; 
+  border-radius: 55px; 
+}
