@@ -47,3 +47,9 @@
   padding: 10px; 
   border-radius: 55px; 
 }
+.date-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

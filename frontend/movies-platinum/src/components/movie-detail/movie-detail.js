@@ -100,12 +100,25 @@ const MovieDetail = () => {
     return review.email === email;
   };
 
-  //sortowanie reviews
   const sortedReviews = [...reviews].sort((a, b) => {
     const dateA = new Date(a.fullDate);
     const dateB = new Date(b.fullDate);
     return dateB - dateA; 
   });
+
+  const onReviewEdited = (editedReviewId, editedReviewData) => {
+    setReviews((prevReviews) => {
+      return prevReviews.map((review) => {
+        if (review.id === editedReviewId) {
+          return { ...review, ...editedReviewData };
+        } else {
+          return review;
+        }
+      });
+    });
+    window.location.reload();
+    history.push(`/movie/${movieId}`);
+  };
 
   return (
     <Container>
@@ -203,14 +216,18 @@ const MovieDetail = () => {
                   </p>
                 </div>
                 <div className="center-section">
+                
                   <p>Comment:</p>
                   <p className="comment-text">{review.comment}</p>
                 </div>
                 <div className="right-section">
-                  <p>Date: {formatDate(review.fullDate)}</p>
+                <div className="date-container">
+                  <p>Date:</p>
+                  <p>{formatDate(review.fullDate)}</p>
                   {isUserReview(review, userEmail) && (
                     <div>
                       <FontAwesomeIcon
+                        variant="outline-primary"
                         onClick={() => handleEditReview(review.id)}
                         icon={faPenToSquare}
                       />
@@ -222,6 +239,15 @@ const MovieDetail = () => {
                       />
                     </div>
                   )}
+               </div>
+
+                {editingReviewId === review.id && (
+                  <EditReviewForm
+                    reviewToEdit={review}
+                    onReviewEdited={onReviewEdited}
+
+                  />
+                )}
                 </div>
                 <hr />
               </div>

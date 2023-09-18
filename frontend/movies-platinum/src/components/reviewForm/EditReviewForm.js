@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../api/axiosConfig';
 import { useCookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import './CustomModal.css';
 
 const EditReviewForm = ({ reviewToEdit, onReviewEdited }) => {
   const [show, setShow] = useState(true);
@@ -48,13 +51,13 @@ const EditReviewForm = ({ reviewToEdit, onReviewEdited }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const reviewData = {
       userEmail,
       rating,
       comment,
     };
-  
+
     try {
       const token = cookies.token;
       const response = await axios.put(
@@ -77,36 +80,41 @@ const EditReviewForm = ({ reviewToEdit, onReviewEdited }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} className='custom-modal' centered>
       <Modal.Header closeButton>
-        <Modal.Title>Edytuj recenzję</Modal.Title>
+        <Modal.Title>Edit Review</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Ocena:</label>
-            <input
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formRating">
+            <Form.Label>Rating:</Form.Label>
+            <Form.Control
               type="number"
               min="0"
+              step="0.1"
               max="10"
               value={rating}
               onChange={(e) => setRating(e.target.value)}
             />
-          </div>
-          <div>
-            <label>Komentarz:</label>
-            <textarea
+          </Form.Group>
+
+          <Form.Group controlId="formComment">
+            <Form.Label>Comment:</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={6}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-          </div>
+          </Form.Group>
           <Button variant="secondary" onClick={handleClose}>
-            Zamknij
+            Close
           </Button>
+
           <Button variant="primary" type="submit">
-            Zapisz
+            Save Changes
           </Button>
-        </form>
+        </Form>
       </Modal.Body>
     </Modal>
   );
