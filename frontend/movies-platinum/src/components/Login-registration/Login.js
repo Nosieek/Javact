@@ -5,7 +5,7 @@ import './Login.css';
 import Register from './Register';
 import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import axios from '../../api/axiosConfig';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,23 +31,21 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     const loginData = {
       email,
       password,
     };
-
+  
     try {
-      const response = await fetch('http://localhost:8080/api/auth/authenticate', {
-        method: 'POST',
+      const response = await axios.post('/auth/authenticate', loginData, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(loginData),
       });
-
-      if (response.ok) {
-        const data = await response.json();
+  
+      if (response.status === 200) {
+        const data = response.data;
         const { token } = data;
         console.log('Login successful!', token);
         setCookie('token', token, { path: '/' });
@@ -64,7 +62,7 @@ const Login = () => {
       }
     }
   };
-
+  
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [showRegistrationForm, setShowRegistrationForm] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
