@@ -136,11 +136,6 @@ const MovieDetail = () => {
             src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
             alt={movie.title}
           /></div>
-          {/* <img
-            className="movie-poster"
-            src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
-            alt={movie.title}
-          /> */}
         </Col>
         <Col>
           <>
