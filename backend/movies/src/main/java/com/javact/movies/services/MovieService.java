@@ -268,8 +268,9 @@ public class MovieService {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Optional<Movie> optionalMovie = repository.findById(movieId);
-
+            Optional<Movie> optionalMovie = Optional.ofNullable(repository.findMovieBy(movieId));
+            System.out.println(movieId);
+            System.out.println(optionalMovie.isPresent());
             if (optionalMovie.isPresent()) {
                 Movie movie = optionalMovie.get();
                 user.removeLikedMovie(movie);

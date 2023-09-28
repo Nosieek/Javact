@@ -1,18 +1,100 @@
-   .movie-poster-container {
+.movie-detail-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-detail-container::before,
+.movie-detail-container::after {
+  content: "";
+  z-index: 1;
+  position: absolute;
+  bottom: 0;
+  width: 30%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent, rgba(230, 228, 228, 0.2) 190%, transparent);
+  pointer-events: none;
+}
+
+.movie-detail-container::before {
+  left: 0;
+  transform: skew(-45deg);
+}
+
+.movie-detail-container::after {
+  right: 0;
+  transform: skew(45deg);
+}
+h3 {
+  color: orange;
+}
+.movie-poster-container {
     margin-top: 20px;
     width:40vb;
     min-height: 60vb;
     object-fit: cover;
-   }
+    box-shadow: 0px 20px 20px rgb(255, 204, 0); 
+    z-index: 3;
+
+}
 
 .yt-video-container {
+  margin-left: 10%;
+  width: 80%; 
+  height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+  border: 2cap;
+  z-index: 3;
+  box-shadow: 0px 0px 50px orange; 
+  margin-bottom: 10%;
+
 }
 
 .yt-video {
-  width: 560px;
-  height: 315px;
+  width: 100%; 
+  height: 100%;
+}
+.review-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.left-section {
+  flex: 1;
+}
+
+.center-section {
+  flex: 2;
+  text-align: center;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.right-section p {
+  margin-bottom: 5px;
+}
+.review-border {
+  border: 2px solid orange;
+  padding: 10px; 
+  border-radius: 55px; 
+}
+.date-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.watchlist-icon{
+  margin-top: 10%;
+  height: 300px;
 }

@@ -10,17 +10,17 @@ public class ReviewDto {
     private Long id;
     private String email;
     private String username;
-    private int rating;
+    private Float rating;
     private String comment;
     private Date fullDate;
 
-    public ReviewDto(Long id, String email,String username, int rating, String comment, Date fullDate) {
+    public ReviewDto(Long id, String email, String username, Float rating, String comment, Date fullDate) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.rating = rating;
         this.comment = comment;
-        Calendar calendar = Calendar.getInstance();
+//        Calendar calendar = Calendar.getInstance();
         this.fullDate = fullDate;
     }
 }

@@ -1,22 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from '../../api/axiosConfig'
+import axios from '../../api/axiosConfig';
 import './TopRanked.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeartCircleMinus, faHeartCirclePlus, faMagnifyingGlass, faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faHeartCircleMinus,
+  faHeartCirclePlus,
+  faMagnifyingGlass,
+  faStar,
+  faStarHalfAlt
+} from '@fortawesome/free-solid-svg-icons';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
-import { BeatLoader } from 'react-spinners'; // importowanie BeatLoader
+import { BeatLoader } from 'react-spinners';
 
 const TopRanked = () => {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  const [cookies, setCookies, removeCookies] = useCookies(['token']);
+  const [favorites, setFavorites] = useState([]);
+  const [cookies] = useCookies(['token']);
   const navigate = useNavigate();
-  const logoutTimeoutRef = useRef(null);
+  const [showLoader, setShowLoader] = useState(false);
 
 
   useEffect(() => {
@@ -25,11 +31,89 @@ const TopRanked = () => {
       navigate('/Login');
     } else {
       fetchMovies(currentPage);
+      fetchFavorites();
     }
   }, [currentPage, cookies, navigate]);
 
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  const fetchFavorites = async () => {
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const token = cookies.token;
+      const userEmail = getUserEmailFromToken(token);
+      const tk = cookies.token;
+      console.log("User Email:", userEmail);
+      console.log("Token:", tk);
+  
+      const response = await axios.get(`movies/liked-movies?email=${userEmail}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`
+        }
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Error fetching favorites');
+      }
+  
+      console.log("Favorites Data:", response.data);
+  
+      setFavorites(response.data);
+    } catch (error) {
+      setError('Error fetching favorites. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
+  const isMovieInFavorites = (movieId) => {
+    return favorites.some((favorite) => favorite.imdbId === movieId);
+  };
+
+  const toggleFavorite = async (movieId) => {
+    setLoading(true);
+
+    try {
+      const userEmail = getUserEmailFromToken(cookies.token);
+      const tk = cookies.token;
+
+      if (isMovieInFavorites(movieId)) {
+        const response = await axios.post(
+          `movies/Fav/delete?movieId=${movieId}&email=${userEmail}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${tk}`
+            }
+          }
+        );
+
+        setFavorites((prevFavorites) => prevFavorites.filter((favorite) => favorite.id !== movieId));
+      } else {
+        const response = await axios.post(
+          `movies/addFav?email=${userEmail}&movieId=${movieId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${tk}`
+            }
+          }
+        );
+
+        setFavorites((prevFavorites) => [...prevFavorites, { id: movieId }]);
+      }
+      fetchFavorites();
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getUserEmailFromToken = (token) => {
@@ -60,54 +144,25 @@ const TopRanked = () => {
     }
   };
 
-  const addToFavoritelist = async (movieId) => {
-    try {
-      const userEmail = getUserEmailFromToken(cookies.token);
-      const tk = cookies.token;
-      console.log(movieId)
-      const response = await axios.post(
-        `movies/addFav?email=${userEmail}&movieId=${movieId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${tk}`
-          }
-        }
-      );
-    } catch (error) {
-      console.error('Error adding movie to favoritelist:', error);
-    }
-  };
-
   const getMovieDetail = async (movieId) => {
     navigate(`/movie/${movieId}`);
-    console.log(movieId);
-    };
-
-
+  };
   const renderRatingStars = (rating) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = rating - fullStars >= 0.5;
-    const emptyStars = 5 - Math.ceil(rating);
-
     const stars = [];
 
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<FontAwesomeIcon key={`star-${i}`} icon={faStar} className="star-icon" />);
+    for (let index = 0; index < 10; index++) {
+      if (index < Math.floor(rating)) {
+        stars.push(<FontAwesomeIcon key={index} icon={faStar} style={{ color: 'orange' }} />);
+      } else if (index === Math.floor(rating) && rating % 1 !== 0) {
+        stars.push(<FontAwesomeIcon key={index} icon={faStarHalfAlt} style={{ color: 'orange' }} />);
+      } else {
+        stars.push(<FontAwesomeIcon key={index} icon={faStar} style={{ color: 'gray' }} />);
+      }
     }
 
-    if (halfStar) {
-      stars.push(<FontAwesomeIcon key="half-star" icon={faStarHalfAlt} className="star-icon" />);
-    }
-
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FontAwesomeIcon key={`empty-star-${i}`} icon={faStar} className="star-icon" />);
-    }
-
-    return <div className="rating-stars">{stars}</div>;
-  };
-
-  if (loading) {
+    return stars;
+  }
+  if (loading ) {
     return (
       <div className="container">
         <h1>Top Ranked Movies</h1>
@@ -128,11 +183,8 @@ const TopRanked = () => {
   }
 
   return (
-    
     <div className="container">
-      
       <h1>Top Ranked Movies</h1>
-      
       <div className="pagination">
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Previous
@@ -161,21 +213,16 @@ const TopRanked = () => {
             <div className="play-button-icon-container">
               <FontAwesomeIcon
                 className="top-icon"
-                icon={faHeartCirclePlus}
-                onClick={() => addToFavoritelist(movie.id)}
+                icon={isMovieInFavorites(movie.id) ? faHeartCircleMinus : faHeartCirclePlus}
+                onClick={() => toggleFavorite(movie.id)
+                }
               />
-              {/* <FontAwesomeIcon
-                className="top-icon"
-                icon={faHeartCircleMinus}
-                onClick={() => rmr(movie.id)}
-              /> */}
               <FontAwesomeIcon
                 className="top-icon"
                 icon={faMagnifyingGlass}
                 onClick={() => getMovieDetail(movie.id)}
               />
             </div>
-
           </div>
         </div>
       ))}

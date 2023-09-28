@@ -29,7 +29,7 @@ public class Review {
     @JoinColumn(name = "movie_id")
     @JsonBackReference
     private Movie movie;
-    private int rating;
+    private Float rating;
 
     @Column(length = 1000)
     private String comment;
@@ -38,7 +38,7 @@ public class Review {
     private Date fullDate;
 
     // Dodajemy konstruktor, który inicjalizuje pole fullDate
-    public Review(User user, Movie movie, int rating, String comment) {
+    public Review(User user, Movie movie, Float rating, String comment) {
         this.user = user;
         this.movie = movie;
         this.rating = rating;

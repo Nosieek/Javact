@@ -1,5 +1,5 @@
 .header-navbar {
-  background-color: #0077ee;
+  background-color: orange;
 }
 
 .header-brand {
@@ -16,12 +16,14 @@
 .header-login-btn,
 .header-register-btn {
   color: orange !important;
+  border-color: orange !important;
 }
 
 .header-logout-btn:hover,
 .header-login-btn:hover,
 .header-register-btn:hover {
-  color: #ffc107 ;
+  background-color: orange !important;
+  color: black !important;
 }
 
 
@@ -38,16 +40,36 @@
 }
 .header-search {
   display: flex;
-  align-items: center; /* Domyślnie elementy będą wyśrodkowane pionowo */
+  align-items: center;
+
 }
 
 .header-search-input {
-  margin-right: 5px; /* Dostosuj margines między polem wyszukiwania a przyciskiem */
+  margin-right: 5px; 
   padding: 5px;
 }
 .header-search-button-small {
-  padding: 2px 5px; /* Dostosuj padding do preferencji */
-  font-size: 10px; /* Dostosuj rozmiar czcionki do preferencji */
-  margin-right: 5px; /* Dostosuj margines między polem wyszukiwania a przyciskiem */
+  padding: 2px 5px; 
+  font-size: 10px; 
+  margin-right: 5px; 
+  border-color: orange !important;
+  background-color: orange !important;
+  color: black !important;
 
+}
+.header-search-button-small:hover {
+  background-color: rgb(255, 136, 0) !important;
+  color: black !important;
+  border-color: rgb(255, 136, 0) !important;
+
+}
+.header-dropdown .dropdown-toggle {
+  background-color: transparent !important; 
+  border: none !important; 
+  color: orange !important; 
+  padding: 10 !important; 
+}
+
+.header-dropdown .dropdown-toggle:hover {
+  color: #ffc107 !important; 
 }

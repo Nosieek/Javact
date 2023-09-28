@@ -8,6 +8,8 @@ import NotFoundPage from '../404page/page404';
 import jwtDecode from "jwt-decode";
 import EditReviewForm from '../reviewForm/EditReviewForm';
 import CreateReviewForm from '../reviewForm/CreateReviewForm';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faTrash,faPenToSquare, faStarHalfAlt, faHeartCircleMinus, faHeartCirclePlus} from "@fortawesome/free-solid-svg-icons";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -16,8 +18,8 @@ const MovieDetail = () => {
   const [cookies] = useCookies(['token']);
   const [reviews, setReviews] = useState([]);
   const [editingReviewId, setEditingReviewId] = useState(null);
+  const [favorites, setFavorites] = useState([]);
 
-  const [editedReview, setEditedReview] = useState(null);
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
@@ -29,6 +31,38 @@ const MovieDetail = () => {
     fetchMovieReview();
   }, [movieId]);
 
+  const isMovieInFavorites = (movieId) => {
+    return favorites.some((favorite) => favorite.imdbId === movieId);
+  };
+  const fetchFavorites = async () => {
+    setLoading(true);
+  
+    try {
+      const token = cookies.token;
+      const userEmail = getUserEmailFromToken(token);
+      const tk = cookies.token;
+      console.log("User Email:", userEmail);
+      console.log("Token:", tk);
+  
+      const response = await axios.get(`movies/liked-movies?email=${userEmail}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`
+        }
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Error fetching favorites');
+      }
+  
+      console.log("Favorites Data:", response.data);
+  
+      setFavorites(response.data);
+    } catch (error) {
+      setError('Error fetching favorites. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleEditReview = (reviewId) => {
     setEditingReviewId(reviewId);
   };
@@ -98,14 +132,70 @@ const MovieDetail = () => {
     return review.email === email;
   };
 
-  //sortowanie reviews
   const sortedReviews = [...reviews].sort((a, b) => {
     const dateA = new Date(a.fullDate);
     const dateB = new Date(b.fullDate);
     return dateB - dateA; 
   });
 
+  const onReviewEdited = (editedReviewId, editedReviewData) => {
+    setReviews((prevReviews) => {
+      return prevReviews.map((review) => {
+        if (review.id === editedReviewId) {
+          return { ...review, ...editedReviewData };
+        } else {
+          return review;
+        }
+      });
+    });
+    window.location.reload();
+    history.push(`/movie/${movieId}`);
+  };
+
+
+
+
+  const toggleFavorite = async (movieId) => {
+    setLoading(true);
+
+    try {
+      const userEmail = getUserEmailFromToken(cookies.token);
+      const tk = cookies.token;
+
+      if (isMovieInFavorites(movieId)) {
+        const response = await axios.post(
+          `movies/Fav/delete?movieId=${movieId}&email=${userEmail}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${tk}`
+            }
+          }
+        );
+
+        setFavorites((prevFavorites) => prevFavorites.filter((favorite) => favorite.id !== movieId));
+      } else {
+        const response = await axios.post(
+          `movies/addFav?email=${userEmail}&movieId=${movieId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${tk}`
+            }
+          }
+        );
+
+        setFavorites((prevFavorites) => [...prevFavorites, { id: movieId }]);
+      }
+      fetchFavorites();
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
+    <div className="movie-detail-container">
     <Container>
       <Row>
         <Col>
@@ -114,18 +204,27 @@ const MovieDetail = () => {
       </Row>
       <Row className="mt-2">
         <Col>
+        <div className="light-rays-container">
           <img
             className="movie-poster"
             src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
             alt={movie.title}
           />
+        </div>
+        
+        <div className='watchlist-icon'>
+        <FontAwesomeIcon className='top-icon' 
+          icon={isMovieInFavorites(movie.id) ? faHeartCircleMinus : faHeartCirclePlus}
+          onClick={() => toggleFavorite(movie.id)}
+        />
+        </div>
         </Col>
         <Col>
           <>
             <Row>
               <Col>
                 <h5>Release Date:</h5>
-                {movie.releaseDate}
+                {movie.relaseDate}
                 <hr />
                 <h5>Overview:</h5>
                 {movie.overview}
@@ -167,43 +266,83 @@ const MovieDetail = () => {
 
           <hr />
           {sortedReviews.length > 0 && (
-            <>
-              {sortedReviews.map((review) => (
-                <div key={review.id}>
+          <>
+            {sortedReviews.map((review) => (
+              <div key={review.id} className="review-container review-border">
+                <div className="left-section">
                   <p>Username: {review.username}</p>
-                  <p>Rating: {review.rating}</p>
-                  <p>Comment: {review.comment}</p>
-                  <p>Date: {formatDate(review.fullDate)}</p>
-                  <hr />
+                  <p>
+                    Rating:{" "}
+                    {[...Array(10)].map((_, index) => (
+                      <span
+                        key={index}
+                        style={{
+                          color:
+                            index < Math.floor(review.rating)
+                              ? "orange"
+                              : index === Math.floor(review.rating) &&
+                                review.rating % 1 !== 0
+                              ? "orange"
+                              : "gray",
+                          marginRight: "2px",
+                        }}
+                      >
+                        {index < Math.floor(review.rating) ? (
+                          <FontAwesomeIcon icon={faStar} />
+                        ) : index === Math.floor(review.rating) &&
+                          review.rating % 1 !== 0 ? (
+                          <FontAwesomeIcon icon={faStarHalfAlt} />
+                        ) : (
+                          <FontAwesomeIcon icon={faStar} />
+                        )}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+                <div className="center-section">
+                
+                  <p>Comment:</p>
+                  <p className="comment-text">{review.comment}</p>
+                </div>
+                <div className="right-section">
+                <div className="date-container">
+                  <p>Date:</p>
+                  <p>{formatDate(review.fullDate)}</p>
                   {isUserReview(review, userEmail) && (
                     <div>
-                      <Button
+                      <FontAwesomeIcon
                         variant="outline-primary"
                         onClick={() => handleEditReview(review.id)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outline-danger"
+                        icon={faPenToSquare}
+                      />
+
+                      <FontAwesomeIcon
                         onClick={() => handleDeleteReview(review.id)}
-                      >
-                        Delete
-                      </Button>
+                        icon={faTrash}
+                        color="red"
+                      />
                     </div>
                   )}
-                  {editingReviewId === review.id && (
-                    <EditReviewForm
-                      reviewToEdit={review}
-                      onReviewEdited={fetchMovieReview} 
-                    />
-                  )}
+               </div>
+
+                {editingReviewId === review.id && (
+                  <EditReviewForm
+                    reviewToEdit={review}
+                    onReviewEdited={onReviewEdited}
+
+                  />
+                )}
                 </div>
-              ))}
-            </>
-          )}
+                <hr />
+              </div>
+            ))}
+          </>
+        )}
+
         </Col>
       </Row>
     </Container>
+    </div>
   );
 };
 

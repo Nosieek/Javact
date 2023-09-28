@@ -108,7 +108,7 @@ const Favorites = () => {
                 <FontAwesomeIcon
                   className="heart-icon"
                   icon={faHeartCircleMinus}
-                  onClick={() => removeFromFavorites(movie.id)}
+                  onClick={() => removeFromFavorites(movie.imdbId)}
                 />
                 <FontAwesomeIcon
                   className="magnify-glass-icon"
