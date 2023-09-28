@@ -9,7 +9,7 @@ import jwtDecode from "jwt-decode";
 import EditReviewForm from '../reviewForm/EditReviewForm';
 import CreateReviewForm from '../reviewForm/CreateReviewForm';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faTrash,faPenToSquare, faStarHalfAlt} from "@fortawesome/free-solid-svg-icons";
+import { faStar, faTrash,faPenToSquare, faStarHalfAlt, faHeartCircleMinus, faHeartCirclePlus} from "@fortawesome/free-solid-svg-icons";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -18,8 +18,8 @@ const MovieDetail = () => {
   const [cookies] = useCookies(['token']);
   const [reviews, setReviews] = useState([]);
   const [editingReviewId, setEditingReviewId] = useState(null);
+  const [favorites, setFavorites] = useState([]);
 
-  const [editedReview, setEditedReview] = useState(null);
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
@@ -31,6 +31,38 @@ const MovieDetail = () => {
     fetchMovieReview();
   }, [movieId]);
 
+  const isMovieInFavorites = (movieId) => {
+    return favorites.some((favorite) => favorite.imdbId === movieId);
+  };
+  const fetchFavorites = async () => {
+    setLoading(true);
+  
+    try {
+      const token = cookies.token;
+      const userEmail = getUserEmailFromToken(token);
+      const tk = cookies.token;
+      console.log("User Email:", userEmail);
+      console.log("Token:", tk);
+  
+      const response = await axios.get(`movies/liked-movies?email=${userEmail}`, {
+        headers: {
+          Authorization: `Bearer ${tk}`
+        }
+      });
+  
+      if (response.status !== 200) {
+        throw new Error('Error fetching favorites');
+      }
+  
+      console.log("Favorites Data:", response.data);
+  
+      setFavorites(response.data);
+    } catch (error) {
+      setError('Error fetching favorites. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleEditReview = (reviewId) => {
     setEditingReviewId(reviewId);
   };
@@ -120,6 +152,48 @@ const MovieDetail = () => {
     history.push(`/movie/${movieId}`);
   };
 
+
+
+
+  const toggleFavorite = async (movieId) => {
+    setLoading(true);
+
+    try {
+      const userEmail = getUserEmailFromToken(cookies.token);
+      const tk = cookies.token;
+
+      if (isMovieInFavorites(movieId)) {
+        const response = await axios.post(
+          `movies/Fav/delete?movieId=${movieId}&email=${userEmail}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${tk}`
+            }
+          }
+        );
+
+        setFavorites((prevFavorites) => prevFavorites.filter((favorite) => favorite.id !== movieId));
+      } else {
+        const response = await axios.post(
+          `movies/addFav?email=${userEmail}&movieId=${movieId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${tk}`
+            }
+          }
+        );
+
+        setFavorites((prevFavorites) => [...prevFavorites, { id: movieId }]);
+      }
+      fetchFavorites();
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="movie-detail-container">
     <Container>
@@ -135,7 +209,15 @@ const MovieDetail = () => {
             className="movie-poster"
             src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`}
             alt={movie.title}
-          /></div>
+          />
+        </div>
+        
+        <div className='watchlist-icon'>
+        <FontAwesomeIcon className='top-icon' 
+          icon={isMovieInFavorites(movie.id) ? faHeartCircleMinus : faHeartCirclePlus}
+          onClick={() => toggleFavorite(movie.id)}
+        />
+        </div>
         </Col>
         <Col>
           <>

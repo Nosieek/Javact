@@ -94,3 +94,7 @@ h3 {
   flex-direction: column;
 }
 
+.watchlist-icon{
+  margin-top: 10%;
+  height: 300px;
+}
