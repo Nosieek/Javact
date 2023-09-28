@@ -32,19 +32,23 @@ h3 {
     width:40vb;
     min-height: 60vb;
     object-fit: cover;
-    box-shadow: 0px 20px 20px rgb(255, 204, 0); /* Dodaj mocniejszy cień */
+    box-shadow: 0px 20px 20px rgb(255, 204, 0); 
     z-index: 3;
 
 }
 
 .yt-video-container {
+  margin-left: 10%;
+  width: 690px;
+  height: 315px;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-top: 20px; */
-  /* border: 2cap; */
+  margin-top: 20px;
+  border: 2cap;
   z-index: 3;
-  box-shadow: 10px 20px 20px rgb(255, 204, 0); /* Dodaj mocniejszy cień */
+  box-shadow: 0px 0px 50px orange; 
+  margin-bottom: 10%;
 
 }
 
@@ -89,21 +93,4 @@ h3 {
   justify-content: center;
   flex-direction: column;
 }
-/* 
-.light-rays-container {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-} */
 
-/* .light-rays-container::before {
-  content: "";
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 100%, transparent 70%);
-  pointer-events: none;
-  z-index: -1;
-} */
