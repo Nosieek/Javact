@@ -20,7 +20,7 @@ public class ReviewDto {
         this.username = username;
         this.rating = rating;
         this.comment = comment;
-        Calendar calendar = Calendar.getInstance();
+//        Calendar calendar = Calendar.getInstance();
         this.fullDate = fullDate;
     }
 }
