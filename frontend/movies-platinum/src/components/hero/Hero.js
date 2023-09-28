@@ -74,20 +74,20 @@ const Hero = ({movies}) => {
                                                 </div>
 
                                              </Link>
-                                             {/* <div className="play-button-icon-container2">
+                                             <div className="play-button-icon-container2">
                                              <FontAwesomeIcon
                                                         className="heart-icon-hero"
                                                         icon={faMagnifyingGlass}
                                                         onClick={() => getMovieDetail(movie)}
                                                     />
-                                            </div> */}
-                                            <div className="play-button-icon-container2">
+                                            </div>
+                                            {/* <div className="play-button-icon-container2">
                                              <FontAwesomeIcon
                                                         className="heart-icon-hero"
                                                         icon={faHeartCirclePlus}
                                                         onClick={() => addToFavorite(movie)}
                                                     />
-                                            </div>
+                                            </div> */}
                                             </>
                                         ):(
                                             <Link to={`/Trailer/${movie.ytTrailer}`}>
