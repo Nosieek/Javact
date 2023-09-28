@@ -24,6 +24,8 @@ h1 {
   margin-bottom: 20px;
   border: 2px solid orange;
   border-radius: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .left-column {
@@ -78,17 +80,17 @@ h1 {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  justify-content: center; /* Dodano centrowanie */
+  justify-content: center; 
 }
 
 .pagination button {
   margin-right: 15px;
   margin-left: 15px;
   padding: 5px 10px;
-  background-color: #ff6600; /* Ustawienie ciemnopomarańczowego koloru tła */
-  color: #ffffff; /* Ustawienie białego koloru tekstu */
-  border: none; /* Usunięcie obramowania */
-  border-radius: 15px; /* Dodano zaokrąglenie */
+  background-color: #ff6600; 
+  color: #ffffff; 
+  border: none; 
+  border-radius: 15px; 
 
   cursor: pointer;
 }
